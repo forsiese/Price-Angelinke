@@ -5,9 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Premium Brow & Lash Menu</title>
     
-    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     
+    <!-- Шрифты: Playfair Display и Montserrat -->
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@200;300;400;500;600&family=Playfair+Display:ital,wght@0,600;1,600;1,700&display=swap" rel="stylesheet">
     
     <style>
@@ -67,6 +68,7 @@
                 0 4px 10px rgba(22, 22, 22, 0.01);
         }
 
+        /* Базовая структура 3D-карточки */
         .spotlight-card {
             position: relative;
             background: rgba(255, 255, 255, 0.55);
@@ -80,6 +82,7 @@
             transition: box-shadow 0.5s cubic-bezier(0.25, 1, 0.5, 1), border-color 0.5s cubic-bezier(0.25, 1, 0.5, 1), background-color 0.5s cubic-bezier(0.25, 1, 0.5, 1);
         }
 
+        /* Световой блик */
         .spotlight-card::before {
             content: '';
             position: absolute;
@@ -102,6 +105,7 @@
         }
         .spotlight-card:hover::before { opacity: 1; }
 
+        /* Стиль ДЛЯ ВЫБРАННОЙ карточки */
         .spotlight-card.is-selected {
             background-color: #161616 !important;
             border-color: #161616 !important;
@@ -127,6 +131,7 @@
             transition: transform 0.5s cubic-bezier(0.25, 1, 0.5, 1);
         }
 
+        /* Премиум кнопки и брендовые ховеры */
         .premium-btn {
             background: #161616;
             color: #ffffff;
@@ -136,6 +141,7 @@
             overflow: hidden;
         }
 
+        /* Анимация иконок внутри кнопок */
         .btn-icon {
             opacity: 0;
             transform: translateX(-10px);
@@ -154,6 +160,21 @@
             transform: translateX(12px);
         }
 
+        /* Telegram Hover */
+        .btn-tg:hover {
+            background-color: #2AABEE !important;
+            box-shadow: 0 16px 32px rgba(42, 171, 238, 0.3) !important;
+            transform: translateY(-2px);
+        }
+
+        /* Max Hover (Градиент из логотипа) */
+        .btn-max:hover {
+            background: linear-gradient(135deg, #00D2FF 0%, #8A2BE2 100%) !important;
+            box-shadow: 0 16px 32px rgba(138, 43, 226, 0.25) !important;
+            transform: translateY(-2px);
+        }
+
+        /* Dikidi Hover */
         .btn-dikidi:hover {
             background-color: #00A5FF !important;
             box-shadow: 0 16px 32px rgba(0, 165, 255, 0.25) !important;
@@ -205,6 +226,7 @@
 
     <div class="relative w-full max-w-[420px] bg-white/35 backdrop-blur-3xl rounded-[48px] p-6 sm:p-8 border border-white/50 main-container-shadow z-10">
         
+        <!-- СЕКЦИЯ 1: БРОВИ -->
         <div class="mb-10 reveal-item delay-1">
             <div class="flex items-baseline justify-between mb-6 px-1">
                 <h2 class="font-accent text-[2.6rem] italic font-semibold premium-heading text-neutral-900">Брови</h2>
@@ -216,8 +238,8 @@
                 <div class="spotlight-card p-5 cursor-pointer group" tabindex="0" data-name="коррекция бровей" data-price="400">
                     <div class="card-content flex justify-between items-center gap-4">
                         <div class="flex-1 min-w-0 pr-1">
-                            <h3 class="text-[14.5px] font-semibold premium-text text-neutral-900">Коррекция</h3>
-                            <p class="text-[12px] text-neutral-400 font-light mt-1 leading-snug">(воск, пинцет)</p>
+                            <h3 class="text-[14.5px] font-semibold premium-text text-neutral-900 transition-colors duration-300">Коррекция</h3>
+                            <p class="text-[12px] text-neutral-400 font-light mt-1 leading-snug transition-colors duration-300">(воск, пинцет)</p>
                         </div>
                         <span class="price-badge shrink-0 text-[13.5px] font-medium tracking-wide text-neutral-800 bg-white/60 border border-white/80 px-4 py-2 rounded-full">400р</span>
                     </div>
@@ -226,8 +248,8 @@
                 <div class="spotlight-card p-5 cursor-pointer group" tabindex="0" data-name="архитектура бровей" data-price="700">
                     <div class="card-content flex justify-between items-center gap-4">
                         <div class="flex-1 min-w-0 pr-1">
-                            <h3 class="text-[14.5px] font-semibold premium-text text-neutral-900">Архитектура бровей</h3>
-                            <p class="text-[12px] text-neutral-400 font-light mt-1 leading-snug">(коррекция, окрашивание)</p>
+                            <h3 class="text-[14.5px] font-semibold premium-text text-neutral-900 transition-colors duration-300">Архитектура бровей</h3>
+                            <p class="text-[12px] text-neutral-400 font-light mt-1 leading-snug transition-colors duration-300">(коррекция, окрашивание)</p>
                         </div>
                         <span class="price-badge shrink-0 text-[13.5px] font-medium tracking-wide text-neutral-800 bg-white/60 border border-white/80 px-4 py-2 rounded-full">700р</span>
                     </div>
@@ -236,8 +258,8 @@
                 <div class="spotlight-card p-5 cursor-pointer group" tabindex="0" data-name="долговременная укладка" data-price="1200">
                     <div class="card-content flex justify-between items-center gap-4">
                         <div class="flex-1 min-w-0 pr-1">
-                            <h3 class="text-[14.5px] font-semibold premium-text text-neutral-900">Долговременная укладка</h3>
-                            <p class="text-[12px] text-neutral-400 font-light mt-1 leading-snug">(+коррекция, уход)</p>
+                            <h3 class="text-[14.5px] font-semibold premium-text text-neutral-900 transition-colors duration-300">Долговременная укладка</h3>
+                            <p class="text-[12px] text-neutral-400 font-light mt-1 leading-snug transition-colors duration-300">(+коррекция, уход)</p>
                         </div>
                         <span class="price-badge shrink-0 text-[13.5px] font-medium tracking-wide text-neutral-800 bg-white/60 border border-white/80 px-4 py-2 rounded-full">1200р</span>
                     </div>
@@ -246,8 +268,8 @@
                 <div class="spotlight-card p-5 cursor-pointer group" tabindex="0" data-name="долговременная укладка +" data-price="1500">
                     <div class="card-content flex justify-between items-center gap-4">
                         <div class="flex-1 min-w-0 pr-1">
-                            <h3 class="text-[14.5px] font-semibold premium-text text-neutral-900">Долговременная укладка +</h3>
-                            <p class="text-[12px] text-neutral-400 font-light mt-1 leading-snug">(+коррекция, окрашивание, уход)</p>
+                            <h3 class="text-[14.5px] font-semibold premium-text text-neutral-900 transition-colors duration-300">Долговременная укладка +</h3>
+                            <p class="text-[12px] text-neutral-400 font-light mt-1 leading-snug transition-colors duration-300">(+коррекция, окрашивание, уход)</p>
                         </div>
                         <span class="price-badge shrink-0 text-[13.5px] font-medium tracking-wide text-neutral-800 bg-white/60 border border-white/80 px-4 py-2 rounded-full">1500р</span>
                     </div>
@@ -255,6 +277,7 @@
             </div>
         </div>
 
+        <!-- СЕКЦИЯ 2: РЕСНИЦЫ -->
         <div class="mb-8 reveal-item delay-2">
             <div class="flex items-baseline justify-between mb-6 px-1">
                 <h2 class="font-accent text-[2.6rem] italic font-semibold premium-heading text-neutral-900">Ресницы</h2>
@@ -266,8 +289,8 @@
                 <div class="spotlight-card p-5 cursor-pointer group" tabindex="0" data-name="ламинирование ресниц" data-price="1200">
                     <div class="card-content flex justify-between items-center gap-4">
                         <div class="flex-1 min-w-0 pr-1">
-                            <h3 class="text-[14.5px] font-semibold premium-text text-neutral-900">Ламинирование ресниц</h3>
-                            <p class="text-[12px] text-neutral-400 font-light mt-1 leading-snug">(+окрашивание, уход)</p>
+                            <h3 class="text-[14.5px] font-semibold premium-text text-neutral-900 transition-colors duration-300">Ламинирование ресниц</h3>
+                            <p class="text-[12px] text-neutral-400 font-light mt-1 leading-snug transition-colors duration-300">(+окрашивание, уход)</p>
                         </div>
                         <span class="price-badge shrink-0 text-[13.5px] font-medium tracking-wide text-neutral-800 bg-white/60 border border-white/80 px-4 py-2 rounded-full">1200р</span>
                     </div>
@@ -276,7 +299,7 @@
                 <div class="spotlight-card p-5 cursor-pointer group" tabindex="0" data-name="окрашивание ресниц" data-price="300">
                     <div class="card-content flex justify-between items-center gap-4">
                         <div class="flex-1 min-w-0 pr-1">
-                            <h3 class="text-[14.5px] font-semibold premium-text text-neutral-900">Окрашивание ресниц</h3>
+                            <h3 class="text-[14.5px] font-semibold premium-text text-neutral-900 transition-colors duration-300">Окрашивание ресниц</h3>
                         </div>
                         <span class="price-badge shrink-0 text-[13.5px] font-medium tracking-wide text-neutral-800 bg-white/60 border border-white/80 px-4 py-2 rounded-full">300р</span>
                     </div>
@@ -285,7 +308,7 @@
                 <div class="spotlight-card p-5 cursor-pointer group" tabindex="0" data-name="снятие наращенных ресниц" data-price="300">
                     <div class="card-content flex justify-between items-center gap-4">
                         <div class="flex-1 min-w-0 pr-1">
-                            <h3 class="text-[14.5px] font-semibold premium-text text-neutral-900">Снятие наращенных ресниц</h3>
+                            <h3 class="text-[14.5px] font-semibold premium-text text-neutral-900 transition-colors duration-300">Снятие наращенных ресниц</h3>
                         </div>
                         <span class="price-badge shrink-0 text-[13.5px] font-medium tracking-wide text-neutral-800 bg-white/60 border border-white/80 px-4 py-2 rounded-full">300р</span>
                     </div>
@@ -293,9 +316,10 @@
             </div>
         </div>
 
+        <!-- СЕКЦИЯ 3: ИТОГИ И КНОПКИ ЗАПИСИ -->
         <div class="w-full mt-4 relative reveal-item delay-3">
             
-            <div class="bg-white/40 backdrop-blur-xl border border-white/60 rounded-[24px] p-5 text-center mb-6 soft-shadow-sm">
+            <div class="bg-white/40 backdrop-blur-xl border border-white/60 rounded-[24px] p-5 text-center mb-6 soft-shadow-sm transition-all duration-300">
                 <p class="text-[14px] font-light tracking-wide text-neutral-600">
                     Итоговая сумма: <br>
                     <span class="font-semibold text-neutral-900 text-[24px] mt-1 inline-block tracking-wide">
@@ -307,47 +331,64 @@
                 </p>
             </div>
 
-            <div class="p-5 bg-white/50 backdrop-blur-2xl border border-white/70 rounded-[28px] mb-5">
-                <h4 class="text-[12px] font-semibold tracking-[0.15em] uppercase text-neutral-700 text-center mb-4">Выберите дату и время</h4>
-                <div class="flex flex-col gap-3">
-                    <input type="date" id="bookDate" class="premium-input text-[14px] text-neutral-800">
-                    <input type="time" id="bookTime" class="premium-input text-[14px] text-neutral-800">
-                </div>
+            <div id="messengerBlock" class="grid grid-cols-2 gap-3 w-full">
+                <!-- Telegram Button -->
+                <button onclick="chooseMessenger('telegram')" class="premium-btn btn-tg h-[54px] flex justify-center items-center rounded-[20px] font-semibold tracking-[0.12em] text-[11px] uppercase outline-none">
+                    <svg class="btn-icon w-5 h-5 text-white" fill="currentColor" viewBox="0 0 24 24"><path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/></svg>
+                    <span class="btn-text">В Telegram</span>
+                </button>
+                
+                <!-- Max.ru Button -->
+                <button onclick="chooseMessenger('max')" class="premium-btn btn-max h-[54px] flex justify-center items-center rounded-[20px] font-semibold tracking-[0.12em] text-[11px] uppercase outline-none">
+                    <!-- Логотип-иконка Max (стилизованное диалоговое кольцо) -->
+                    <svg class="btn-icon w-[22px] h-[22px] text-white" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12c0 1.8.5 3.48 1.36 4.96L2 22l5.04-1.36C8.52 21.5 10.2 22 12 22c5.52 0 10-4.48 10-10S17.52 2 12 2zm0 15c-1.12 0-2.18-.28-3.12-.76l-.22-.12-2.14.58.58-2.14-.12-.22A6.974 6.974 0 0 1 5 12c0-3.86 3.14-7 7-7s7 3.14 7 7-3.14 7-7 7z"/></svg>
+                    <span class="btn-text">В Max.ru</span>
+                </button>
             </div>
 
-            <button onclick="sendDataToBot()" class="premium-btn h-[56px] flex justify-center items-center rounded-[22px] font-semibold tracking-[0.12em] text-[12px] uppercase outline-none w-full mb-4">
-                <svg class="btn-icon w-5 h-5 text-white" fill="currentColor" viewBox="0 0 24 24"><path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0zm4.962 7.224c.1-.002.321.023.465.14.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/></svg>
-                <span class="btn-text">Подтвердить запись</span>
-            </button>
-
-            <div class="pt-4 border-t border-neutral-300/40">
+            <!-- Блок Dikidi -->
+            <div class="mt-4 pt-4 border-t border-neutral-300/40">
                 <a href="https://dikidi.net/ru/profile/" target="_blank" class="premium-btn btn-dikidi h-[54px] flex justify-center items-center rounded-[20px] font-semibold tracking-[0.12em] text-[11px] uppercase outline-none w-full">
                     <svg class="btn-icon w-5 h-5 text-white" viewBox="0 0 24 24" fill="currentColor"><path d="M19 4h-1V2h-2v2H8V2H6v2H5c-1.11 0-1.99.9-1.99 2L3 20c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 16H5V10h14v10z"/></svg>
                     <span class="btn-text">Записаться в Dikidi</span>
                 </a>
+                <p class="text-center text-[10px] text-neutral-400 font-light mt-3 tracking-wide">Или выберите прямую запись онлайн</p>
+            </div>
+
+            <!-- Премиальный блок интерактивного календаря -->
+            <div id="calendarBlock" class="mt-5 p-5 bg-white/50 backdrop-blur-2xl border border-white/70 rounded-[28px] transition-all duration-500 hidden scale-95 opacity-0">
+                <h4 class="text-[12px] font-semibold tracking-[0.15em] uppercase text-neutral-700 text-center mb-4">Выберите дату и время</h4>
+                
+                <div class="flex flex-col gap-3">
+                    <input type="date" id="bookDate" class="premium-input text-[14px] text-neutral-800">
+                    <input type="time" id="bookTime" class="premium-input text-[14px] text-neutral-800">
+                    
+                    <button onclick="generateAndSend()" class="premium-btn h-[50px] mt-2 flex justify-center items-center rounded-[18px] font-semibold tracking-[0.12em] text-[11px] uppercase outline-none w-full">
+                        Отправить запрос
+                    </button>
+                </div>
             </div>
 
         </div>
     </div>
 
+    <!-- ЛОГИКА -->
     <script>
-        // Инициализация Telegram WebApp
-        const tg = window.Telegram.WebApp;
-        tg.expand(); // Расширяет окно на максимум
-
         let selectedServices = [];
         let totalPrice = 0;
+        let selectedMessenger = '';
 
         document.addEventListener('DOMContentLoaded', () => {
-            setCurrentDateTime();
-            
             const cards = document.querySelectorAll('.spotlight-card');
+            
             cards.forEach(card => {
                 card.addEventListener('mousemove', (e) => {
                     if (card.classList.contains('is-selected')) return;
+
                     const rect = card.getBoundingClientRect();
                     const x = e.clientX - rect.left;
                     const y = e.clientY - rect.top;
+                    
                     card.style.setProperty('--x', `${x}px`);
                     card.style.setProperty('--y', `${y}px`);
 
@@ -357,14 +398,23 @@
                     const rotateY = ((x - centerX) / centerX) * 5;
 
                     const content = card.querySelector('.card-content');
-                    if(content) content.style.transform = `translateZ(25px) translateX(${rotateY * 0.5}px) translateY(${rotateX * -0.5}px)`;
+                    if(content) {
+                        content.style.transform = `translateZ(25px) translateX(${rotateY * 0.5}px) translateY(${rotateX * -0.5}px)`;
+                    }
                     card.style.transform = `perspective(800px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale3d(1.015, 1.015, 1.015)`;
                 });
 
                 card.addEventListener('mouseleave', () => {
                     card.style.transform = `perspective(800px) rotateX(0deg) rotateY(0deg) scale3d(1, 1, 1)`;
                     const content = card.querySelector('.card-content');
-                    if(content) content.style.transform = `translateZ(0px) translateX(0px) translateY(0px)`;
+                    if(content) {
+                        content.style.transform = `translateZ(0px) translateX(0px) translateY(0px)`;
+                    }
+                    card.style.transition = 'transform 0.6s cubic-bezier(0.25, 1, 0.5, 1), background-color 0.4s ease, border-color 0.4s ease';
+                });
+
+                card.addEventListener('mouseenter', () => {
+                    card.style.transition = 'background-color 0.4s ease, border-color 0.4s ease';
                 });
 
                 card.addEventListener('click', () => {
@@ -380,45 +430,97 @@
                         totalPrice += price;
                         selectedServices.push(name);
                     }
+
                     document.getElementById('totalPrice').innerText = totalPrice;
                 });
             });
         });
 
+        // Установка текущей даты и времени устройства
         function setCurrentDateTime() {
             const now = new Date();
-            document.getElementById('bookDate').value = now.toISOString().split('T')[0];
-            document.getElementById('bookTime').value = String(now.getHours()).padStart(2, '0') + ':' + String(now.getMinutes()).padStart(2, '0');
+            
+            const year = now.getFullYear();
+            const month = String(now.getMonth() + 1).padStart(2, '0');
+            const day = String(now.getDate()).padStart(2, '0');
+            document.getElementById('bookDate').value = `${year}-${month}-${day}`;
+
+            const hours = String(now.getHours()).padStart(2, '0');
+            const minutes = String(now.getMinutes()).padStart(2, '0');
+            document.getElementById('bookTime').value = `${hours}:${minutes}`;
+        }
+
+        function chooseMessenger(messenger) {
+            if (selectedServices.length === 0) {
+                alert('Пожалуйста, выберите сначала хотя бы одну процедуру.');
+                return;
+            }
+            selectedMessenger = messenger;
+
+            const calendarBlock = document.getElementById('calendarBlock');
+            calendarBlock.classList.remove('hidden');
+            
+            setCurrentDateTime();
+            
+            setTimeout(() => {
+                calendarBlock.classList.remove('scale-95', 'opacity-0');
+                calendarBlock.classList.add('scale-100', 'opacity-100');
+                calendarBlock.scrollIntoView({ behavior: 'smooth', block: 'end' });
+            }, 50);
         }
 
         function formatDate(dateString) {
             if (!dateString) return '';
-            const months = ['января', 'февраля', 'марта', 'апреля', 'мая', 'июня', 'июля', 'августа', 'сентября', 'октября', 'ноября', 'декабря'];
-            const parts = dateString.split('-');
-            return parts.length === 3 ? `${parseInt(parts[2], 10)} ${months[parseInt(parts[1], 10) - 1]} ${parts[0]}г.` : dateString;
+            const months = [
+                'января', 'февраля', 'марта', 'апреля', 'мая', 'июня', 
+                'июля', 'августа', 'сентября', 'октября', 'ноября', 'декабря'
+            ];
+            const dateParts = dateString.split('-');
+            if (dateParts.length !== 3) return dateString;
+
+            const year = dateParts[0];
+            const monthIndex = parseInt(dateParts[1], 10) - 1;
+            const day = parseInt(dateParts[2], 10);
+
+            return `${day} ${months[monthIndex]} ${year}г.`;
         }
 
-        function sendDataToBot() {
-            if (selectedServices.length === 0) {
-                alert('Пожалуйста, выберите хотя бы одну услугу.');
-                return;
-            }
-
+        function generateAndSend() {
             const rawDate = document.getElementById('bookDate').value;
             const time = document.getElementById('bookTime').value;
 
             if (!rawDate || !time) {
-                alert('Пожалуйста, заполните дату и время.');
+                alert('Пожалуйста, заполните дату и время для записи.');
                 return;
             }
 
             const formattedDate = formatDate(rawDate);
-            const textMessage = `✨ Новая запись! ✨\n\n🗓 Дата: ${formattedDate}\n🕒 Время: ${time}\n\n💅 Услуги:\n• ${selectedServices.join('\n• ')}\n\n💰 Итого: ${totalPrice}р`;
+            
+            let proceduresText = '';
+            if (selectedServices.length === 1) {
+                proceduresText = selectedServices[0];
+            } else {
+                const lastService = selectedServices[selectedServices.length - 1];
+                const otherServices = selectedServices.slice(0, -1).join(', ');
+                proceduresText = `${otherServices} и ${lastService}`;
+            }
 
-            // Отправляем данные боту
-            tg.sendData(textMessage);
-            // Закрываем приложение
-            tg.close();
+            const textMessage = `Здравствуйте! Хочу записаться на ${formattedDate} в ${time} на процедуру ${proceduresText}.`;
+            const encodedText = encodeURIComponent(textMessage);
+
+            let finalLink = '';
+
+            if (selectedMessenger === 'telegram') {
+                // Прямая ссылка на нужный Telegram аккаунт
+                finalLink = `https://t.me/aandvl?text=${encodedText}`;
+            } else if (selectedMessenger === 'max') {
+                // Интеграция с Max.ru по указанному номеру
+                finalLink = `https://max.ru/send?phone=79872785811&text=${encodedText}`;
+            }
+
+            if (finalLink) {
+                window.open(finalLink, '_blank');
+            }
         }
     </script>
 </body>

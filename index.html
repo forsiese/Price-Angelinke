@@ -125,7 +125,10 @@
         .premium-btn:hover .btn-text { transform: translateX(12px); }
 
         .btn-tg:hover { background-color: #2AABEE; box-shadow: 0 16px 32px rgba(42, 171, 238, 0.3); transform: translateY(-2px); }
-        .btn-dikidi:hover { background-color: #00A5FF; box-shadow: 0 16px 32px rgba(0, 165, 255, 0.25); transform: translateY(-2px); }
+        .btn-green { background-color: #16a34a; }
+        .btn-green:hover { background-color: #15803d; transform: translateY(-2px); }
+        .btn-red { background-color: #dc2626; }
+        .btn-red:hover { background-color: #b91c1c; transform: translateY(-2px); }
 
         .premium-input {
             background: rgba(255, 255, 255, 0.6);
@@ -168,8 +171,19 @@
             z-index: 100;
             transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
             box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            text-align: center;
         }
         #toast.show { transform: translateX(-50%) translateY(0); }
+
+        .admin-card {
+            background: rgba(255, 255, 255, 0.7);
+            border: 1px solid rgba(255, 255, 255, 0.8);
+            border-radius: 20px;
+            backdrop-filter: blur(12px);
+        }
+        .status-pending { color: #d97706; font-weight: 600; }
+        .status-approved { color: #16a34a; font-weight: 600; }
+        .status-rejected { color: #dc2626; font-weight: 600; }
     </style>
 </head>
 <body class="flex justify-center items-start sm:items-center min-h-screen p-4 sm:p-8 relative selection:bg-neutral-900 selection:text-white">
@@ -181,7 +195,10 @@
 
     <div id="toast" role="alert" aria-live="assertive">Пожалуйста, выберите процедуру.</div>
 
-    <main class="relative w-full max-w-[420px] bg-white/35 backdrop-blur-3xl rounded-[48px] p-6 sm:p-8 border border-white/50 main-container-shadow z-10">
+    <!-- ========================================== -->
+    <!-- КЛИЕНТСКАЯ ЧАСТЬ (ОСНОВНАЯ СТРАНИЦА)        -->
+    <!-- ========================================== -->
+    <main id="client-view" class="relative w-full max-w-[420px] bg-white/35 backdrop-blur-3xl rounded-[48px] p-6 sm:p-8 border border-white/50 main-container-shadow z-10">
         
         <!-- СЕКЦИЯ 1: БРОВИ -->
         <section class="mb-10 reveal-item delay-1" aria-labelledby="brows-title">
@@ -282,7 +299,7 @@
             </ul>
         </section>
 
-        <!-- СЕКЦИЯ 3: ИТОГИ И КНОПКИ ЗАПИСИ -->
+        <!-- СЕКЦИЯ 3: ИТОГИ И КНОПКА ЗАПИСИ -->
         <div class="w-full mt-4 relative reveal-item delay-3">
             <div class="bg-white/40 backdrop-blur-xl border border-white/60 rounded-[24px] p-5 text-center mb-6 transition-all duration-300">
                 <p class="text-[14px] font-light tracking-wide text-neutral-600">
@@ -296,24 +313,10 @@
                 </p>
             </div>
 
-            <!-- Кнопка Telegram -->
             <button onclick="chooseMessenger('telegram')" class="premium-btn btn-tg w-full h-[54px] flex justify-center items-center rounded-[20px] font-semibold tracking-[0.12em] text-[11px] uppercase outline-none">
                 <svg class="btn-icon w-5 h-5 text-white" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/></svg>
                 <span class="btn-text">Записаться в Telegram</span>
             </button>
-
-            <!-- Разделитель -->
-            <div class="flex items-center my-5">
-                <div class="h-[1px] flex-1 bg-neutral-300/40"></div>
-                <span class="px-4 text-[10px] uppercase tracking-[0.12em] text-neutral-400 font-medium">или</span>
-                <div class="h-[1px] flex-1 bg-neutral-300/40"></div>
-            </div>
-
-            <!-- Кнопка Dikidi -->
-            <a href="https://dikidi.net/ru/profile/" target="_blank" rel="noopener noreferrer" class="premium-btn btn-dikidi w-full h-[54px] flex justify-center items-center rounded-[20px] font-semibold tracking-[0.12em] text-[11px] uppercase outline-none">
-                <svg class="btn-icon w-5 h-5 text-white" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M19 4h-1V2h-2v2H8V2H6v2H5c-1.11 0-1.99.9-1.99 2L3 20c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 16H5V10h14v10z"/></svg>
-                <span class="btn-text">Записаться через Dikidi</span>
-            </a>
 
             <!-- Интерактивный календарь -->
             <div id="calendarBlock" class="mt-6 p-5 bg-white/50 backdrop-blur-2xl border border-white/70 rounded-[28px] transition-all duration-500 hidden scale-95 opacity-0">
@@ -335,13 +338,36 @@
         </div>
     </main>
 
+    <!-- ========================================== -->
+    <!-- АДМИН ПАНЕЛЬ (СКРЫТАЯ)                      -->
+    <!-- ========================================== -->
+    <main id="admin-view" class="hidden relative w-full max-w-[500px] bg-white/35 backdrop-blur-3xl rounded-[48px] p-6 sm:p-8 border border-white/50 main-container-shadow z-10">
+        <div class="flex justify-between items-center mb-8">
+            <h2 class="font-accent text-[2rem] italic font-semibold text-neutral-900">Заявки</h2>
+            <a href="#" onclick="logoutAdmin()" class="text-[11px] uppercase tracking-[0.12em] text-neutral-500 hover:text-neutral-900 transition-colors">Выйти</a>
+        </div>
+        
+        <div id="admin-list" class="flex flex-col gap-4">
+            <!-- Заявки будут отрисованы здесь -->
+        </div>
+    </main>
+
+    <!-- ЛОГИКА ПРИЛОЖЕНИЯ -->
     <script>
+        // ====== НАСТРОЙКИ АДМИНА ======
+        const ADMIN_PIN = "1234"; // ПИН-код для входа в админку
+        const TG_USERNAME = "aandvl"; // Ваш юзернейм в Telegram (без @)
+        // ==============================
+
         const selectedServices = [];
         let totalPrice = 0;
         let selectedMessenger = '';
+        let bookings = JSON.parse(localStorage.getItem('bookings')) || [];
 
         const cards = document.querySelectorAll('.spotlight-card');
         const toast = document.getElementById('toast');
+        const clientView = document.getElementById('client-view');
+        const adminView = document.getElementById('admin-view');
 
         function showToast(message) {
             toast.textContent = message;
@@ -349,6 +375,7 @@
             setTimeout(() => toast.classList.remove('show'), 3000);
         }
 
+        // ====== ЛОГИКА КЛИЕНТСКОЙ ЧАСТИ ======
         cards.forEach(card => {
             card.addEventListener('mousemove', (e) => {
                 if (card.classList.contains('is-selected')) return;
@@ -397,7 +424,6 @@
             };
 
             card.addEventListener('click', toggleSelection);
-            
             card.addEventListener('keydown', (e) => {
                 if (e.key === 'Enter' || e.key === ' ') {
                     e.preventDefault();
@@ -409,7 +435,6 @@
         function setCurrentDateTime() {
             const now = new Date();
             const pad = (num) => String(num).padStart(2, '0');
-            
             document.getElementById('bookDate').value = `${now.getFullYear()}-${pad(now.getMonth() + 1)}-${pad(now.getDate())}`;
             document.getElementById('bookTime').value = `${pad(now.getHours())}:${pad(now.getMinutes())}`;
         }
@@ -420,7 +445,6 @@
                 return;
             }
             selectedMessenger = messenger;
-
             const calendarBlock = document.getElementById('calendarBlock');
             calendarBlock.classList.remove('hidden');
             setCurrentDateTime();
@@ -458,7 +482,6 @@
             const formattedDate = formatDate(rawDate);
             let proceduresText = '';
 
-            // Формируем список процедур с правильным падежом
             if (selectedServices.length === 1) {
                 proceduresText = `процедуру: ${selectedServices[0]}`;
             } else if (selectedServices.length > 1) {
@@ -467,21 +490,128 @@
                 proceduresText = `процедуры: ${otherServices} и ${last}`;
             }
 
-            // Формируем итоговый текст по вашему шаблону
-            const textMessage = `Здравствуйте, хочу записаться на ${proceduresText}. Дата ${formattedDate} ${time}. Сумма к оплате ${totalPrice}р.`;
+            // Текст БЕЗ суммы
+            const textMessage = `Здравствуйте, хочу записаться на ${proceduresText}. Дата ${formattedDate} ${time}.`;
             const encodedText = encodeURIComponent(textMessage);
 
-            let finalLink = '';
-            if (selectedMessenger === 'telegram') {
-                // Замените 'aandvl' на ваш юзернейм, если нужно
-                finalLink = `https://t.me/aandvl?text=${encodedText}`;
-            }
+            // Сохраняем заявку в LocalStorage
+            const newBooking = {
+                id: Date.now(),
+                services: selectedServices.join(', '),
+                date: formattedDate,
+                time: time,
+                timestamp: new Date().toLocaleString('ru-RU'),
+                status: 'pending' // pending, approved, rejected
+            };
+            bookings.push(newBooking);
+            localStorage.setItem('bookings', JSON.stringify(bookings));
 
-            if (finalLink) {
-                window.open(finalLink, '_blank', 'noopener,noreferrer');
-                closeCalendar(); // Закрываем календарь после отправки
+            let finalLink = `https://t.me/${TG_USERNAME}?text=${encodedText}`;
+
+            window.open(finalLink, '_blank', 'noopener,noreferrer');
+            closeCalendar();
+            
+            // Сброс выбора после отправки
+            setTimeout(() => {
+                cards.forEach(c => {
+                    c.classList.remove('is-selected');
+                    c.setAttribute('aria-pressed', 'false');
+                });
+                selectedServices.length = 0;
+                totalPrice = 0;
+                document.getElementById('totalPrice').innerText = '0';
+            }, 1000);
+        }
+
+        // ====== ЛОГИКА АДМИН ПАНЕЛИ ======
+        function checkAdminRoute() {
+            if (window.location.hash === '#admin') {
+                const isAdmin = sessionStorage.getItem('isAdmin');
+                if (isAdmin === 'true') {
+                    showAdminPanel();
+                } else {
+                    const pin = prompt('Введите PIN-код для доступа к панели администратора:');
+                    if (pin === ADMIN_PIN) {
+                        sessionStorage.setItem('isAdmin', 'true');
+                        showAdminPanel();
+                    } else {
+                        alert('Неверный PIN-код.');
+                        window.location.hash = '';
+                    }
+                }
+            } else {
+                showClientPanel();
             }
         }
+
+        function showAdminPanel() {
+            clientView.classList.add('hidden');
+            adminView.classList.remove('hidden');
+            renderAdminBookings();
+        }
+
+        function showClientPanel() {
+            adminView.classList.add('hidden');
+            clientView.classList.remove('hidden');
+        }
+
+        function logoutAdmin() {
+            sessionStorage.removeItem('isAdmin');
+            window.location.hash = '';
+            showClientPanel();
+        }
+
+        function renderAdminBookings() {
+            const list = document.getElementById('admin-list');
+            list.innerHTML = '';
+
+            if (bookings.length === 0) {
+                list.innerHTML = '<p class="text-center text-neutral-500 py-10">Новых заявок нет.</p>';
+                return;
+            }
+
+            // Сортируем: новые сверху
+            bookings.sort((a, b) => b.id - a.id);
+
+            bookings.forEach(b => {
+                let statusClass = 'status-pending';
+                let statusText = 'Ожидает';
+                if (b.status === 'approved') { statusClass = 'status-approved'; statusText = 'Подтверждена'; }
+                if (b.status === 'rejected') { statusClass = 'status-rejected'; statusText = 'Отклонена'; }
+
+                const card = document.createElement('div');
+                card.className = 'admin-card p-5 shadow-sm';
+                card.innerHTML = `
+                    <div class="flex justify-between items-start mb-3">
+                        <div>
+                            <p class="text-[14px] font-semibold text-neutral-900">${b.services}</p>
+                            <p class="text-[12px] text-neutral-500 mt-1">${b.date} в ${b.time}</p>
+                        </div>
+                        <span class="text-[10px] uppercase tracking-wide ${statusClass} bg-neutral-100 px-2 py-1 rounded-full">${statusText}</span>
+                    </div>
+                    <p class="text-[10px] text-neutral-400 mb-4">Заявка от: ${b.timestamp}</p>
+                    
+                    ${b.status === 'pending' ? `
+                    <div class="flex gap-2 mt-2">
+                        <button onclick="updateBookingStatus(${b.id}, 'approved')" class="flex-1 py-2 rounded-xl text-white text-[11px] uppercase tracking-wide font-semibold btn-green transition-all">Подтвердить</button>
+                        <button onclick="updateBookingStatus(${b.id}, 'rejected')" class="flex-1 py-2 rounded-xl text-white text-[11px] uppercase tracking-wide font-semibold btn-red transition-all">Отклонить</button>
+                    </div>
+                    ` : ''}
+                `;
+                list.appendChild(card);
+            });
+        }
+
+        function updateBookingStatus(id, status) {
+            bookings = bookings.map(b => b.id === id ? { ...b, status: status } : b);
+            localStorage.setItem('bookings', JSON.stringify(bookings));
+            renderAdminBookings();
+        }
+
+        // Слушаем изменение хеша в URL (для перехода в админку)
+        window.addEventListener('hashchange', checkAdminRoute);
+        // Проверяем при загрузке страницы
+        window.addEventListener('DOMContentLoaded', checkAdminRoute);
     </script>
 </body>
 </html>

@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Awwwards Level Brow Menu - Premium Edition</title>
+    <title>Premium Brow & Lash Menu</title>
     
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -12,9 +12,6 @@
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@200;300;400;500;600&family=Playfair+Display:ital,wght@0,600;1,600;1,700&display=swap" rel="stylesheet">
     
     <style>
-        /* ==========================================================================
-           1. НАСТРОЙКИ ТИПОГРАФИКИ И БАЗЫ (Typography & Base)
-           ========================================================================== */
         .font-accent { font-family: 'Playfair Display', serif; }
         
         body {
@@ -26,11 +23,6 @@
             overflow-x: hidden;
         }
 
-        /* 
-           ВИДЕО-КОНЦЕПТ: Оптимизация межбуквенного интервала и высоты строк.
-           В видео [00:03:47] Коул говорит, что крупные заголовки выглядят "рыхло".
-           Уменьшение letter-spacing на -2% / -3% и line-height до 110-120% делает текст премиальным.
-        */
         .premium-heading {
             letter-spacing: -0.03em;
             line-height: 1.15;
@@ -41,18 +33,13 @@
             line-height: 1.4;
         }
 
-        /* ==========================================================================
-           2. СЛОЖНЫЕ АНИМАЦИИ ПОЯВЛЕНИЯ (Clip-Path & Mask Reveals)
-           ========================================================================== */
         @keyframes premiumReveal {
             0% {
                 clip-path: inset(100% 0 0 0);
                 transform: translateY(40px) scale(0.98);
                 opacity: 0;
             }
-            60% {
-                opacity: 1;
-            }
+            60% { opacity: 1; }
             100% {
                 clip-path: inset(0 0 0 0);
                 transform: translateY(0) scale(1);
@@ -62,7 +49,6 @@
 
         .reveal-item {
             opacity: 0;
-            /* Использование кинетической кривой Безье для более "дорогого" движения */
             animation: premiumReveal 1.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
             will-change: transform, opacity, clip-path;
         }
@@ -71,27 +57,8 @@
         .delay-2 { animation-delay: 0.35s; }
         .delay-3 { animation-delay: 0.55s; }
 
-        /* ==========================================================================
-           3. ГЛУБИНА, ТЕНИ И ЭФФЕКТЫ СТЕКЛА (Depth, Shadows & Glass)
-           ========================================================================== */
-        
-        /*
-           ВИДЕО-КОНЦЕПТ: Мягкие, многослойные тени [00:06:21].
-           Вместо одной контрастной тени мы используем связку из 3 ультра-прозрачных слоев.
-           Это создает эффект мягкого рассеивания света (Ambient Occlusion).
-        */
         .soft-shadow-sm {
-            box-shadow: 
-                0 4px 12px rgba(0, 0, 0, 0.01),
-                0 1px 2px rgba(0, 0, 0, 0.01);
-        }
-
-        .soft-shadow-md {
-            box-shadow: 
-                0 20px 40px rgba(0, 0, 0, 0.02),
-                0 8px 16px rgba(0, 0, 0, 0.01),
-                0 1px 3px rgba(0, 0, 0, 0.01);
-            transition: box-shadow 0.5s cubic-bezier(0.25, 1, 0.5, 1);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.01), 0 1px 2px rgba(0, 0, 0, 0.01);
         }
 
         .main-container-shadow {
@@ -112,14 +79,10 @@
             overflow: hidden;
             transform-style: preserve-3d;
             will-change: transform;
-            /* Раздельные транзишны для разных состояний */
-            transition: 
-                box-shadow 0.5s cubic-bezier(0.25, 1, 0.5, 1), 
-                border-color 0.5s cubic-bezier(0.25, 1, 0.5, 1),
-                background-color 0.5s cubic-bezier(0.25, 1, 0.5, 1);
+            transition: box-shadow 0.5s cubic-bezier(0.25, 1, 0.5, 1), border-color 0.5s cubic-bezier(0.25, 1, 0.5, 1), background-color 0.5s cubic-bezier(0.25, 1, 0.5, 1);
         }
 
-        /* Световой интерактивный блик (Spotlight) */
+        /* Световой блик */
         .spotlight-card::before {
             content: '';
             position: absolute;
@@ -135,160 +98,108 @@
             z-index: 0;
         }
 
-        /* ==========================================================================
-           4. СЕМАНТИЧЕСКИЕ СОСТОЯНИЯ КАРТОЧЕК (Card States: Signifiers & Responses)
-           ========================================================================== */
-        
-        /* Состояние: Hover (Наведение) */
         .spotlight-card:hover {
             background-color: rgba(255, 255, 255, 0.8);
             border-color: rgba(255, 255, 255, 1);
-            box-shadow: 
-                0 30px 60px rgba(0, 0, 0, 0.04),
-                0 10px 20px rgba(0, 0, 0, 0.02);
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.04), 0 10px 20px rgba(0, 0, 0, 0.02);
+        }
+        .spotlight-card:hover::before { opacity: 1; }
+
+        /* Стиль ДЛЯ ВЫБРАННОЙ карточки */
+        .spotlight-card.is-selected {
+            background-color: #161616 !important;
+            border-color: #161616 !important;
+            color: #ffffff !important;
+        }
+        .spotlight-card.is-selected .premium-text { color: #ffffff !important; }
+        .spotlight-card.is-selected p { color: rgba(255, 255, 255, 0.6) !important; }
+        .spotlight-card.is-selected .price-badge {
+            background-color: rgba(255, 255, 255, 0.2) !important;
+            color: #ffffff !important;
+            border-color: rgba(255, 255, 255, 0.3) !important;
         }
 
-        .spotlight-card:hover::before {
-            opacity: 1;
-        }
-
-        /* Состояние: Active/Pressed (Нажатие) - Реализация тактильного отклика [00:07:31] */
         .spotlight-card:active {
             transform: scale(0.985) translateY(1px) !important;
-            background-color: rgba(245, 245, 243, 0.9);
-            box-shadow: 
-                0 8px 16px rgba(0, 0, 0, 0.02),
-                0 2px 4px rgba(0, 0, 0, 0.01);
-            transition: transform 0.1s ease, background-color 0.1s ease, box-shadow 0.1s ease;
-        }
-
-        /* Состояние: Focus (Для доступности с клавиатуры) */
-        .spotlight-card:focus-within {
-            outline: none;
-            border-color: #161616;
-            box-shadow: 0 0 0 3px rgba(22, 22, 22, 0.1);
+            transition: transform 0.1s ease;
         }
 
         .card-content {
             position: relative;
             z-index: 1;
-            /* Выдавливание элементов контента в 3D пространство (Z-пространство) */
             transform: translateZ(30px);
             transition: transform 0.5s cubic-bezier(0.25, 1, 0.5, 1);
         }
 
-        /* Ценник как отдельный интерактивный элемент */
-        .price-badge {
-            transition: 
-                background-color 0.4s cubic-bezier(0.25, 1, 0.5, 1), 
-                color 0.4s cubic-bezier(0.25, 1, 0.5, 1), 
-                border-color 0.4s cubic-bezier(0.25, 1, 0.5, 1),
-                transform 0.4s cubic-bezier(0.25, 1, 0.5, 1);
-        }
-
-        /* ==========================================================================
-           5. ТАКТИЛЬНАЯ МАГНИТНАЯ КНОПКА ЗАПИСИ (Premium Magnetic Button)
-           ========================================================================== */
-        .magnetic-wrap {
-            position: relative;
-            transition: transform 0.3s ease;
-        }
-        
-        .magnetic-btn {
+        /* Премиум кнопки и брендовые ховеры */
+        .premium-btn {
             background: #161616;
             color: #ffffff;
-            box-shadow: 
-                0 20px 40px rgba(22, 22, 22, 0.15),
-                0 4px 12px rgba(22, 22, 22, 0.08);
-            /* Плавный переход для ховера */
-            transition: 
-                background-color 0.3s ease, 
-                box-shadow 0.3s ease, 
-                color 0.3s ease,
-                border-radius 0.4s ease;
+            box-shadow: 0 20px 40px rgba(22, 22, 22, 0.15), 0 4px 12px rgba(22, 22, 22, 0.08);
+            transition: all 0.4s cubic-bezier(0.25, 1, 0.5, 1);
+            position: relative;
+            overflow: hidden;
         }
 
-        /* Ховер кнопки */
-        .magnetic-btn:hover {
-            background: #262624;
-            box-shadow: 
-                0 26px 50px rgba(22, 22, 22, 0.22),
-                0 6px 16px rgba(22, 22, 22, 0.1);
-        }
-
-        /* Нажатие кнопки (Active State) */
-        .magnetic-btn:active {
-            background: #000000;
-            box-shadow: 
-                0 10px 20px rgba(22, 22, 22, 0.1),
-                0 2px 6px rgba(22, 22, 22, 0.05);
-            transform: scale(0.96) !important;
-            transition: transform 0.08s ease, background-color 0.08s ease, box-shadow 0.08s ease;
-        }
-
-        /* Специфическое премиум-состояние: Загрузка (Loading State) */
-        .magnetic-btn.is-loading {
-            background: #161616;
-            pointer-events: none;
-            color: transparent;
-        }
-
-        /* ==========================================================================
-           6. МИКРОИНТЕРАКЦИИ И СУПЕР-ПЛАВНЫЕ ТЕГИ (Micro-interactions)
-           ========================================================================== */
-        
-        /* Всплывающий чип-нотификация успеха (Success Feedback Toast) [00:08:09] */
-        .success-toast {
-            position: absolute;
-            left: 50%;
-            bottom: 110%;
-            transform: translateX(-50%) translateY(15px);
-            background: #22C55E; /* Семантический зеленый цвет успеха из видео [00:05:31] */
-            color: white;
-            padding: 10px 20px;
-            border-radius: 100px;
-            font-size: 12px;
-            font-weight: 500;
-            letter-spacing: 0.02em;
-            box-shadow: 0 16px 32px rgba(34, 197, 94, 0.25), 0 4px 8px rgba(34, 197, 94, 0.1);
+        /* Анимация иконок внутри кнопок */
+        .btn-icon {
             opacity: 0;
-            pointer-events: none;
-            will-change: transform, opacity;
-            transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            z-index: 100;
-        }
-
-        .success-toast.is-active {
-            opacity: 1;
-            transform: translateX(-50%) translateY(0);
-        }
-
-        /* Элемент спиннера для состояния загрузки кнопки */
-        .btn-spinner {
+            transform: translateX(-10px);
+            transition: all 0.4s cubic-bezier(0.25, 1, 0.5, 1);
             position: absolute;
-            width: 20px;
-            height: 20px;
-            border: 2px solid rgba(255, 255, 255, 0.2);
-            border-top-color: #ffffff;
-            border-radius: 50%;
-            opacity: 0;
-            transform: translate(-50%, -50%) rotate(0deg);
-            transition: opacity 0.3s ease;
-            pointer-events: none;
-            left: 50%;
-            top: 50%;
+            left: 20px;
         }
-
-        .magnetic-btn.is-loading .btn-spinner {
+        .premium-btn:hover .btn-icon {
             opacity: 1;
-            animation: spinSpinner 0.6s linear infinite;
+            transform: translateX(0);
+        }
+        .btn-text {
+            transition: transform 0.4s cubic-bezier(0.25, 1, 0.5, 1);
+        }
+        .premium-btn:hover .btn-text {
+            transform: translateX(12px);
         }
 
-        @keyframes spinSpinner {
-            to { transform: translate(-50%, -50%) rotate(360deg); }
+        /* Telegram Hover */
+        .btn-tg:hover {
+            background-color: #2AABEE !important;
+            box-shadow: 0 16px 32px rgba(42, 171, 238, 0.3) !important;
+            transform: translateY(-2px);
         }
 
-        /* Живой органический фон */
+        /* Max Hover (Градиент из логотипа) */
+        .btn-max:hover {
+            background: linear-gradient(135deg, #00D2FF 0%, #8A2BE2 100%) !important;
+            box-shadow: 0 16px 32px rgba(138, 43, 226, 0.25) !important;
+            transform: translateY(-2px);
+        }
+
+        /* Dikidi Hover */
+        .btn-dikidi:hover {
+            background-color: #00A5FF !important;
+            box-shadow: 0 16px 32px rgba(0, 165, 255, 0.25) !important;
+            transform: translateY(-2px);
+        }
+
+        .premium-btn:active {
+            transform: scale(0.97) translateY(0px) !important;
+        }
+
+        .premium-input {
+            background: rgba(255, 255, 255, 0.6);
+            border: 1px solid rgba(0, 0, 0, 0.08);
+            border-radius: 16px;
+            padding: 12px 16px;
+            outline: none;
+            font-family: 'Montserrat', sans-serif;
+            transition: all 0.3s ease;
+            width: 100%;
+        }
+        .premium-input:focus {
+            border-color: #161616;
+            background: rgba(255, 255, 255, 0.9);
+        }
+
         @keyframes floatGradient {
             0% { transform: translate(0, 0) rotate(0deg) scale(1); }
             33% { transform: translate(40px, -60px) rotate(8deg) scale(1.08); }
@@ -308,275 +219,309 @@
 </head>
 <body class="flex justify-center items-center min-h-screen p-4 sm:p-8 relative selection:bg-neutral-900 selection:text-white">
 
-    <!-- Динамический интерактивный фон (Ambient Background) -->
     <div class="fixed inset-0 overflow-hidden pointer-events-none z-0">
         <div class="ambient-orb bg-amber-200/40 w-[600px] h-[600px] top-[-15%] left-[-15%]"></div>
         <div class="ambient-orb bg-neutral-300/50 w-[500px] h-[500px] bottom-[5%] right-[-10%]" style="animation-delay: -6s;"></div>
     </div>
 
-    <!-- Главный стеклянный контейнер (Bento Base Grid Frame) -->
     <div class="relative w-full max-w-[420px] bg-white/35 backdrop-blur-3xl rounded-[48px] p-6 sm:p-8 border border-white/50 main-container-shadow z-10">
         
-        <!-- ==========================================================================
-           СЕКЦИЯ 1: БРОВИ (Section: Brows)
-           ========================================================================== */ -->
+        <!-- СЕКЦИЯ 1: БРОВИ -->
         <div class="mb-10 reveal-item delay-1">
             <div class="flex items-baseline justify-between mb-6 px-1">
                 <h2 class="font-accent text-[2.6rem] italic font-semibold premium-heading text-neutral-900">Брови</h2>
                 <div class="h-[1px] flex-1 bg-neutral-300/40 mx-4 mt-8"></div>
-                <span class="text-[9px] uppercase tracking-[0.25em] text-neutral-400 font-medium shrink-0">Menu 01</span>
+                <span class="text-[9px] uppercase tracking-[0.12em] text-neutral-400 font-medium shrink-0">Выберите услуги</span>
             </div>
             
             <div class="flex flex-col gap-3.5">
-                
-                <!-- Карточка 1 -->
-                <div class="spotlight-card p-5 cursor-pointer group" tabindex="0">
+                <div class="spotlight-card p-5 cursor-pointer group" tabindex="0" data-name="коррекция бровей" data-price="400">
                     <div class="card-content flex justify-between items-center gap-4">
                         <div class="flex-1 min-w-0 pr-1">
-                            <h3 class="text-[14.5px] font-semibold premium-text text-neutral-900 transition-colors duration-300 group-hover:text-black">Коррекция</h3>
-                            <p class="text-[12px] text-neutral-400 font-light mt-1 leading-snug transition-colors duration-300 group-hover:text-neutral-500">(воск, пинцет)</p>
+                            <h3 class="text-[14.5px] font-semibold premium-text text-neutral-900 transition-colors duration-300">Коррекция</h3>
+                            <p class="text-[12px] text-neutral-400 font-light mt-1 leading-snug transition-colors duration-300">(воск, пинцет)</p>
                         </div>
-                        <!-- Семантический элемент индикации цены [00:01:27] -->
-                        <span class="price-badge shrink-0 text-[13.5px] font-medium tracking-wide text-neutral-800 bg-white/60 border border-white/80 px-4 py-2 rounded-full group-hover:bg-neutral-900 group-hover:text-white group-hover:border-neutral-900 group-hover:scale-105">400р</span>
+                        <span class="price-badge shrink-0 text-[13.5px] font-medium tracking-wide text-neutral-800 bg-white/60 border border-white/80 px-4 py-2 rounded-full">400р</span>
                     </div>
                 </div>
 
-                <!-- Карточка 2 -->
-                <div class="spotlight-card p-5 cursor-pointer group" tabindex="0">
+                <div class="spotlight-card p-5 cursor-pointer group" tabindex="0" data-name="архитектура бровей" data-price="700">
                     <div class="card-content flex justify-between items-center gap-4">
                         <div class="flex-1 min-w-0 pr-1">
-                            <h3 class="text-[14.5px] font-semibold premium-text text-neutral-900 transition-colors duration-300 group-hover:text-black">Архитектура бровей</h3>
-                            <p class="text-[12px] text-neutral-400 font-light mt-1 leading-snug transition-colors duration-300 group-hover:text-neutral-500">(коррекция, окрашивание)</p>
+                            <h3 class="text-[14.5px] font-semibold premium-text text-neutral-900 transition-colors duration-300">Архитектура бровей</h3>
+                            <p class="text-[12px] text-neutral-400 font-light mt-1 leading-snug transition-colors duration-300">(коррекция, окрашивание)</p>
                         </div>
-                        <span class="price-badge shrink-0 text-[13.5px] font-medium tracking-wide text-neutral-800 bg-white/60 border border-white/80 px-4 py-2 rounded-full group-hover:bg-neutral-900 group-hover:text-white group-hover:border-neutral-900 group-hover:scale-105">700р</span>
+                        <span class="price-badge shrink-0 text-[13.5px] font-medium tracking-wide text-neutral-800 bg-white/60 border border-white/80 px-4 py-2 rounded-full">700р</span>
                     </div>
                 </div>
 
-                <!-- Карточка 3 -->
-                <div class="spotlight-card p-5 cursor-pointer group" tabindex="0">
+                <div class="spotlight-card p-5 cursor-pointer group" tabindex="0" data-name="долговременная укладка" data-price="1200">
                     <div class="card-content flex justify-between items-center gap-4">
                         <div class="flex-1 min-w-0 pr-1">
-                            <h3 class="text-[14.5px] font-semibold premium-text text-neutral-900 transition-colors duration-300 group-hover:text-black">Долговременная укладка</h3>
-                            <p class="text-[12px] text-neutral-400 font-light mt-1 leading-snug transition-colors duration-300 group-hover:text-neutral-500">(+коррекция, уход)</p>
+                            <h3 class="text-[14.5px] font-semibold premium-text text-neutral-900 transition-colors duration-300">Долговременная укладка</h3>
+                            <p class="text-[12px] text-neutral-400 font-light mt-1 leading-snug transition-colors duration-300">(+коррекция, уход)</p>
                         </div>
-                        <span class="price-badge shrink-0 text-[13.5px] font-medium tracking-wide text-neutral-800 bg-white/60 border border-white/80 px-4 py-2 rounded-full group-hover:bg-neutral-900 group-hover:text-white group-hover:border-neutral-900 group-hover:scale-105">1200р</span>
+                        <span class="price-badge shrink-0 text-[13.5px] font-medium tracking-wide text-neutral-800 bg-white/60 border border-white/80 px-4 py-2 rounded-full">1200р</span>
                     </div>
                 </div>
 
-                <!-- Карточка 4 -->
-                <div class="spotlight-card p-5 cursor-pointer group" tabindex="0">
+                <div class="spotlight-card p-5 cursor-pointer group" tabindex="0" data-name="долговременная укладка +" data-price="1500">
                     <div class="card-content flex justify-between items-center gap-4">
                         <div class="flex-1 min-w-0 pr-1">
-                            <h3 class="text-[14.5px] font-semibold premium-text text-neutral-900 transition-colors duration-300 group-hover:text-black">Долговременная укладка +</h3>
-                            <p class="text-[12px] text-neutral-400 font-light mt-1 leading-snug transition-colors duration-300 group-hover:text-neutral-500">(+коррекция, окрашивание, уход)</p>
+                            <h3 class="text-[14.5px] font-semibold premium-text text-neutral-900 transition-colors duration-300">Долговременная укладка +</h3>
+                            <p class="text-[12px] text-neutral-400 font-light mt-1 leading-snug transition-colors duration-300">(+коррекция, окрашивание, уход)</p>
                         </div>
-                        <span class="price-badge shrink-0 text-[13.5px] font-medium tracking-wide text-neutral-800 bg-white/60 border border-white/80 px-4 py-2 rounded-full group-hover:bg-neutral-900 group-hover:text-white group-hover:border-neutral-900 group-hover:scale-105">1500р</span>
+                        <span class="price-badge shrink-0 text-[13.5px] font-medium tracking-wide text-neutral-800 bg-white/60 border border-white/80 px-4 py-2 rounded-full">1500р</span>
                     </div>
                 </div>
-
             </div>
         </div>
 
-        <!-- ==========================================================================
-           СЕКЦИЯ 2: РЕСНИЦЫ (Section: Lashes)
-           ========================================================================== */ -->
+        <!-- СЕКЦИЯ 2: РЕСНИЦЫ -->
         <div class="mb-8 reveal-item delay-2">
             <div class="flex items-baseline justify-between mb-6 px-1">
                 <h2 class="font-accent text-[2.6rem] italic font-semibold premium-heading text-neutral-900">Ресницы</h2>
                 <div class="h-[1px] flex-1 bg-neutral-300/40 mx-4 mt-8"></div>
-                <span class="text-[9px] uppercase tracking-[0.25em] text-neutral-400 font-medium shrink-0">Menu 02</span>
+                <span class="text-[9px] uppercase tracking-[0.12em] text-neutral-400 font-medium shrink-0">Выберите услуги</span>
             </div>
             
             <div class="flex flex-col gap-3.5">
-                
-                <!-- Карточка 5 -->
-                <div class="spotlight-card p-5 cursor-pointer group" tabindex="0">
+                <div class="spotlight-card p-5 cursor-pointer group" tabindex="0" data-name="ламинирование ресниц" data-price="1200">
                     <div class="card-content flex justify-between items-center gap-4">
                         <div class="flex-1 min-w-0 pr-1">
-                            <h3 class="text-[14.5px] font-semibold premium-text text-neutral-900 transition-colors duration-300 group-hover:text-black">Ламинирование ресниц</h3>
-                            <p class="text-[12px] text-neutral-400 font-light mt-1 leading-snug transition-colors duration-300 group-hover:text-neutral-500">(+окрашивание, уход)</p>
+                            <h3 class="text-[14.5px] font-semibold premium-text text-neutral-900 transition-colors duration-300">Ламинирование ресниц</h3>
+                            <p class="text-[12px] text-neutral-400 font-light mt-1 leading-snug transition-colors duration-300">(+окрашивание, уход)</p>
                         </div>
-                        <span class="price-badge shrink-0 text-[13.5px] font-medium tracking-wide text-neutral-800 bg-white/60 border border-white/80 px-4 py-2 rounded-full group-hover:bg-neutral-900 group-hover:text-white group-hover:border-neutral-900 group-hover:scale-105">1200р</span>
+                        <span class="price-badge shrink-0 text-[13.5px] font-medium tracking-wide text-neutral-800 bg-white/60 border border-white/80 px-4 py-2 rounded-full">1200р</span>
                     </div>
                 </div>
 
-                <!-- Карточка 6 -->
-                <div class="spotlight-card p-5 cursor-pointer group" tabindex="0">
+                <div class="spotlight-card p-5 cursor-pointer group" tabindex="0" data-name="окрашивание ресниц" data-price="300">
                     <div class="card-content flex justify-between items-center gap-4">
                         <div class="flex-1 min-w-0 pr-1">
-                            <h3 class="text-[14.5px] font-semibold premium-text text-neutral-900 transition-colors duration-300 group-hover:text-black">Окрашивание ресниц</h3>
+                            <h3 class="text-[14.5px] font-semibold premium-text text-neutral-900 transition-colors duration-300">Окрашивание ресниц</h3>
                         </div>
-                        <span class="price-badge shrink-0 text-[13.5px] font-medium tracking-wide text-neutral-800 bg-white/60 border border-white/80 px-4 py-2 rounded-full group-hover:bg-neutral-900 group-hover:text-white group-hover:border-neutral-900 group-hover:scale-105">300р</span>
+                        <span class="price-badge shrink-0 text-[13.5px] font-medium tracking-wide text-neutral-800 bg-white/60 border border-white/80 px-4 py-2 rounded-full">300р</span>
                     </div>
                 </div>
 
-                <!-- Карточка 7 -->
-                <div class="spotlight-card p-5 cursor-pointer group" tabindex="0">
+                <div class="spotlight-card p-5 cursor-pointer group" tabindex="0" data-name="снятие наращенных ресниц" data-price="300">
                     <div class="card-content flex justify-between items-center gap-4">
                         <div class="flex-1 min-w-0 pr-1">
-                            <h3 class="text-[14.5px] font-semibold premium-text text-neutral-900 transition-colors duration-300 group-hover:text-black">Снятие наращенных ресниц</h3>
+                            <h3 class="text-[14.5px] font-semibold premium-text text-neutral-900 transition-colors duration-300">Снятие наращенных ресниц</h3>
                         </div>
-                        <span class="price-badge shrink-0 text-[13.5px] font-medium tracking-wide text-neutral-800 bg-white/60 border border-white/80 px-4 py-2 rounded-full group-hover:bg-neutral-900 group-hover:text-white group-hover:border-neutral-900 group-hover:scale-105">300р</span>
+                        <span class="price-badge shrink-0 text-[13.5px] font-medium tracking-wide text-neutral-800 bg-white/60 border border-white/80 px-4 py-2 rounded-full">300р</span>
                     </div>
                 </div>
-
             </div>
         </div>
 
-        <!-- ==========================================================================
-           СЕКЦИЯ 3: ФУТЕР И ПРЕМИУМ-МАГНИТНАЯ КНОПКА (Footer & Magnetic CTA)
-           ========================================================================== */ -->
+        <!-- СЕКЦИЯ 3: ИТОГИ И КНОПКИ ЗАПИСИ -->
         <div class="w-full mt-4 relative reveal-item delay-3">
             
-            <!-- Информационная плашка -->
-            <div class="bg-white/40 backdrop-blur-xl border border-white/60 rounded-[24px] p-4 text-center mb-6 soft-shadow-sm">
-                <p class="text-[12px] font-light tracking-wide text-neutral-500 leading-relaxed">
-                    Действует скидка на первое посещение <br>
-                    <span class="font-semibold text-neutral-900 text-[14.5px] mt-0.5 inline-block tracking-widest">- 15% -</span>
+            <div class="bg-white/40 backdrop-blur-xl border border-white/60 rounded-[24px] p-5 text-center mb-6 soft-shadow-sm transition-all duration-300">
+                <p class="text-[14px] font-light tracking-wide text-neutral-600">
+                    Итоговая сумма: <br>
+                    <span class="font-semibold text-neutral-900 text-[24px] mt-1 inline-block tracking-wide">
+                        <span id="totalPrice">0</span>р
+                    </span>
+                </p>
+                <p class="text-[11px] text-neutral-400 font-light mt-2">
+                    На первое посещение действует скидка 15%
                 </p>
             </div>
 
-            <!-- Магнитная зона захвата курсора -->
-            <div class="magnetic-wrap relative w-full h-[60px] flex items-center justify-center">
+            <div id="messengerBlock" class="grid grid-cols-2 gap-3 w-full">
+                <!-- Telegram Button -->
+                <button onclick="chooseMessenger('telegram')" class="premium-btn btn-tg h-[54px] flex justify-center items-center rounded-[20px] font-semibold tracking-[0.12em] text-[11px] uppercase outline-none">
+                    <svg class="btn-icon w-5 h-5 text-white" fill="currentColor" viewBox="0 0 24 24"><path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/></svg>
+                    <span class="btn-text">В Telegram</span>
+                </button>
                 
-                <!-- Микроинтеракция: Всплывающий семантический фидбек -->
-                <div class="success-toast" id="successToast">Открываем DIKIDI...</div>
-                
-                <!-- Интерактивная CTA-кнопка -->
-                <button id="ctaButton" class="magnetic-btn absolute inset-0 w-full h-full flex justify-center items-center rounded-[24px] font-semibold tracking-[0.18em] text-[12px] uppercase will-change-transform z-20 outline-none focus:ring-2 focus:ring-neutral-900 focus:ring-offset-2">
-                    <span class="btn-text">Онлайн-запись</span>
-                    <div class="btn-spinner"></div>
+                <!-- Max.ru Button -->
+                <button onclick="chooseMessenger('max')" class="premium-btn btn-max h-[54px] flex justify-center items-center rounded-[20px] font-semibold tracking-[0.12em] text-[11px] uppercase outline-none">
+                    <!-- Логотип-иконка Max (стилизованное диалоговое кольцо) -->
+                    <svg class="btn-icon w-[22px] h-[22px] text-white" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12c0 1.8.5 3.48 1.36 4.96L2 22l5.04-1.36C8.52 21.5 10.2 22 12 22c5.52 0 10-4.48 10-10S17.52 2 12 2zm0 15c-1.12 0-2.18-.28-3.12-.76l-.22-.12-2.14.58.58-2.14-.12-.22A6.974 6.974 0 0 1 5 12c0-3.86 3.14-7 7-7s7 3.14 7 7-3.14 7-7 7z"/></svg>
+                    <span class="btn-text">В Max.ru</span>
                 </button>
             </div>
-        </div>
 
+            <!-- Блок Dikidi -->
+            <div class="mt-4 pt-4 border-t border-neutral-300/40">
+                <a href="https://dikidi.net/ru/profile/" target="_blank" class="premium-btn btn-dikidi h-[54px] flex justify-center items-center rounded-[20px] font-semibold tracking-[0.12em] text-[11px] uppercase outline-none w-full">
+                    <svg class="btn-icon w-5 h-5 text-white" viewBox="0 0 24 24" fill="currentColor"><path d="M19 4h-1V2h-2v2H8V2H6v2H5c-1.11 0-1.99.9-1.99 2L3 20c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 16H5V10h14v10z"/></svg>
+                    <span class="btn-text">Записаться в Dikidi</span>
+                </a>
+                <p class="text-center text-[10px] text-neutral-400 font-light mt-3 tracking-wide">Или выберите прямую запись онлайн</p>
+            </div>
+
+            <!-- Премиальный блок интерактивного календаря -->
+            <div id="calendarBlock" class="mt-5 p-5 bg-white/50 backdrop-blur-2xl border border-white/70 rounded-[28px] transition-all duration-500 hidden scale-95 opacity-0">
+                <h4 class="text-[12px] font-semibold tracking-[0.15em] uppercase text-neutral-700 text-center mb-4">Выберите дату и время</h4>
+                
+                <div class="flex flex-col gap-3">
+                    <input type="date" id="bookDate" class="premium-input text-[14px] text-neutral-800">
+                    <input type="time" id="bookTime" class="premium-input text-[14px] text-neutral-800">
+                    
+                    <button onclick="generateAndSend()" class="premium-btn h-[50px] mt-2 flex justify-center items-center rounded-[18px] font-semibold tracking-[0.12em] text-[11px] uppercase outline-none w-full">
+                        Отправить запрос
+                    </button>
+                </div>
+            </div>
+
+        </div>
     </div>
 
-    <!-- ==========================================================================
-       7. СЛОЖНЫЙ СЦЕНАРИЙ ВЗАИМОДЕЙСТВИЯ (Advanced Interaction Logic)
-       ========================================================================== */ -->
+    <!-- ЛОГИКА -->
     <script>
+        let selectedServices = [];
+        let totalPrice = 0;
+        let selectedMessenger = '';
+
         document.addEventListener('DOMContentLoaded', () => {
-            
-            // --- ЛОГИКА 1: 3D КИНЕТИКА КАРТОЧЕК (Advanced Tilt & Lighting Physics) ---
             const cards = document.querySelectorAll('.spotlight-card');
             
             cards.forEach(card => {
-                // Плавное слежение за координатами курсора внутри элемента
                 card.addEventListener('mousemove', (e) => {
+                    if (card.classList.contains('is-selected')) return;
+
                     const rect = card.getBoundingClientRect();
                     const x = e.clientX - rect.left;
                     const y = e.clientY - rect.top;
                     
-                    // Передаем точные координаты в CSS-переменные для рендеринга Spotlight
                     card.style.setProperty('--x', `${x}px`);
                     card.style.setProperty('--y', `${y}px`);
 
-                    // Вычисляем угол наклона с учетом центра карточки (Максимум 5 градусов для сохранения премиальной строгости)
                     const centerX = rect.width / 2;
                     const centerY = rect.height / 2;
                     const rotateX = ((y - centerY) / centerY) * -5;
                     const rotateY = ((x - centerX) / centerX) * 5;
 
-                    // Плавное смещение контента внутри карты относительно основы (эффект Параллакса)
                     const content = card.querySelector('.card-content');
                     if(content) {
                         content.style.transform = `translateZ(25px) translateX(${rotateY * 0.5}px) translateY(${rotateX * -0.5}px)`;
                     }
-
-                    // Применяем финальную комплексную 3D матрицу трансформации к карточке
                     card.style.transform = `perspective(800px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale3d(1.015, 1.015, 1.015)`;
                 });
 
-                // Мягкий демпфированный возврат структуры в исходное состояние при потере фокуса/выходе мыши
                 card.addEventListener('mouseleave', () => {
                     card.style.transform = `perspective(800px) rotateX(0deg) rotateY(0deg) scale3d(1, 1, 1)`;
                     const content = card.querySelector('.card-content');
                     if(content) {
                         content.style.transform = `translateZ(0px) translateX(0px) translateY(0px)`;
                     }
-                    // Включаем мягкую интерполяцию для фазы затухания
-                    card.style.transition = 'transform 0.6s cubic-bezier(0.25, 1, 0.5, 1), box-shadow 0.4s ease, border-color 0.4s ease, background-color 0.4s ease';
+                    card.style.transition = 'transform 0.6s cubic-bezier(0.25, 1, 0.5, 1), background-color 0.4s ease, border-color 0.4s ease';
                 });
 
                 card.addEventListener('mouseenter', () => {
-                    // Отключаем транзишны во время движения, убирая "желейный" инпут-лаг для идеального отклика
-                    card.style.transition = 'box-shadow 0.4s ease, border-color 0.4s ease, background-color 0.4s ease';
+                    card.style.transition = 'background-color 0.4s ease, border-color 0.4s ease';
+                });
+
+                card.addEventListener('click', () => {
+                    const name = card.getAttribute('data-name');
+                    const price = parseInt(card.getAttribute('data-price'));
+
+                    if (card.classList.contains('is-selected')) {
+                        card.classList.remove('is-selected');
+                        totalPrice -= price;
+                        selectedServices = selectedServices.filter(item => item !== name);
+                    } else {
+                        card.classList.add('is-selected');
+                        totalPrice += price;
+                        selectedServices.push(name);
+                    }
+
+                    document.getElementById('totalPrice').innerText = totalPrice;
                 });
             });
-
-            // --- ЛОГИКА 2: ФИЗИКА МАГНИТНОЙ КНОПКИ (Magnetic Field Simulation) ---
-            const magneticWrap = document.querySelector('.magnetic-wrap');
-            const magneticBtn = document.getElementById('ctaButton');
-
-            if (magneticWrap && magneticBtn) {
-                magneticWrap.addEventListener('mousemove', (e) => {
-                    const rect = magneticWrap.getBoundingClientRect();
-                    const x = e.clientX - rect.left;
-                    const y = e.clientY - rect.top;
-                    
-                    // Расчет вектора смещения от геометрического центра зоны захвата
-                    const targetX = x - rect.width / 2;
-                    const targetY = y - rect.height / 2;
-                    
-                    // Сила притяжения (коэффициент демпфирования: 0.35 по оси X, 0.45 по оси Y)
-                    const moveX = targetX * 0.35; 
-                    const moveY = targetY * 0.45;
-
-                    // Растягивание радиуса скругления кнопки в сторону движения (микроэффект органической капли)
-                    magneticBtn.style.transform = `translate(${moveX}px, ${moveY}px)`;
-                });
-
-                // Возврат кнопки с эффектом инерционной пружины (Spring Physics emulation)
-                magneticWrap.addEventListener('mouseleave', () => {
-                    magneticBtn.style.transform = `translate(0px, 0px)`;
-                    magneticBtn.style.transition = 'transform 0.8s cubic-bezier(0.25, 1.5, 0.4, 1), background-color 0.3s ease, box-shadow 0.3s ease';
-                });
-
-                magneticWrap.addEventListener('mouseenter', () => {
-                    magneticBtn.style.transition = 'background-color 0.3s ease, box-shadow 0.3s ease'; 
-                });
-            }
-
-            // --- ЛОГИКА 3: РЕАЛИЗАЦИЯ СЦЕНАРИЯ СЕМАНТИЧЕСКОЙ ЗАГРУЗКИ (Response & Micro-interaction) ---
-            if (magneticBtn) {
-                magneticBtn.addEventListener('click', (e) => {
-                    e.preventDefault();
-                    
-                    // Защита от повторных нажатий во время обработки
-                    if (magneticBtn.classList.contains('is-loading')) return;
-
-                    const btnText = magneticBtn.querySelector('.btn-text');
-                    const toast = document.getElementById('successToast');
-
-                    // 1. Активация состояния загрузки (Loading State) [00:07:31]
-                    magneticBtn.classList.add('is-loading');
-                    if(btnText) btnText.style.opacity = '0';
-                    
-                    // Смена геометрии кнопки на более обтекаемую во время процесса
-                    magneticBtn.style.borderRadius = '32px';
-
-                    // 2. Имитация обработки запроса сервером и вызов Микроинтеракции [00:08:09]
-                    setTimeout(() => {
-                        // Активация всплывающего уведомления успеха с семантическим зеленым фоном
-                        if(toast) toast.classList.add('is-active');
-                        
-                        // 3. Финальный переход на целевую ссылку после завершения анимации обратной связи
-                        setTimeout(() => {
-                            // Деактивация лоадера
-                            magneticBtn.classList.remove('is-loading');
-                            if(btnText) btnText.style.opacity = '1';
-                            magneticBtn.style.borderRadius = '24px';
-                            if(toast) toast.classList.remove('is-active');
-                            
-                            // Замените на вашу реальную ссылку Dikidi
-                            window.open('https://dikidi.net/ru/YOUR_DIKIDI_LINK', '_blank');
-                        }, 1400);
-
-                    }, 1000); // Тайминг симуляции спиннера
-                });
-            }
         });
+
+        // Установка текущей даты и времени устройства
+        function setCurrentDateTime() {
+            const now = new Date();
+            
+            const year = now.getFullYear();
+            const month = String(now.getMonth() + 1).padStart(2, '0');
+            const day = String(now.getDate()).padStart(2, '0');
+            document.getElementById('bookDate').value = `${year}-${month}-${day}`;
+
+            const hours = String(now.getHours()).padStart(2, '0');
+            const minutes = String(now.getMinutes()).padStart(2, '0');
+            document.getElementById('bookTime').value = `${hours}:${minutes}`;
+        }
+
+        function chooseMessenger(messenger) {
+            if (selectedServices.length === 0) {
+                alert('Пожалуйста, выберите сначала хотя бы одну процедуру.');
+                return;
+            }
+            selectedMessenger = messenger;
+
+            const calendarBlock = document.getElementById('calendarBlock');
+            calendarBlock.classList.remove('hidden');
+            
+            setCurrentDateTime();
+            
+            setTimeout(() => {
+                calendarBlock.classList.remove('scale-95', 'opacity-0');
+                calendarBlock.classList.add('scale-100', 'opacity-100');
+                calendarBlock.scrollIntoView({ behavior: 'smooth', block: 'end' });
+            }, 50);
+        }
+
+        function formatDate(dateString) {
+            if (!dateString) return '';
+            const months = [
+                'января', 'февраля', 'марта', 'апреля', 'мая', 'июня', 
+                'июля', 'августа', 'сентября', 'октября', 'ноября', 'декабря'
+            ];
+            const dateParts = dateString.split('-');
+            if (dateParts.length !== 3) return dateString;
+
+            const year = dateParts[0];
+            const monthIndex = parseInt(dateParts[1], 10) - 1;
+            const day = parseInt(dateParts[2], 10);
+
+            return `${day} ${months[monthIndex]} ${year}г.`;
+        }
+
+        function generateAndSend() {
+            const rawDate = document.getElementById('bookDate').value;
+            const time = document.getElementById('bookTime').value;
+
+            if (!rawDate || !time) {
+                alert('Пожалуйста, заполните дату и время для записи.');
+                return;
+            }
+
+            const formattedDate = formatDate(rawDate);
+            
+            let proceduresText = '';
+            if (selectedServices.length === 1) {
+                proceduresText = selectedServices[0];
+            } else {
+                const lastService = selectedServices[selectedServices.length - 1];
+                const otherServices = selectedServices.slice(0, -1).join(', ');
+                proceduresText = `${otherServices} и ${lastService}`;
+            }
+
+            const textMessage = `Здравствуйте! Хочу записаться на ${formattedDate} в ${time} на процедуру ${proceduresText}.`;
+            const encodedText = encodeURIComponent(textMessage);
+
+            let finalLink = '';
+
+            if (selectedMessenger === 'telegram') {
+                // Прямая ссылка на нужный Telegram аккаунт
+                finalLink = `https://t.me/aandvl?text=${encodedText}`;
+            } else if (selectedMessenger === 'max') {
+                // Интеграция с Max.ru по указанному номеру
+                finalLink = `https://max.ru/send?phone=79872785811&text=${encodedText}`;
+            }
+
+            if (finalLink) {
+                window.open(finalLink, '_blank');
+            }
+        }
     </script>
 </body>
 </html>

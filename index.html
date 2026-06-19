@@ -5,16 +5,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Premium Brow & Lash Menu</title>
     
-    <!-- SEO и Open Graph (для красивых ссылок) -->
     <meta name="description" content="Премиальные услуги бровиста и лэшмейкера. Коррекция, архитектура, ламинирование. Запись онлайн.">
     <meta property="og:title" content="Premium Brow & Lash Menu">
     <meta property="og:description" content="Премиальные услуги бровиста и лэшмейкера. Запись онлайн.">
     <meta property="og:type" content="website">
 
-    <!-- Tailwind CSS (Внимание: для прода замените на скомпилированный CSS!) -->
     <script src="https://cdn.tailwindcss.com"></script>
 
-    <!-- Шрифты -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@200;300;400;500;600&family=Playfair+Display:ital,wght@0,600;1,600;1,700&display=swap" rel="stylesheet">
@@ -54,7 +51,6 @@
             box-shadow: 0 60px 120px rgba(22, 22, 22, 0.04), 0 20px 40px rgba(22, 22, 22, 0.02), 0 4px 10px rgba(22, 22, 22, 0.01);
         }
 
-        /* 3D-карточка: убрали инлайн-стили, всё через CSS-переменные */
         .spotlight-card {
             position: relative;
             background: rgba(255, 255, 255, 0.55);
@@ -87,7 +83,6 @@
         }
         .spotlight-card:hover::before { opacity: 1; }
 
-        /* Состояние выбора без !important */
         .spotlight-card.is-selected {
             background-color: #161616;
             border-color: #161616;
@@ -102,7 +97,6 @@
             border-color: rgba(255, 255, 255, 0.3);
         }
 
-        /* Доступность: фокус с клавиатуры */
         .spotlight-card:focus-visible {
             outline: 2px solid #161616;
             outline-offset: 4px;
@@ -125,13 +119,12 @@
         }
         .premium-btn:focus-visible { outline: 2px solid #2AABEE; outline-offset: 4px; }
 
-        .btn-icon { opacity: 0; transform: translateX(-10px); transition: all 0.4s cubic-bezier(0.25, 1, 0.5, 1); position: absolute; left: 20px; }
+        .btn-icon { opacity: 0; transform: translateX(-10px); transition: all 0.4s cubic-bezier(0.25, 1, 0.5, 1); position: absolute; left: 24px; }
         .premium-btn:hover .btn-icon { opacity: 1; transform: translateX(0); }
         .btn-text { transition: transform 0.4s cubic-bezier(0.25, 1, 0.5, 1); }
         .premium-btn:hover .btn-text { transform: translateX(12px); }
 
         .btn-tg:hover { background-color: #2AABEE; box-shadow: 0 16px 32px rgba(42, 171, 238, 0.3); transform: translateY(-2px); }
-        .btn-max:hover { background: linear-gradient(135deg, #00D2FF 0%, #8A2BE2 100%); box-shadow: 0 16px 32px rgba(138, 43, 226, 0.25); transform: translateY(-2px); }
         .btn-dikidi:hover { background-color: #00A5FF; box-shadow: 0 16px 32px rgba(0, 165, 255, 0.25); transform: translateY(-2px); }
 
         .premium-input {
@@ -162,7 +155,6 @@
             will-change: transform;
         }
 
-        /* Toast уведомления вместо alert */
         #toast {
             position: fixed;
             bottom: 20px;
@@ -182,13 +174,11 @@
 </head>
 <body class="flex justify-center items-start sm:items-center min-h-screen p-4 sm:p-8 relative selection:bg-neutral-900 selection:text-white">
 
-    <!-- Фоновые элементы -->
     <div class="fixed inset-0 overflow-hidden pointer-events-none z-0" aria-hidden="true">
         <div class="ambient-orb bg-amber-200/40 w-[600px] h-[600px] top-[-15%] left-[-15%]"></div>
         <div class="ambient-orb bg-neutral-300/50 w-[500px] h-[500px] bottom-[5%] right-[-10%]" style="animation-delay: -6s;"></div>
     </div>
 
-    <!-- Toast для ошибок -->
     <div id="toast" role="alert" aria-live="assertive">Пожалуйста, выберите процедуру.</div>
 
     <main class="relative w-full max-w-[420px] bg-white/35 backdrop-blur-3xl rounded-[48px] p-6 sm:p-8 border border-white/50 main-container-shadow z-10">
@@ -306,27 +296,27 @@
                 </p>
             </div>
 
-            <div id="messengerBlock" class="grid grid-cols-2 gap-3 w-full">
-                <button onclick="chooseMessenger('telegram')" class="premium-btn btn-tg h-[54px] flex justify-center items-center rounded-[20px] font-semibold tracking-[0.12em] text-[11px] uppercase outline-none">
-                    <svg class="btn-icon w-5 h-5 text-white" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/></svg>
-                    <span class="btn-text">В Telegram</span>
-                </button>
-                <button onclick="chooseMessenger('max')" class="premium-btn btn-max h-[54px] flex justify-center items-center rounded-[20px] font-semibold tracking-[0.12em] text-[11px] uppercase outline-none">
-                    <svg class="btn-icon w-[22px] h-[22px] text-white" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2C6.48 2 2 6.48 2 12c0 1.8.5 3.48 1.36 4.96L2 22l5.04-1.36C8.52 21.5 10.2 22 12 22c5.52 0 10-4.48 10-10S17.52 2 12 2zm0 15c-1.12 0-2.18-.28-3.12-.76l-.22-.12-2.14.58.58-2.14-.12-.22A6.974 6.974 0 0 1 5 12c0-3.86 3.14-7 7-7s7 3.14 7 7-3.14 7-7 7z"/></svg>
-                    <span class="btn-text">В Max.ru</span>
-                </button>
+            <!-- Кнопка Telegram -->
+            <button onclick="chooseMessenger('telegram')" class="premium-btn btn-tg w-full h-[54px] flex justify-center items-center rounded-[20px] font-semibold tracking-[0.12em] text-[11px] uppercase outline-none">
+                <svg class="btn-icon w-5 h-5 text-white" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/></svg>
+                <span class="btn-text">Записаться в Telegram</span>
+            </button>
+
+            <!-- Разделитель -->
+            <div class="flex items-center my-5">
+                <div class="h-[1px] flex-1 bg-neutral-300/40"></div>
+                <span class="px-4 text-[10px] uppercase tracking-[0.12em] text-neutral-400 font-medium">или</span>
+                <div class="h-[1px] flex-1 bg-neutral-300/40"></div>
             </div>
 
-            <div class="mt-4 pt-4 border-t border-neutral-300/40">
-                <a href="https://dikidi.net/ru/profile/" target="_blank" rel="noopener noreferrer" class="premium-btn btn-dikidi h-[54px] flex justify-center items-center rounded-[20px] font-semibold tracking-[0.12em] text-[11px] uppercase outline-none w-full">
-                    <svg class="btn-icon w-5 h-5 text-white" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M19 4h-1V2h-2v2H8V2H6v2H5c-1.11 0-1.99.9-1.99 2L3 20c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 16H5V10h14v10z"/></svg>
-                    <span class="btn-text">Записаться в Dikidi</span>
-                </a>
-                <p class="text-center text-[10px] text-neutral-400 font-light mt-3 tracking-wide">Или выберите прямую запись онлайн</p>
-            </div>
+            <!-- Кнопка Dikidi -->
+            <a href="https://dikidi.net/ru/profile/" target="_blank" rel="noopener noreferrer" class="premium-btn btn-dikidi w-full h-[54px] flex justify-center items-center rounded-[20px] font-semibold tracking-[0.12em] text-[11px] uppercase outline-none">
+                <svg class="btn-icon w-5 h-5 text-white" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M19 4h-1V2h-2v2H8V2H6v2H5c-1.11 0-1.99.9-1.99 2L3 20c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 16H5V10h14v10z"/></svg>
+                <span class="btn-text">Записаться через Dikidi</span>
+            </a>
 
             <!-- Интерактивный календарь -->
-            <div id="calendarBlock" class="mt-5 p-5 bg-white/50 backdrop-blur-2xl border border-white/70 rounded-[28px] transition-all duration-500 hidden scale-95 opacity-0">
+            <div id="calendarBlock" class="mt-6 p-5 bg-white/50 backdrop-blur-2xl border border-white/70 rounded-[28px] transition-all duration-500 hidden scale-95 opacity-0">
                 <div class="flex justify-between items-center mb-4">
                     <h4 class="text-[12px] font-semibold tracking-[0.15em] uppercase text-neutral-700">Выберите дату и время</h4>
                     <button onclick="closeCalendar()" class="text-neutral-400 hover:text-neutral-900 transition-colors" aria-label="Закрыть календарь">
@@ -345,7 +335,6 @@
         </div>
     </main>
 
-    <!-- ЛОГИКА (Оптимизированная) -->
     <script>
         const selectedServices = [];
         let totalPrice = 0;
@@ -354,7 +343,6 @@
         const cards = document.querySelectorAll('.spotlight-card');
         const toast = document.getElementById('toast');
 
-        // Утилита для показа уведомлений
         function showToast(message) {
             toast.textContent = message;
             toast.classList.add('show');
@@ -362,7 +350,6 @@
         }
 
         cards.forEach(card => {
-            // 3D Эффект (Оптимизированный через CSS-переменные)
             card.addEventListener('mousemove', (e) => {
                 if (card.classList.contains('is-selected')) return;
 
@@ -392,7 +379,6 @@
                 if(content) content.style.transform = '';
             });
 
-            // Обработка выбора
             const toggleSelection = () => {
                 const name = card.getAttribute('data-name');
                 const price = parseInt(card.getAttribute('data-price'), 10);
@@ -412,7 +398,6 @@
 
             card.addEventListener('click', toggleSelection);
             
-            // Доступность: Выбор по Enter
             card.addEventListener('keydown', (e) => {
                 if (e.key === 'Enter' || e.key === ' ') {
                     e.preventDefault();
@@ -440,7 +425,6 @@
             calendarBlock.classList.remove('hidden');
             setCurrentDateTime();
 
-            // Анимация появления
             setTimeout(() => {
                 calendarBlock.classList.remove('scale-95', 'opacity-0');
                 calendarBlock.classList.add('scale-100', 'opacity-100');
@@ -457,10 +441,9 @@
 
         function formatDate(dateString) {
             if (!dateString) return '';
-            const months = ['января', 'февраля', 'марта', 'апреля', 'мая', 'июня', 'июля', 'августа', 'сентября', 'октября', 'ноября', 'декабря'];
             const [year, month, day] = dateString.split('-');
             if (!year || !month || !day) return dateString;
-            return `${parseInt(day)} ${months[parseInt(month) - 1]} ${year}г.`;
+            return `${day}.${month}.${year}`;
         }
 
         function generateAndSend() {
@@ -475,26 +458,28 @@
             const formattedDate = formatDate(rawDate);
             let proceduresText = '';
 
+            // Формируем список процедур с правильным падежом
             if (selectedServices.length === 1) {
-                proceduresText = selectedServices[0];
+                proceduresText = `процедуру: ${selectedServices[0]}`;
             } else if (selectedServices.length > 1) {
-                const last = selectedServices.pop(); // Временно забираем последний
-                proceduresText = `${selectedServices.join(', ')} и ${last}`;
-                selectedServices.push(last); // Возвращаем обратно, чтобы данные не потерялись
+                const last = selectedServices[selectedServices.length - 1];
+                const otherServices = selectedServices.slice(0, -1).join(', ');
+                proceduresText = `процедуры: ${otherServices} и ${last}`;
             }
 
-            const textMessage = `Здравствуйте! Хочу записаться на ${formattedDate} в ${time} на процедуру: ${proceduresText}.`;
+            // Формируем итоговый текст по вашему шаблону
+            const textMessage = `Здравствуйте, хочу записаться на ${proceduresText}. Дата ${formattedDate} ${time}. Сумма к оплате ${totalPrice}р.`;
             const encodedText = encodeURIComponent(textMessage);
 
             let finalLink = '';
             if (selectedMessenger === 'telegram') {
+                // Замените 'aandvl' на ваш юзернейм, если нужно
                 finalLink = `https://t.me/aandvl?text=${encodedText}`;
-            } else if (selectedMessenger === 'max') {
-                finalLink = `https://max.ru/send?phone=79872785811&text=${encodedText}`;
             }
 
             if (finalLink) {
                 window.open(finalLink, '_blank', 'noopener,noreferrer');
+                closeCalendar(); // Закрываем календарь после отправки
             }
         }
     </script>

@@ -5,15 +5,23 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Premium Brow & Lash Menu</title>
     
-    <!-- Tailwind CSS -->
+    <!-- SEO и Open Graph (для красивых ссылок) -->
+    <meta name="description" content="Премиальные услуги бровиста и лэшмейкера. Коррекция, архитектура, ламинирование. Запись онлайн.">
+    <meta property="og:title" content="Premium Brow & Lash Menu">
+    <meta property="og:description" content="Премиальные услуги бровиста и лэшмейкера. Запись онлайн.">
+    <meta property="og:type" content="website">
+
+    <!-- Tailwind CSS (Внимание: для прода замените на скомпилированный CSS!) -->
     <script src="https://cdn.tailwindcss.com"></script>
-    
-    <!-- Шрифты: Playfair Display и Montserrat -->
+
+    <!-- Шрифты -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@200;300;400;500;600&family=Playfair+Display:ital,wght@0,600;1,600;1,700&display=swap" rel="stylesheet">
-    
+
     <style>
         .font-accent { font-family: 'Playfair Display', serif; }
-        
+
         body {
             font-family: 'Montserrat', sans-serif;
             background: #F2F2F0; 
@@ -23,28 +31,13 @@
             overflow-x: hidden;
         }
 
-        .premium-heading {
-            letter-spacing: -0.03em;
-            line-height: 1.15;
-        }
-        
-        .premium-text {
-            letter-spacing: -0.01em;
-            line-height: 1.4;
-        }
+        .premium-heading { letter-spacing: -0.03em; line-height: 1.15; }
+        .premium-text { letter-spacing: -0.01em; line-height: 1.4; }
 
         @keyframes premiumReveal {
-            0% {
-                clip-path: inset(100% 0 0 0);
-                transform: translateY(40px) scale(0.98);
-                opacity: 0;
-            }
+            0% { clip-path: inset(100% 0 0 0); transform: translateY(40px) scale(0.98); opacity: 0; }
             60% { opacity: 1; }
-            100% {
-                clip-path: inset(0 0 0 0);
-                transform: translateY(0) scale(1);
-                opacity: 1;
-            }
+            100% { clip-path: inset(0 0 0 0); transform: translateY(0) scale(1); opacity: 1; }
         }
 
         .reveal-item {
@@ -52,45 +45,34 @@
             animation: premiumReveal 1.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
             will-change: transform, opacity, clip-path;
         }
-        
+
         .delay-1 { animation-delay: 0.15s; }
         .delay-2 { animation-delay: 0.35s; }
         .delay-3 { animation-delay: 0.55s; }
 
-        .soft-shadow-sm {
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.01), 0 1px 2px rgba(0, 0, 0, 0.01);
-        }
-
         .main-container-shadow {
-            box-shadow: 
-                0 60px 120px rgba(22, 22, 22, 0.04),
-                0 20px 40px rgba(22, 22, 22, 0.02),
-                0 4px 10px rgba(22, 22, 22, 0.01);
+            box-shadow: 0 60px 120px rgba(22, 22, 22, 0.04), 0 20px 40px rgba(22, 22, 22, 0.02), 0 4px 10px rgba(22, 22, 22, 0.01);
         }
 
-        /* Базовая структура 3D-карточки */
+        /* 3D-карточка: убрали инлайн-стили, всё через CSS-переменные */
         .spotlight-card {
             position: relative;
             background: rgba(255, 255, 255, 0.55);
             backdrop-filter: blur(24px);
-            -webkit-backdrop-filter: blur(24px);
             border: 1px solid rgba(255, 255, 255, 0.7);
             border-radius: 28px;
             overflow: hidden;
             transform-style: preserve-3d;
             will-change: transform;
-            transition: box-shadow 0.5s cubic-bezier(0.25, 1, 0.5, 1), border-color 0.5s cubic-bezier(0.25, 1, 0.5, 1), background-color 0.5s cubic-bezier(0.25, 1, 0.5, 1);
+            transition: transform 0.6s cubic-bezier(0.25, 1, 0.5, 1), box-shadow 0.5s, border-color 0.5s, background-color 0.5s;
         }
 
-        /* Световой блик */
         .spotlight-card::before {
             content: '';
             position: absolute;
-            top: var(--y, 50%);
-            left: var(--x, 50%);
+            top: var(--y, 50%); left: var(--x, 50%);
             transform: translate(-50%, -50%);
-            width: 260px;
-            height: 260px;
+            width: 260px; height: 260px;
             background: radial-gradient(circle, rgba(255, 255, 255, 0.85) 0%, rgba(255, 255, 255, 0) 70%);
             opacity: 0;
             transition: opacity 0.4s ease;
@@ -105,23 +87,25 @@
         }
         .spotlight-card:hover::before { opacity: 1; }
 
-        /* Стиль ДЛЯ ВЫБРАННОЙ карточки */
+        /* Состояние выбора без !important */
         .spotlight-card.is-selected {
-            background-color: #161616 !important;
-            border-color: #161616 !important;
-            color: #ffffff !important;
+            background-color: #161616;
+            border-color: #161616;
+            color: #ffffff;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.2);
         }
-        .spotlight-card.is-selected .premium-text { color: #ffffff !important; }
-        .spotlight-card.is-selected p { color: rgba(255, 255, 255, 0.6) !important; }
+        .spotlight-card.is-selected .premium-text { color: #ffffff; }
+        .spotlight-card.is-selected p { color: rgba(255, 255, 255, 0.6); }
         .spotlight-card.is-selected .price-badge {
-            background-color: rgba(255, 255, 255, 0.2) !important;
-            color: #ffffff !important;
-            border-color: rgba(255, 255, 255, 0.3) !important;
+            background-color: rgba(255, 255, 255, 0.2);
+            color: #ffffff;
+            border-color: rgba(255, 255, 255, 0.3);
         }
 
-        .spotlight-card:active {
-            transform: scale(0.985) translateY(1px) !important;
-            transition: transform 0.1s ease;
+        /* Доступность: фокус с клавиатуры */
+        .spotlight-card:focus-visible {
+            outline: 2px solid #161616;
+            outline-offset: 4px;
         }
 
         .card-content {
@@ -131,7 +115,6 @@
             transition: transform 0.5s cubic-bezier(0.25, 1, 0.5, 1);
         }
 
-        /* Премиум кнопки и брендовые ховеры */
         .premium-btn {
             background: #161616;
             color: #ffffff;
@@ -140,50 +123,16 @@
             position: relative;
             overflow: hidden;
         }
+        .premium-btn:focus-visible { outline: 2px solid #2AABEE; outline-offset: 4px; }
 
-        /* Анимация иконок внутри кнопок */
-        .btn-icon {
-            opacity: 0;
-            transform: translateX(-10px);
-            transition: all 0.4s cubic-bezier(0.25, 1, 0.5, 1);
-            position: absolute;
-            left: 20px;
-        }
-        .premium-btn:hover .btn-icon {
-            opacity: 1;
-            transform: translateX(0);
-        }
-        .btn-text {
-            transition: transform 0.4s cubic-bezier(0.25, 1, 0.5, 1);
-        }
-        .premium-btn:hover .btn-text {
-            transform: translateX(12px);
-        }
+        .btn-icon { opacity: 0; transform: translateX(-10px); transition: all 0.4s cubic-bezier(0.25, 1, 0.5, 1); position: absolute; left: 20px; }
+        .premium-btn:hover .btn-icon { opacity: 1; transform: translateX(0); }
+        .btn-text { transition: transform 0.4s cubic-bezier(0.25, 1, 0.5, 1); }
+        .premium-btn:hover .btn-text { transform: translateX(12px); }
 
-        /* Telegram Hover */
-        .btn-tg:hover {
-            background-color: #2AABEE !important;
-            box-shadow: 0 16px 32px rgba(42, 171, 238, 0.3) !important;
-            transform: translateY(-2px);
-        }
-
-        /* Max Hover (Градиент из логотипа) */
-        .btn-max:hover {
-            background: linear-gradient(135deg, #00D2FF 0%, #8A2BE2 100%) !important;
-            box-shadow: 0 16px 32px rgba(138, 43, 226, 0.25) !important;
-            transform: translateY(-2px);
-        }
-
-        /* Dikidi Hover */
-        .btn-dikidi:hover {
-            background-color: #00A5FF !important;
-            box-shadow: 0 16px 32px rgba(0, 165, 255, 0.25) !important;
-            transform: translateY(-2px);
-        }
-
-        .premium-btn:active {
-            transform: scale(0.97) translateY(0px) !important;
-        }
+        .btn-tg:hover { background-color: #2AABEE; box-shadow: 0 16px 32px rgba(42, 171, 238, 0.3); transform: translateY(-2px); }
+        .btn-max:hover { background: linear-gradient(135deg, #00D2FF 0%, #8A2BE2 100%); box-shadow: 0 16px 32px rgba(138, 43, 226, 0.25); transform: translateY(-2px); }
+        .btn-dikidi:hover { background-color: #00A5FF; box-shadow: 0 16px 32px rgba(0, 165, 255, 0.25); transform: translateY(-2px); }
 
         .premium-input {
             background: rgba(255, 255, 255, 0.6);
@@ -191,14 +140,11 @@
             border-radius: 16px;
             padding: 12px 16px;
             outline: none;
-            font-family: 'Montserrat', sans-serif;
             transition: all 0.3s ease;
             width: 100%;
+            color: #161616;
         }
-        .premium-input:focus {
-            border-color: #161616;
-            background: rgba(255, 255, 255, 0.9);
-        }
+        .premium-input:focus { border-color: #161616; background: rgba(255, 255, 255, 0.9); }
 
         @keyframes floatGradient {
             0% { transform: translate(0, 0) rotate(0deg) scale(1); }
@@ -215,111 +161,140 @@
             pointer-events: none;
             will-change: transform;
         }
+
+        /* Toast уведомления вместо alert */
+        #toast {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%) translateY(100px);
+            background: #161616;
+            color: #fff;
+            padding: 12px 24px;
+            border-radius: 12px;
+            font-size: 14px;
+            z-index: 100;
+            transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+        #toast.show { transform: translateX(-50%) translateY(0); }
     </style>
 </head>
-<body class="flex justify-center items-center min-h-screen p-4 sm:p-8 relative selection:bg-neutral-900 selection:text-white">
+<body class="flex justify-center items-start sm:items-center min-h-screen p-4 sm:p-8 relative selection:bg-neutral-900 selection:text-white">
 
-    <div class="fixed inset-0 overflow-hidden pointer-events-none z-0">
+    <!-- Фоновые элементы -->
+    <div class="fixed inset-0 overflow-hidden pointer-events-none z-0" aria-hidden="true">
         <div class="ambient-orb bg-amber-200/40 w-[600px] h-[600px] top-[-15%] left-[-15%]"></div>
         <div class="ambient-orb bg-neutral-300/50 w-[500px] h-[500px] bottom-[5%] right-[-10%]" style="animation-delay: -6s;"></div>
     </div>
 
-    <div class="relative w-full max-w-[420px] bg-white/35 backdrop-blur-3xl rounded-[48px] p-6 sm:p-8 border border-white/50 main-container-shadow z-10">
+    <!-- Toast для ошибок -->
+    <div id="toast" role="alert" aria-live="assertive">Пожалуйста, выберите процедуру.</div>
+
+    <main class="relative w-full max-w-[420px] bg-white/35 backdrop-blur-3xl rounded-[48px] p-6 sm:p-8 border border-white/50 main-container-shadow z-10">
         
         <!-- СЕКЦИЯ 1: БРОВИ -->
-        <div class="mb-10 reveal-item delay-1">
+        <section class="mb-10 reveal-item delay-1" aria-labelledby="brows-title">
             <div class="flex items-baseline justify-between mb-6 px-1">
-                <h2 class="font-accent text-[2.6rem] italic font-semibold premium-heading text-neutral-900">Брови</h2>
+                <h2 id="brows-title" class="font-accent text-[2.6rem] italic font-semibold premium-heading text-neutral-900">Брови</h2>
                 <div class="h-[1px] flex-1 bg-neutral-300/40 mx-4 mt-8"></div>
                 <span class="text-[9px] uppercase tracking-[0.12em] text-neutral-400 font-medium shrink-0">Выберите услуги</span>
             </div>
-            
-            <div class="flex flex-col gap-3.5">
-                <div class="spotlight-card p-5 cursor-pointer group" tabindex="0" data-name="коррекция бровей" data-price="400">
-                    <div class="card-content flex justify-between items-center gap-4">
-                        <div class="flex-1 min-w-0 pr-1">
-                            <h3 class="text-[14.5px] font-semibold premium-text text-neutral-900 transition-colors duration-300">Коррекция</h3>
-                            <p class="text-[12px] text-neutral-400 font-light mt-1 leading-snug transition-colors duration-300">(воск, пинцет)</p>
-                        </div>
-                        <span class="price-badge shrink-0 text-[13.5px] font-medium tracking-wide text-neutral-800 bg-white/60 border border-white/80 px-4 py-2 rounded-full">400р</span>
-                    </div>
-                </div>
 
-                <div class="spotlight-card p-5 cursor-pointer group" tabindex="0" data-name="архитектура бровей" data-price="700">
-                    <div class="card-content flex justify-between items-center gap-4">
-                        <div class="flex-1 min-w-0 pr-1">
-                            <h3 class="text-[14.5px] font-semibold premium-text text-neutral-900 transition-colors duration-300">Архитектура бровей</h3>
-                            <p class="text-[12px] text-neutral-400 font-light mt-1 leading-snug transition-colors duration-300">(коррекция, окрашивание)</p>
+            <ul class="flex flex-col gap-3.5 list-none p-0 m-0">
+                <li>
+                    <article class="spotlight-card p-5 cursor-pointer group" tabindex="0" role="button" aria-pressed="false" data-name="коррекция бровей" data-price="400">
+                        <div class="card-content flex justify-between items-center gap-4">
+                            <div class="flex-1 min-w-0 pr-1">
+                                <h3 class="text-[14.5px] font-semibold premium-text text-neutral-900 transition-colors duration-300">Коррекция</h3>
+                                <p class="text-[12px] text-neutral-400 font-light mt-1 leading-snug transition-colors duration-300">(воск, пинцет)</p>
+                            </div>
+                            <span class="price-badge shrink-0 text-[13.5px] font-medium tracking-wide text-neutral-800 bg-white/60 border border-white/80 px-4 py-2 rounded-full">400р</span>
                         </div>
-                        <span class="price-badge shrink-0 text-[13.5px] font-medium tracking-wide text-neutral-800 bg-white/60 border border-white/80 px-4 py-2 rounded-full">700р</span>
-                    </div>
-                </div>
-
-                <div class="spotlight-card p-5 cursor-pointer group" tabindex="0" data-name="долговременная укладка" data-price="1200">
-                    <div class="card-content flex justify-between items-center gap-4">
-                        <div class="flex-1 min-w-0 pr-1">
-                            <h3 class="text-[14.5px] font-semibold premium-text text-neutral-900 transition-colors duration-300">Долговременная укладка</h3>
-                            <p class="text-[12px] text-neutral-400 font-light mt-1 leading-snug transition-colors duration-300">(+коррекция, уход)</p>
+                    </article>
+                </li>
+                <li>
+                    <article class="spotlight-card p-5 cursor-pointer group" tabindex="0" role="button" aria-pressed="false" data-name="архитектура бровей" data-price="700">
+                        <div class="card-content flex justify-between items-center gap-4">
+                            <div class="flex-1 min-w-0 pr-1">
+                                <h3 class="text-[14.5px] font-semibold premium-text text-neutral-900 transition-colors duration-300">Архитектура бровей</h3>
+                                <p class="text-[12px] text-neutral-400 font-light mt-1 leading-snug transition-colors duration-300">(коррекция, окрашивание)</p>
+                            </div>
+                            <span class="price-badge shrink-0 text-[13.5px] font-medium tracking-wide text-neutral-800 bg-white/60 border border-white/80 px-4 py-2 rounded-full">700р</span>
                         </div>
-                        <span class="price-badge shrink-0 text-[13.5px] font-medium tracking-wide text-neutral-800 bg-white/60 border border-white/80 px-4 py-2 rounded-full">1200р</span>
-                    </div>
-                </div>
-
-                <div class="spotlight-card p-5 cursor-pointer group" tabindex="0" data-name="долговременная укладка +" data-price="1500">
-                    <div class="card-content flex justify-between items-center gap-4">
-                        <div class="flex-1 min-w-0 pr-1">
-                            <h3 class="text-[14.5px] font-semibold premium-text text-neutral-900 transition-colors duration-300">Долговременная укладка +</h3>
-                            <p class="text-[12px] text-neutral-400 font-light mt-1 leading-snug transition-colors duration-300">(+коррекция, окрашивание, уход)</p>
+                    </article>
+                </li>
+                <li>
+                    <article class="spotlight-card p-5 cursor-pointer group" tabindex="0" role="button" aria-pressed="false" data-name="долговременная укладка" data-price="1200">
+                        <div class="card-content flex justify-between items-center gap-4">
+                            <div class="flex-1 min-w-0 pr-1">
+                                <h3 class="text-[14.5px] font-semibold premium-text text-neutral-900 transition-colors duration-300">Долговременная укладка</h3>
+                                <p class="text-[12px] text-neutral-400 font-light mt-1 leading-snug transition-colors duration-300">(+коррекция, уход)</p>
+                            </div>
+                            <span class="price-badge shrink-0 text-[13.5px] font-medium tracking-wide text-neutral-800 bg-white/60 border border-white/80 px-4 py-2 rounded-full">1200р</span>
                         </div>
-                        <span class="price-badge shrink-0 text-[13.5px] font-medium tracking-wide text-neutral-800 bg-white/60 border border-white/80 px-4 py-2 rounded-full">1500р</span>
-                    </div>
-                </div>
-            </div>
-        </div>
+                    </article>
+                </li>
+                <li>
+                    <article class="spotlight-card p-5 cursor-pointer group" tabindex="0" role="button" aria-pressed="false" data-name="долговременная укладка +" data-price="1500">
+                        <div class="card-content flex justify-between items-center gap-4">
+                            <div class="flex-1 min-w-0 pr-1">
+                                <h3 class="text-[14.5px] font-semibold premium-text text-neutral-900 transition-colors duration-300">Долговременная укладка +</h3>
+                                <p class="text-[12px] text-neutral-400 font-light mt-1 leading-snug transition-colors duration-300">(+коррекция, окрашивание, уход)</p>
+                            </div>
+                            <span class="price-badge shrink-0 text-[13.5px] font-medium tracking-wide text-neutral-800 bg-white/60 border border-white/80 px-4 py-2 rounded-full">1500р</span>
+                        </div>
+                    </article>
+                </li>
+            </ul>
+        </section>
 
         <!-- СЕКЦИЯ 2: РЕСНИЦЫ -->
-        <div class="mb-8 reveal-item delay-2">
+        <section class="mb-8 reveal-item delay-2" aria-labelledby="lash-title">
             <div class="flex items-baseline justify-between mb-6 px-1">
-                <h2 class="font-accent text-[2.6rem] italic font-semibold premium-heading text-neutral-900">Ресницы</h2>
+                <h2 id="lash-title" class="font-accent text-[2.6rem] italic font-semibold premium-heading text-neutral-900">Ресницы</h2>
                 <div class="h-[1px] flex-1 bg-neutral-300/40 mx-4 mt-8"></div>
                 <span class="text-[9px] uppercase tracking-[0.12em] text-neutral-400 font-medium shrink-0">Выберите услуги</span>
             </div>
-            
-            <div class="flex flex-col gap-3.5">
-                <div class="spotlight-card p-5 cursor-pointer group" tabindex="0" data-name="ламинирование ресниц" data-price="1200">
-                    <div class="card-content flex justify-between items-center gap-4">
-                        <div class="flex-1 min-w-0 pr-1">
-                            <h3 class="text-[14.5px] font-semibold premium-text text-neutral-900 transition-colors duration-300">Ламинирование ресниц</h3>
-                            <p class="text-[12px] text-neutral-400 font-light mt-1 leading-snug transition-colors duration-300">(+окрашивание, уход)</p>
-                        </div>
-                        <span class="price-badge shrink-0 text-[13.5px] font-medium tracking-wide text-neutral-800 bg-white/60 border border-white/80 px-4 py-2 rounded-full">1200р</span>
-                    </div>
-                </div>
 
-                <div class="spotlight-card p-5 cursor-pointer group" tabindex="0" data-name="окрашивание ресниц" data-price="300">
-                    <div class="card-content flex justify-between items-center gap-4">
-                        <div class="flex-1 min-w-0 pr-1">
-                            <h3 class="text-[14.5px] font-semibold premium-text text-neutral-900 transition-colors duration-300">Окрашивание ресниц</h3>
+            <ul class="flex flex-col gap-3.5 list-none p-0 m-0">
+                <li>
+                    <article class="spotlight-card p-5 cursor-pointer group" tabindex="0" role="button" aria-pressed="false" data-name="ламинирование ресниц" data-price="1200">
+                        <div class="card-content flex justify-between items-center gap-4">
+                            <div class="flex-1 min-w-0 pr-1">
+                                <h3 class="text-[14.5px] font-semibold premium-text text-neutral-900 transition-colors duration-300">Ламинирование ресниц</h3>
+                                <p class="text-[12px] text-neutral-400 font-light mt-1 leading-snug transition-colors duration-300">(+окрашивание, уход)</p>
+                            </div>
+                            <span class="price-badge shrink-0 text-[13.5px] font-medium tracking-wide text-neutral-800 bg-white/60 border border-white/80 px-4 py-2 rounded-full">1200р</span>
                         </div>
-                        <span class="price-badge shrink-0 text-[13.5px] font-medium tracking-wide text-neutral-800 bg-white/60 border border-white/80 px-4 py-2 rounded-full">300р</span>
-                    </div>
-                </div>
-
-                <div class="spotlight-card p-5 cursor-pointer group" tabindex="0" data-name="снятие наращенных ресниц" data-price="300">
-                    <div class="card-content flex justify-between items-center gap-4">
-                        <div class="flex-1 min-w-0 pr-1">
-                            <h3 class="text-[14.5px] font-semibold premium-text text-neutral-900 transition-colors duration-300">Снятие наращенных ресниц</h3>
+                    </article>
+                </li>
+                <li>
+                    <article class="spotlight-card p-5 cursor-pointer group" tabindex="0" role="button" aria-pressed="false" data-name="окрашивание ресниц" data-price="300">
+                        <div class="card-content flex justify-between items-center gap-4">
+                            <div class="flex-1 min-w-0 pr-1">
+                                <h3 class="text-[14.5px] font-semibold premium-text text-neutral-900 transition-colors duration-300">Окрашивание ресниц</h3>
+                            </div>
+                            <span class="price-badge shrink-0 text-[13.5px] font-medium tracking-wide text-neutral-800 bg-white/60 border border-white/80 px-4 py-2 rounded-full">300р</span>
                         </div>
-                        <span class="price-badge shrink-0 text-[13.5px] font-medium tracking-wide text-neutral-800 bg-white/60 border border-white/80 px-4 py-2 rounded-full">300р</span>
-                    </div>
-                </div>
-            </div>
-        </div>
+                    </article>
+                </li>
+                <li>
+                    <article class="spotlight-card p-5 cursor-pointer group" tabindex="0" role="button" aria-pressed="false" data-name="снятие наращенных ресниц" data-price="300">
+                        <div class="card-content flex justify-between items-center gap-4">
+                            <div class="flex-1 min-w-0 pr-1">
+                                <h3 class="text-[14.5px] font-semibold premium-text text-neutral-900 transition-colors duration-300">Снятие наращенных ресниц</h3>
+                            </div>
+                            <span class="price-badge shrink-0 text-[13.5px] font-medium tracking-wide text-neutral-800 bg-white/60 border border-white/80 px-4 py-2 rounded-full">300р</span>
+                        </div>
+                    </article>
+                </li>
+            </ul>
+        </section>
 
         <!-- СЕКЦИЯ 3: ИТОГИ И КНОПКИ ЗАПИСИ -->
         <div class="w-full mt-4 relative reveal-item delay-3">
-            
-            <div class="bg-white/40 backdrop-blur-xl border border-white/60 rounded-[24px] p-5 text-center mb-6 soft-shadow-sm transition-all duration-300">
+            <div class="bg-white/40 backdrop-blur-xl border border-white/60 rounded-[24px] p-5 text-center mb-6 transition-all duration-300">
                 <p class="text-[14px] font-light tracking-wide text-neutral-600">
                     Итоговая сумма: <br>
                     <span class="font-semibold text-neutral-900 text-[24px] mt-1 inline-block tracking-wide">
@@ -332,157 +307,160 @@
             </div>
 
             <div id="messengerBlock" class="grid grid-cols-2 gap-3 w-full">
-                <!-- Telegram Button -->
                 <button onclick="chooseMessenger('telegram')" class="premium-btn btn-tg h-[54px] flex justify-center items-center rounded-[20px] font-semibold tracking-[0.12em] text-[11px] uppercase outline-none">
-                    <svg class="btn-icon w-5 h-5 text-white" fill="currentColor" viewBox="0 0 24 24"><path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/></svg>
+                    <svg class="btn-icon w-5 h-5 text-white" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/></svg>
                     <span class="btn-text">В Telegram</span>
                 </button>
-                
-                <!-- Max.ru Button -->
                 <button onclick="chooseMessenger('max')" class="premium-btn btn-max h-[54px] flex justify-center items-center rounded-[20px] font-semibold tracking-[0.12em] text-[11px] uppercase outline-none">
-                    <!-- Логотип-иконка Max (стилизованное диалоговое кольцо) -->
-                    <svg class="btn-icon w-[22px] h-[22px] text-white" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12c0 1.8.5 3.48 1.36 4.96L2 22l5.04-1.36C8.52 21.5 10.2 22 12 22c5.52 0 10-4.48 10-10S17.52 2 12 2zm0 15c-1.12 0-2.18-.28-3.12-.76l-.22-.12-2.14.58.58-2.14-.12-.22A6.974 6.974 0 0 1 5 12c0-3.86 3.14-7 7-7s7 3.14 7 7-3.14 7-7 7z"/></svg>
+                    <svg class="btn-icon w-[22px] h-[22px] text-white" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2C6.48 2 2 6.48 2 12c0 1.8.5 3.48 1.36 4.96L2 22l5.04-1.36C8.52 21.5 10.2 22 12 22c5.52 0 10-4.48 10-10S17.52 2 12 2zm0 15c-1.12 0-2.18-.28-3.12-.76l-.22-.12-2.14.58.58-2.14-.12-.22A6.974 6.974 0 0 1 5 12c0-3.86 3.14-7 7-7s7 3.14 7 7-3.14 7-7 7z"/></svg>
                     <span class="btn-text">В Max.ru</span>
                 </button>
             </div>
 
-            <!-- Блок Dikidi -->
             <div class="mt-4 pt-4 border-t border-neutral-300/40">
-                <a href="https://dikidi.net/ru/profile/" target="_blank" class="premium-btn btn-dikidi h-[54px] flex justify-center items-center rounded-[20px] font-semibold tracking-[0.12em] text-[11px] uppercase outline-none w-full">
-                    <svg class="btn-icon w-5 h-5 text-white" viewBox="0 0 24 24" fill="currentColor"><path d="M19 4h-1V2h-2v2H8V2H6v2H5c-1.11 0-1.99.9-1.99 2L3 20c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 16H5V10h14v10z"/></svg>
+                <a href="https://dikidi.net/ru/profile/" target="_blank" rel="noopener noreferrer" class="premium-btn btn-dikidi h-[54px] flex justify-center items-center rounded-[20px] font-semibold tracking-[0.12em] text-[11px] uppercase outline-none w-full">
+                    <svg class="btn-icon w-5 h-5 text-white" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M19 4h-1V2h-2v2H8V2H6v2H5c-1.11 0-1.99.9-1.99 2L3 20c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 16H5V10h14v10z"/></svg>
                     <span class="btn-text">Записаться в Dikidi</span>
                 </a>
                 <p class="text-center text-[10px] text-neutral-400 font-light mt-3 tracking-wide">Или выберите прямую запись онлайн</p>
             </div>
 
-            <!-- Премиальный блок интерактивного календаря -->
+            <!-- Интерактивный календарь -->
             <div id="calendarBlock" class="mt-5 p-5 bg-white/50 backdrop-blur-2xl border border-white/70 rounded-[28px] transition-all duration-500 hidden scale-95 opacity-0">
-                <h4 class="text-[12px] font-semibold tracking-[0.15em] uppercase text-neutral-700 text-center mb-4">Выберите дату и время</h4>
-                
+                <div class="flex justify-between items-center mb-4">
+                    <h4 class="text-[12px] font-semibold tracking-[0.15em] uppercase text-neutral-700">Выберите дату и время</h4>
+                    <button onclick="closeCalendar()" class="text-neutral-400 hover:text-neutral-900 transition-colors" aria-label="Закрыть календарь">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" /></svg>
+                    </button>
+                </div>
+
                 <div class="flex flex-col gap-3">
-                    <input type="date" id="bookDate" class="premium-input text-[14px] text-neutral-800">
-                    <input type="time" id="bookTime" class="premium-input text-[14px] text-neutral-800">
-                    
+                    <input type="date" id="bookDate" class="premium-input text-[14px]" aria-label="Дата записи">
+                    <input type="time" id="bookTime" class="premium-input text-[14px]" aria-label="Время записи">
                     <button onclick="generateAndSend()" class="premium-btn h-[50px] mt-2 flex justify-center items-center rounded-[18px] font-semibold tracking-[0.12em] text-[11px] uppercase outline-none w-full">
                         Отправить запрос
                     </button>
                 </div>
             </div>
-
         </div>
-    </div>
+    </main>
 
-    <!-- ЛОГИКА -->
+    <!-- ЛОГИКА (Оптимизированная) -->
     <script>
-        let selectedServices = [];
+        const selectedServices = [];
         let totalPrice = 0;
         let selectedMessenger = '';
 
-        document.addEventListener('DOMContentLoaded', () => {
-            const cards = document.querySelectorAll('.spotlight-card');
+        const cards = document.querySelectorAll('.spotlight-card');
+        const toast = document.getElementById('toast');
+
+        // Утилита для показа уведомлений
+        function showToast(message) {
+            toast.textContent = message;
+            toast.classList.add('show');
+            setTimeout(() => toast.classList.remove('show'), 3000);
+        }
+
+        cards.forEach(card => {
+            // 3D Эффект (Оптимизированный через CSS-переменные)
+            card.addEventListener('mousemove', (e) => {
+                if (card.classList.contains('is-selected')) return;
+
+                const rect = card.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+
+                card.style.setProperty('--x', `${x}px`);
+                card.style.setProperty('--y', `${y}px`);
+
+                const centerX = rect.width / 2;
+                const centerY = rect.height / 2;
+                const rotateX = ((y - centerY) / centerY) * -5;
+                const rotateY = ((x - centerX) / centerX) * 5;
+
+                card.style.transform = `perspective(800px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale3d(1.015, 1.015, 1.015)`;
+                
+                const content = card.querySelector('.card-content');
+                if(content) {
+                    content.style.transform = `translateZ(25px) translateX(${rotateY * 0.5}px) translateY(${rotateX * -0.5}px)`;
+                }
+            });
+
+            card.addEventListener('mouseleave', () => {
+                card.style.transform = '';
+                const content = card.querySelector('.card-content');
+                if(content) content.style.transform = '';
+            });
+
+            // Обработка выбора
+            const toggleSelection = () => {
+                const name = card.getAttribute('data-name');
+                const price = parseInt(card.getAttribute('data-price'), 10);
+                const isSelected = card.classList.toggle('is-selected');
+                card.setAttribute('aria-pressed', isSelected);
+
+                if (isSelected) {
+                    totalPrice += price;
+                    selectedServices.push(name);
+                } else {
+                    totalPrice -= price;
+                    const index = selectedServices.indexOf(name);
+                    if (index > -1) selectedServices.splice(index, 1);
+                }
+                document.getElementById('totalPrice').innerText = totalPrice;
+            };
+
+            card.addEventListener('click', toggleSelection);
             
-            cards.forEach(card => {
-                card.addEventListener('mousemove', (e) => {
-                    if (card.classList.contains('is-selected')) return;
-
-                    const rect = card.getBoundingClientRect();
-                    const x = e.clientX - rect.left;
-                    const y = e.clientY - rect.top;
-                    
-                    card.style.setProperty('--x', `${x}px`);
-                    card.style.setProperty('--y', `${y}px`);
-
-                    const centerX = rect.width / 2;
-                    const centerY = rect.height / 2;
-                    const rotateX = ((y - centerY) / centerY) * -5;
-                    const rotateY = ((x - centerX) / centerX) * 5;
-
-                    const content = card.querySelector('.card-content');
-                    if(content) {
-                        content.style.transform = `translateZ(25px) translateX(${rotateY * 0.5}px) translateY(${rotateX * -0.5}px)`;
-                    }
-                    card.style.transform = `perspective(800px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale3d(1.015, 1.015, 1.015)`;
-                });
-
-                card.addEventListener('mouseleave', () => {
-                    card.style.transform = `perspective(800px) rotateX(0deg) rotateY(0deg) scale3d(1, 1, 1)`;
-                    const content = card.querySelector('.card-content');
-                    if(content) {
-                        content.style.transform = `translateZ(0px) translateX(0px) translateY(0px)`;
-                    }
-                    card.style.transition = 'transform 0.6s cubic-bezier(0.25, 1, 0.5, 1), background-color 0.4s ease, border-color 0.4s ease';
-                });
-
-                card.addEventListener('mouseenter', () => {
-                    card.style.transition = 'background-color 0.4s ease, border-color 0.4s ease';
-                });
-
-                card.addEventListener('click', () => {
-                    const name = card.getAttribute('data-name');
-                    const price = parseInt(card.getAttribute('data-price'));
-
-                    if (card.classList.contains('is-selected')) {
-                        card.classList.remove('is-selected');
-                        totalPrice -= price;
-                        selectedServices = selectedServices.filter(item => item !== name);
-                    } else {
-                        card.classList.add('is-selected');
-                        totalPrice += price;
-                        selectedServices.push(name);
-                    }
-
-                    document.getElementById('totalPrice').innerText = totalPrice;
-                });
+            // Доступность: Выбор по Enter
+            card.addEventListener('keydown', (e) => {
+                if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault();
+                    toggleSelection();
+                }
             });
         });
 
-        // Установка текущей даты и времени устройства
         function setCurrentDateTime() {
             const now = new Date();
+            const pad = (num) => String(num).padStart(2, '0');
             
-            const year = now.getFullYear();
-            const month = String(now.getMonth() + 1).padStart(2, '0');
-            const day = String(now.getDate()).padStart(2, '0');
-            document.getElementById('bookDate').value = `${year}-${month}-${day}`;
-
-            const hours = String(now.getHours()).padStart(2, '0');
-            const minutes = String(now.getMinutes()).padStart(2, '0');
-            document.getElementById('bookTime').value = `${hours}:${minutes}`;
+            document.getElementById('bookDate').value = `${now.getFullYear()}-${pad(now.getMonth() + 1)}-${pad(now.getDate())}`;
+            document.getElementById('bookTime').value = `${pad(now.getHours())}:${pad(now.getMinutes())}`;
         }
 
         function chooseMessenger(messenger) {
             if (selectedServices.length === 0) {
-                alert('Пожалуйста, выберите сначала хотя бы одну процедуру.');
+                showToast('Пожалуйста, выберите сначала хотя бы одну процедуру.');
                 return;
             }
             selectedMessenger = messenger;
 
             const calendarBlock = document.getElementById('calendarBlock');
             calendarBlock.classList.remove('hidden');
-            
             setCurrentDateTime();
-            
+
+            // Анимация появления
             setTimeout(() => {
                 calendarBlock.classList.remove('scale-95', 'opacity-0');
                 calendarBlock.classList.add('scale-100', 'opacity-100');
-                calendarBlock.scrollIntoView({ behavior: 'smooth', block: 'end' });
+                calendarBlock.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
             }, 50);
+        }
+
+        function closeCalendar() {
+            const calendarBlock = document.getElementById('calendarBlock');
+            calendarBlock.classList.add('scale-95', 'opacity-0');
+            calendarBlock.classList.remove('scale-100', 'opacity-100');
+            setTimeout(() => calendarBlock.classList.add('hidden'), 500);
         }
 
         function formatDate(dateString) {
             if (!dateString) return '';
-            const months = [
-                'января', 'февраля', 'марта', 'апреля', 'мая', 'июня', 
-                'июля', 'августа', 'сентября', 'октября', 'ноября', 'декабря'
-            ];
-            const dateParts = dateString.split('-');
-            if (dateParts.length !== 3) return dateString;
-
-            const year = dateParts[0];
-            const monthIndex = parseInt(dateParts[1], 10) - 1;
-            const day = parseInt(dateParts[2], 10);
-
-            return `${day} ${months[monthIndex]} ${year}г.`;
+            const months = ['января', 'февраля', 'марта', 'апреля', 'мая', 'июня', 'июля', 'августа', 'сентября', 'октября', 'ноября', 'декабря'];
+            const [year, month, day] = dateString.split('-');
+            if (!year || !month || !day) return dateString;
+            return `${parseInt(day)} ${months[parseInt(month) - 1]} ${year}г.`;
         }
 
         function generateAndSend() {
@@ -490,36 +468,33 @@
             const time = document.getElementById('bookTime').value;
 
             if (!rawDate || !time) {
-                alert('Пожалуйста, заполните дату и время для записи.');
+                showToast('Пожалуйста, заполните дату и время для записи.');
                 return;
             }
 
             const formattedDate = formatDate(rawDate);
-            
             let proceduresText = '';
+
             if (selectedServices.length === 1) {
                 proceduresText = selectedServices[0];
-            } else {
-                const lastService = selectedServices[selectedServices.length - 1];
-                const otherServices = selectedServices.slice(0, -1).join(', ');
-                proceduresText = `${otherServices} и ${lastService}`;
+            } else if (selectedServices.length > 1) {
+                const last = selectedServices.pop(); // Временно забираем последний
+                proceduresText = `${selectedServices.join(', ')} и ${last}`;
+                selectedServices.push(last); // Возвращаем обратно, чтобы данные не потерялись
             }
 
-            const textMessage = `Здравствуйте! Хочу записаться на ${formattedDate} в ${time} на процедуру ${proceduresText}.`;
+            const textMessage = `Здравствуйте! Хочу записаться на ${formattedDate} в ${time} на процедуру: ${proceduresText}.`;
             const encodedText = encodeURIComponent(textMessage);
 
             let finalLink = '';
-
             if (selectedMessenger === 'telegram') {
-                // Прямая ссылка на нужный Telegram аккаунт
                 finalLink = `https://t.me/aandvl?text=${encodedText}`;
             } else if (selectedMessenger === 'max') {
-                // Интеграция с Max.ru по указанному номеру
                 finalLink = `https://max.ru/send?phone=79872785811&text=${encodedText}`;
             }
 
             if (finalLink) {
-                window.open(finalLink, '_blank');
+                window.open(finalLink, '_blank', 'noopener,noreferrer');
             }
         }
     </script>

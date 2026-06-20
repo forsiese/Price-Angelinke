@@ -47,8 +47,9 @@
         .delay-2 { animation-delay: 0.35s; }
         .delay-3 { animation-delay: 0.55s; }
 
+        /* Оптимизация теней для iOS */
         .main-container-shadow {
-            box-shadow: 0 12px 30px rgba(22, 22, 22, 0.04), 0 4px 10px rgba(22, 22, 22, 0.02);
+            box-shadow: 0 2px 5px rgba(22, 22, 22, 0.02), 0 1px 2px rgba(22, 22, 22, 0.01);
         }
 
         .spotlight-card {
@@ -80,7 +81,7 @@
         .spotlight-card:hover {
             background-color: rgba(255, 255, 255, 0.8);
             border-color: rgba(255, 255, 255, 1);
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.03);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
         }
         .spotlight-card:hover::before { opacity: 1; }
 
@@ -88,7 +89,7 @@
             background-color: #161616;
             border-color: #161616;
             color: #ffffff;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+            box-shadow: 0 6px 15px rgba(0,0,0,0.1);
         }
         .spotlight-card.is-selected .premium-text { color: #ffffff; }
         .spotlight-card.is-selected p { color: rgba(255, 255, 255, 0.6); }
@@ -113,7 +114,7 @@
         .premium-btn {
             background: #161616;
             color: #ffffff;
-            box-shadow: 0 10px 25px rgba(22, 22, 22, 0.12);
+            box-shadow: 0 4px 10px rgba(22, 22, 22, 0.08);
             transition: all 0.4s cubic-bezier(0.25, 1, 0.5, 1);
             position: relative;
             overflow: hidden;
@@ -126,10 +127,10 @@
         .btn-text { transition: transform 0.4s cubic-bezier(0.25, 1, 0.5, 1); }
         .premium-btn:hover .btn-text { transform: translateX(12px); }
 
-        .btn-tg:hover { background-color: #2AABEE; box-shadow: 0 12px 25px rgba(42, 171, 238, 0.25); transform: translateY(-2px); }
-        .btn-green { background-color: #16a34a; box-shadow: 0 10px 20px rgba(22, 163, 74, 0.2); }
+        .btn-tg:hover { background-color: #2AABEE; box-shadow: 0 6px 15px rgba(42, 171, 238, 0.2); transform: translateY(-2px); }
+        .btn-green { background-color: #16a34a; box-shadow: 0 4px 10px rgba(22, 163, 74, 0.15); }
         .btn-green:hover { background-color: #15803d; transform: translateY(-2px); }
-        .btn-red { background-color: #dc2626; box-shadow: 0 10px 20px rgba(220, 38, 38, 0.2); }
+        .btn-red { background-color: #dc2626; box-shadow: 0 4px 10px rgba(220, 38, 38, 0.15); }
         .btn-red:hover { background-color: #b91c1c; transform: translateY(-2px); }
 
         .premium-input {
@@ -172,7 +173,7 @@
             font-size: 14px;
             z-index: 100;
             transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-            box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
             text-align: center;
             max-width: 90vw;
         }
@@ -184,13 +185,12 @@
             border-radius: 20px;
             backdrop-filter: blur(12px);
             -webkit-backdrop-filter: blur(12px);
-            box-shadow: 0 4px 15px rgba(0,0,0,0.03);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.02);
         }
         .status-pending { color: #d97706; font-weight: 600; }
         .status-approved { color: #16a34a; font-weight: 600; }
         .status-rejected { color: #dc2626; font-weight: 600; }
 
-        /* Стили для кнопок времени (слотов) */
         .time-slot {
             padding: 10px 16px;
             border-radius: 12px;
@@ -214,13 +214,38 @@
         }
         .time-slot-delete:hover { background: #fecaca; }
 
-        .tab-active {
-            border-bottom: 2px solid #161616;
-            color: #161616;
+        .tab-active { border-bottom: 2px solid #161616; color: #161616; }
+        .tab-inactive { border-bottom: 2px solid transparent; color: #9ca3af; }
+
+        /* Стили для кастомного календаря */
+        .calendar-grid {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 4px;
         }
-        .tab-inactive {
-            border-bottom: 2px solid transparent;
-            color: #9ca3af;
+        .cal-day {
+            aspect-ratio: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            position: relative;
+        }
+        .cal-day:hover:not(.cal-disabled) { background: rgba(0,0,0,0.05); }
+        .cal-disabled { color: #d1d5db; pointer-events: none; }
+        .cal-selected { background: #161616 !important; color: #fff !important; }
+        .cal-today { border: 1px solid #161616; }
+        .cal-has-slots::after {
+            content: '';
+            position: absolute;
+            bottom: 4px;
+            width: 4px;
+            height: 4px;
+            background: #d97706;
+            border-radius: 50%;
         }
     </style>
 </head>
@@ -343,8 +368,9 @@
                     <span class="font-semibold text-neutral-900 text-[24px] mt-1 inline-block tracking-wide">
                         <span id="totalPrice">0</span>р
                     </span>
+                    <span id="discountBadge" class="hidden ml-2 text-[14px] text-green-600 font-semibold align-middle">(-15%)</span>
                 </p>
-                <p class="text-[11px] text-neutral-400 font-light mt-2">
+                <p id="discountText" class="text-[11px] text-neutral-400 font-light mt-2">
                     На первое посещение действует скидка 15%
                 </p>
             </div>
@@ -356,29 +382,25 @@
 
             <div id="calendarBlock" class="mt-6 p-5 bg-white/50 backdrop-blur-2xl border border-white/70 rounded-[28px] transition-all duration-500 hidden scale-95 opacity-0">
                 <div class="flex justify-between items-center mb-4">
-                    <h4 class="text-[12px] font-semibold tracking-[0.15em] uppercase text-neutral-700">Выберите дату и время</h4>
+                    <h4 class="text-[12px] font-semibold tracking-[0.15em] uppercase text-neutral-700">Выберите дату</h4>
                     <button onclick="closeCalendar()" class="text-neutral-400 hover:text-neutral-900 transition-colors" aria-label="Закрыть календарь">
                         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" /></svg>
                     </button>
                 </div>
 
-                <div class="flex flex-col gap-4">
-                    <div>
-                        <label class="text-[12px] text-neutral-500 mb-2 block">Дата</label>
-                        <input type="date" id="bookDate" class="premium-input text-[14px]" aria-label="Дата записи" onchange="fetchAvailableTimes()">
-                    </div>
-                    
-                    <div>
-                        <label class="text-[12px] text-neutral-500 mb-2 block">Доступное время</label>
-                        <div id="timeSlotsContainer" class="flex flex-wrap gap-2 min-h-[45px] items-center">
-                            <p class="text-[12px] text-neutral-400">Сначала выберите дату</p>
-                        </div>
-                    </div>
+                <!-- Кастомный календарь -->
+                <div id="clientCalendar" class="mb-5"></div>
 
-                    <button onclick="generateAndSend()" id="submitBookingBtn" disabled class="premium-btn h-[50px] mt-2 flex justify-center items-center rounded-[18px] font-semibold tracking-[0.12em] text-[11px] uppercase outline-none w-full">
-                        Отправить запрос
-                    </button>
+                <div class="mt-4">
+                    <label class="text-[12px] text-neutral-500 mb-2 block">Доступное время</label>
+                    <div id="timeSlotsContainer" class="flex flex-wrap gap-2 min-h-[45px] items-center">
+                        <p class="text-[12px] text-neutral-400">Выберите дату в календаре</p>
+                    </div>
                 </div>
+
+                <button onclick="generateAndSend()" id="submitBookingBtn" disabled class="premium-btn h-[50px] mt-6 flex justify-center items-center rounded-[18px] font-semibold tracking-[0.12em] text-[11px] uppercase outline-none w-full">
+                    Отправить запрос
+                </button>
             </div>
         </div>
     </main>
@@ -390,7 +412,6 @@
             <a href="#" onclick="logoutAdmin()" class="text-[11px] uppercase tracking-[0.12em] text-neutral-500 hover:text-neutral-900 transition-colors">Выйти</a>
         </div>
 
-        <!-- Вкладки админки -->
         <div class="flex gap-6 mb-8 border-b border-neutral-200">
             <button onclick="switchAdminTab('bookings')" id="tab-btn-bookings" class="pb-3 text-[12px] uppercase tracking-wide font-semibold tab-active">Заявки</button>
             <button onclick="switchAdminTab('schedule')" id="tab-btn-schedule" class="pb-3 text-[12px] uppercase tracking-wide font-semibold tab-inactive">Расписание</button>
@@ -406,9 +427,12 @@
         <!-- Вкладка Расписание -->
         <div id="admin-schedule-view" class="hidden">
             <div class="bg-white/40 border border-white/60 rounded-[24px] p-5 mb-6">
-                <h4 class="text-[12px] font-semibold tracking-[0.15em] uppercase text-neutral-700 mb-4">Добавить слот</h4>
-                <div class="flex flex-col gap-3">
-                    <input type="date" id="adminSchedDate" class="premium-input text-[14px]" aria-label="Дата слота">
+                <h4 class="text-[12px] font-semibold tracking-[0.15em] uppercase text-neutral-700 mb-4 text-center">Управление слотами</h4>
+                
+                <div id="adminCalendar" class="mb-6"></div>
+
+                <div class="flex flex-col gap-3 mt-4">
+                    <p class="text-[12px] text-neutral-500 text-center">Добавить время на выбранную дату</p>
                     <div class="flex gap-2">
                         <input type="time" id="adminSchedTime" class="premium-input text-[14px] flex-1" aria-label="Время слота">
                         <button onclick="addScheduleSlot()" class="premium-btn px-5 rounded-[16px] text-[12px] uppercase tracking-wide font-semibold whitespace-nowrap">Добавить</button>
@@ -417,23 +441,21 @@
             </div>
 
             <div class="bg-white/40 border border-white/60 rounded-[24px] p-5">
-                <h4 class="text-[12px] font-semibold tracking-[0.15em] uppercase text-neutral-700 mb-4">Управление слотами</h4>
-                <input type="date" id="adminViewSchedDate" class="premium-input text-[14px] mb-4" onchange="fetchAdminSchedule()" aria-label="Просмотр слотов на дату">
-                <div id="adminSlotsList" class="flex flex-wrap gap-2 min-h-[50px] items-center">
-                    <p class="text-[12px] text-neutral-400 w-full text-center">Выберите дату для просмотра</p>
+                <h4 class="text-[12px] font-semibold tracking-[0.15em] uppercase text-neutral-700 mb-4 text-center">Слоты на выбранную дату</h4>
+                <div id="adminSlotsList" class="flex flex-wrap gap-2 min-h-[50px] items-center justify-center">
+                    <p class="text-[12px] text-neutral-400 w-full text-center">Выберите дату в календаре</p>
                 </div>
             </div>
         </div>
     </main>
 
-    <!-- Firebase SDK (Облачная база данных) -->
+    <!-- Firebase SDK -->
     <script src="https://www.gstatic.com/firebasejs/9.17.2/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.17.2/firebase-firestore-compat.js"></script>
     
     <script>
-        // ====== НАСТРОЙКИ ======
-        const ADMIN_PIN = "1234"; // Ваш PIN-код
-        const TG_USERNAME = "aandvl"; // Ваш юзернейм в Telegram
+        const ADMIN_PIN = "1234";
+        const TG_USERNAME = "aandvl";
         
         const firebaseConfig = {
             apiKey: "AIzaSyAWygW7luBG8myNfXqIkm53PlniW7-_i_A",
@@ -456,15 +478,39 @@
         const selectedServices = [];
         let totalPrice = 0;
         let selectedTimeSlot = null;
+        let isFirstVisit = !localStorage.getItem('hasBookedBefore'); // Проверка первого визита
+        
         const cards = document.querySelectorAll('.spotlight-card');
         const toast = document.getElementById('toast');
         const clientView = document.getElementById('client-view');
         const adminView = document.getElementById('admin-view');
 
+        // Состояния календарей
+        let clientCalState = { month: new Date().getMonth(), year: new Date().getFullYear(), selectedDate: null };
+        let adminCalState = { month: new Date().getMonth(), year: new Date().getFullYear(), selectedDate: null };
+
         function showToast(message) {
             toast.textContent = message;
             toast.classList.add('show');
             setTimeout(() => toast.classList.remove('show'), 3000);
+        }
+
+        // Применение скидки
+        function updateTotalPrice() {
+            let finalPrice = totalPrice;
+            if (isFirstVisit && totalPrice > 0) {
+                finalPrice = Math.round(totalPrice * 0.85);
+                document.getElementById('discountBadge').classList.remove('hidden');
+                document.getElementById('discountText').innerText = `Скидка 15% на первый визит применена!`;
+                document.getElementById('discountText').classList.remove('text-neutral-400');
+                document.getElementById('discountText').classList.add('text-green-600', 'font-medium');
+            } else if (!isFirstVisit) {
+                document.getElementById('discountBadge').classList.add('hidden');
+                document.getElementById('discountText').innerText = `На первое посещение действует скидка 15%`;
+                document.getElementById('discountText').classList.add('text-neutral-400');
+                document.getElementById('discountText').classList.remove('text-green-600', 'font-medium');
+            }
+            document.getElementById('totalPrice').innerText = finalPrice;
         }
 
         // ====== ЛОГИКА КЛИЕНТА ======
@@ -507,7 +553,7 @@
                     const index = selectedServices.indexOf(name);
                     if (index > -1) selectedServices.splice(index, 1);
                 }
-                document.getElementById('totalPrice').innerText = totalPrice;
+                updateTotalPrice();
             };
 
             card.addEventListener('click', toggleSelection);
@@ -527,11 +573,7 @@
             const calendarBlock = document.getElementById('calendarBlock');
             calendarBlock.classList.remove('hidden');
 
-            // Устанавливаем сегодняшнюю дату по умолчанию
-            const today = new Date();
-            const pad = (num) => String(num).padStart(2, '0');
-            document.getElementById('bookDate').value = `${today.getFullYear()}-${pad(today.getMonth() + 1)}-${pad(today.getDate())}`;
-            fetchAvailableTimes(); // Сразу грузим слоты на сегодня
+            renderCalendar('client'); // Рендер календаря
 
             setTimeout(() => {
                 calendarBlock.classList.remove('scale-95', 'opacity-0');
@@ -553,20 +595,93 @@
             return `${day}.${month}.${year}`;
         }
 
-        // Загрузка слотов для клиента
-        function fetchAvailableTimes() {
-            const dateStr = document.getElementById('bookDate').value;
+        // ====== ЛОГИКА КАЛЕНДАРЯ ======
+        function renderCalendar(target) {
+            const state = target === 'client' ? clientCalState : adminCalState;
+            const containerId = target === 'client' ? 'clientCalendar' : 'adminCalendar';
+            const container = document.getElementById(containerId);
+            
+            const monthNames = ["Январь", "Февраль", "Март", "Апрель", "Май", "Июнь", "Июль", "Август", "Сентябрь", "Октябрь", "Ноябрь", "Декабрь"];
+            
+            let html = `
+                <div class="flex justify-between items-center mb-4">
+                    <button id="${target}-cal-prev" class="p-2 rounded-lg hover:bg-neutral-200/50 transition-colors">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" /></svg>
+                    </button>
+                    <span class="font-semibold text-sm">${monthNames[state.month]} ${state.year}</span>
+                    <button id="${target}-cal-next" class="p-2 rounded-lg hover:bg-neutral-200/50 transition-colors">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" /></svg>
+                    </button>
+                </div>
+                <div class="calendar-grid text-center text-[10px] text-neutral-400 mb-2">
+                    <div>Пн</div><div>Вт</div><div>Ср</div><div>Чт</div><div>Пт</div><div>Сб</div><div>Вс</div>
+                </div>
+                <div class="calendar-grid" id="${target}-cal-grid"></div>
+            `;
+            container.innerHTML = html;
+
+            document.getElementById(`${target}-cal-prev`).onclick = () => {
+                state.month--;
+                if (state.month < 0) { state.month = 11; state.year--; }
+                renderCalendar(target);
+            };
+            document.getElementById(`${target}-cal-next`).onclick = () => {
+                state.month++;
+                if (state.month > 11) { state.month = 0; state.year++; }
+                renderCalendar(target);
+            };
+
+            const grid = document.getElementById(`${target}-cal-grid`);
+            const firstDay = new Date(state.year, state.month, 1).getDay() || 7; // 0 (Вс) -> 7
+            const daysInMonth = new Date(state.year, state.month + 1, 0).getDate();
+            
+            for (let i = 1; i < firstDay; i++) {
+                grid.innerHTML += `<div></div>`;
+            }
+
+            for (let day = 1; day <= daysInMonth; day++) {
+                const dateStr = `${state.year}-${String(state.month + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
+                const today = new Date(); today.setHours(0,0,0,0);
+                const cellDate = new Date(state.year, state.month, day);
+                const isPast = cellDate < today;
+                const isToday = cellDate.getTime() === today.getTime();
+                const isSelected = state.selectedDate === dateStr;
+
+                let classes = 'cal-day';
+                if (isPast) classes += ' cal-disabled';
+                if (isToday) classes += ' cal-today';
+                if (isSelected) classes += ' cal-selected';
+
+                grid.innerHTML += `<div class="${classes}" data-date="${dateStr}">${day}</div>`;
+            }
+
+            // Добавляем слушатели кликов
+            grid.querySelectorAll('.cal-day:not(.cal-disabled)').forEach(el => {
+                el.onclick = () => {
+                    const dateStr = el.getAttribute('data-date');
+                    state.selectedDate = dateStr;
+                    renderCalendar(target);
+                    if (target === 'client') {
+                        fetchAvailableTimes(dateStr);
+                    } else {
+                        fetchAdminSchedule(dateStr);
+                    }
+                };
+            });
+
+            // Если дата уже выбрана, подгружаем слоты (при перерисовке месяцев)
+            if (state.selectedDate) {
+                if (target === 'client') fetchAvailableTimes(state.selectedDate);
+                else fetchAdminSchedule(state.selectedDate);
+            }
+        }
+
+        function fetchAvailableTimes(dateStr) {
             const container = document.getElementById('timeSlotsContainer');
             const submitBtn = document.getElementById('submitBookingBtn');
             
             selectedTimeSlot = null;
             submitBtn.disabled = true;
-
-            if (!dateStr) {
-                container.innerHTML = '<p class="text-[12px] text-neutral-400">Сначала выберите дату</p>';
-                return;
-            }
-
             container.innerHTML = '<p class="text-[12px] text-neutral-400">Загрузка...</p>';
 
             db.collection("schedule").doc(dateStr).onSnapshot(doc => {
@@ -594,7 +709,7 @@
         }
 
         function generateAndSend() {
-            const rawDate = document.getElementById('bookDate').value;
+            const rawDate = clientCalState.selectedDate;
             
             if (!rawDate || !selectedTimeSlot) {
                 showToast('Пожалуйста, выберите дату и время.');
@@ -612,18 +727,26 @@
                 proceduresText = `процедуры: ${otherServices} и ${last}`;
             }
 
-            const textMessage = `Здравствуйте, хочу записаться на ${proceduresText}. Дата ${formattedDate} ${selectedTimeSlot}.`;
+            // Добавляем пометку о первом визите и скидке
+            let textMessage = `Здравствуйте, хочу записаться на ${proceduresText}. Дата ${formattedDate} ${selectedTimeSlot}.`;
+            if (isFirstVisit) {
+                textMessage += ` (Это мой первый визит, применена скидка 15%)`;
+            }
             const encodedText = encodeURIComponent(textMessage);
 
-            // Сохраняем заявку в базу
             if (db) {
                 db.collection("bookings").add({
                     services: selectedServices.join(', '),
                     date: formattedDate,
-                    rawDate: rawDate, // сохраняем для удаления слота при подтверждении
+                    rawDate: rawDate,
                     time: selectedTimeSlot,
                     timestamp: firebase.firestore.FieldValue.serverTimestamp(),
-                    status: 'pending'
+                    status: 'pending',
+                    isFirstVisit: isFirstVisit // Сохраняем флаг в базу
+                }).then(() => {
+                    // Помечаем, что клиент больше не первый раз
+                    localStorage.setItem('hasBookedBefore', 'true');
+                    isFirstVisit = false; // Обновляем переменную в памяти
                 }).catch(error => console.error("Ошибка записи в БД:", error));
             }
 
@@ -631,12 +754,11 @@
             window.open(finalLink, '_blank', 'noopener,noreferrer');
             closeCalendar();
             
-            // Сброс выбора
             setTimeout(() => {
                 cards.forEach(c => { c.classList.remove('is-selected'); c.setAttribute('aria-pressed', 'false'); });
                 selectedServices.length = 0;
                 totalPrice = 0;
-                document.getElementById('totalPrice').innerText = '0';
+                updateTotalPrice();
             }, 1000);
         }
 
@@ -664,7 +786,7 @@
         function showAdminPanel() {
             clientView.classList.add('hidden');
             adminView.classList.remove('hidden');
-            switchAdminTab('bookings'); // По умолчанию открываем заявки
+            switchAdminTab('bookings');
         }
 
         function showClientPanel() {
@@ -695,6 +817,7 @@
                 btnBookings.classList.replace('tab-active', 'tab-inactive');
                 viewSchedule.classList.remove('hidden');
                 viewBookings.classList.add('hidden');
+                renderCalendar('admin');
             }
         }
 
@@ -727,12 +850,14 @@
                             dateStr = b.timestamp.toDate().toLocaleString('ru-RU');
                         }
 
+                        const visitBadge = b.isFirstVisit ? `<span class="ml-2 text-[10px] bg-green-100 text-green-700 px-2 py-1 rounded-full">1-й визит</span>` : '';
+
                         const card = document.createElement('div');
                         card.className = 'admin-card p-5';
                         card.innerHTML = `
                             <div class="flex justify-between items-start mb-3">
                                 <div>
-                                    <p class="text-[14px] font-semibold text-neutral-900">${b.services}</p>
+                                    <p class="text-[14px] font-semibold text-neutral-900">${b.services} ${visitBadge}</p>
                                     <p class="text-[12px] text-neutral-500 mt-1">${b.date} в ${b.time}</p>
                                 </div>
                                 <span class="text-[10px] uppercase tracking-wide ${statusClass} bg-neutral-100 px-2 py-1 rounded-full">${statusText}</span>
@@ -751,36 +876,33 @@
                 });
         }
 
-        // Подтверждение заявки (и удаление слота из расписания)
         function approveBooking(bookingId, rawDate, time) {
             if (!db) return;
-            
-            // Удаляем слот из расписания
             db.collection("schedule").doc(rawDate).update({
                 times: firebase.firestore.FieldValue.arrayRemove(time)
             }).then(() => {
-                // Меняем статус заявки
                 db.collection("bookings").doc(bookingId).update({ status: 'approved' });
             }).catch(error => {
                 console.error("Ошибка подтверждения:", error);
-                // Даже если слот не найден, подтверждаем заявку
                 db.collection("bookings").doc(bookingId).update({ status: 'approved' });
             });
         }
 
         function updateBookingStatus(id, status) {
-            if (db) {
-                db.collection("bookings").doc(id).update({ status: status });
-            }
+            if (db) db.collection("bookings").doc(id).update({ status: status });
         }
 
         // ====== ЛОГИКА РАСПИСАНИЯ (АДМИН) ======
         function addScheduleSlot() {
-            const date = document.getElementById('adminSchedDate').value;
+            const date = adminCalState.selectedDate;
             const time = document.getElementById('adminSchedTime').value;
 
-            if (!date || !time) {
-                showToast('Выберите дату и время для добавления слота.');
+            if (!date) {
+                showToast('Сначала выберите дату в календаре.');
+                return;
+            }
+            if (!time) {
+                showToast('Укажите время для добавления.');
                 return;
             }
 
@@ -788,23 +910,16 @@
                 times: firebase.firestore.FieldValue.arrayUnion(time)
             }, { merge: true }).then(() => {
                 document.getElementById('adminSchedTime').value = '';
-                showToast(`Слот ${time} добавлен на ${formatDate(date)}`);
-                // Если просматриваем эту же дату, обновляем список
-                if (document.getElementById('adminViewSchedDate').value === date) {
-                    fetchAdminSchedule();
-                }
+                showToast(`Слот ${time} добавлен`);
+                fetchAdminSchedule(date);
             });
         }
 
-        function fetchAdminSchedule() {
-            const date = document.getElementById('adminViewSchedDate').value;
+        function fetchAdminSchedule(dateStr) {
             const list = document.getElementById('adminSlotsList');
-
-            if (!date) return;
-
             list.innerHTML = '<p class="text-[12px] text-neutral-400 w-full text-center">Загрузка...</p>';
 
-            db.collection("schedule").doc(date).onSnapshot(doc => {
+            db.collection("schedule").doc(dateStr).onSnapshot(doc => {
                 list.innerHTML = '';
                 if (doc.exists && doc.data().times && doc.data().times.length > 0) {
                     const times = doc.data().times.sort();
@@ -812,7 +927,7 @@
                         const btn = document.createElement('button');
                         btn.className = 'time-slot time-slot-delete flex items-center gap-2';
                         btn.innerHTML = `${time} <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" /></svg>`;
-                        btn.onclick = () => deleteScheduleSlot(date, time);
+                        btn.onclick = () => deleteScheduleSlot(dateStr, time);
                         list.appendChild(btn);
                     });
                 } else {
@@ -828,7 +943,10 @@
         }
 
         window.addEventListener('hashchange', checkAdminRoute);
-        window.addEventListener('DOMContentLoaded', checkAdminRoute);
+        window.addEventListener('DOMContentLoaded', () => {
+            updateTotalPrice(); // Инициализация текста скидки
+            checkAdminRoute();
+        });
     </script>
 </body>
 </html>

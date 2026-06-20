@@ -1109,7 +1109,15 @@
             button.disabled = false;
         }
     }
-
+function escapeHTML(str) {
+    if (!str) return '';
+    return str.toString()
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+}
     /* ================================================================
        ОТПРАВКА УВЕДОМЛЕНИЙ (TELEGRAM + EMAIL)
     ================================================================ */
@@ -1644,11 +1652,19 @@
                 if (b.status === 'approved') { sc = 'status-approved'; st = 'Подтверждена'; }
                 if (b.status === 'rejected') { sc = 'status-rejected'; st = 'Отклонена'; }
                 var timeStr = 'Только что'; if (b.timestamp && b.timestamp.toDate) timeStr = b.timestamp.toDate().toLocaleString('ru-RU');
-                var fvBadge = b.isFirstVisit ? '<span class="ml-2 text-[10px] bg-green-100 text-green-700 px-2 py-1 rounded-full">1-й визит</span>' : '';
-                var tgInfo = (b.userTg && b.userTg !== 'Не указан') ? '<span class="ml-3">\u2708\uFE0F ' + b.userTg + '</span>' : '';
-                var card = document.createElement('div'); card.className = 'admin-card p-5';
-                card.innerHTML = '<div class="flex justify-between items-start mb-2"><div><p class="text-[14px] font-semibold text-neutral-900">' + b.services + fvBadge + '</p><p class="text-[12px] text-neutral-500 mt-1">' + b.date + ' в ' + b.time + '</p></div><span class="text-[10px] uppercase tracking-wide ' + sc + ' bg-neutral-100 px-2 py-1 rounded-full shrink-0 ml-2">' + st + '</span></div><div class="text-[11px] text-neutral-400 mb-1"><span>\u{1F464} ' + (b.userName || '—') + '</span><span class="ml-3">\u{1F4F1} ' + (b.userPhone || '—') + '</span>' + tgInfo + '</div><p class="text-[10px] text-neutral-300 mb-3">' + (b.finalPrice ? formatPrice(b.finalPrice) + 'р' : '') + ' &middot; Заявка: ' + timeStr + '</p><div class="actions-container flex gap-2"></div>';
+var fvBadge = b.isFirstVisit ? '<span class="ml-2 text-[10px] bg-green-100 text-green-700 px-2 py-1 rounded-full">1-й визит</span>' : '';
 
+// 1. Обезвреживаем данные пользователя
+var safeName = escapeHTML(b.userName || '—');
+var safePhone = escapeHTML(b.userPhone || '—');
+var safeTgRaw = escapeHTML(b.userTg || '');
+var safeServices = escapeHTML(b.services || 'Услуги не указаны');
+
+var tgInfo = (safeTgRaw && safeTgRaw !== 'Не указан') ? '<span class="ml-3">\u2708\uFE0F ' + safeTgRaw + '</span>' : '';
+var card = document.createElement('div'); card.className = 'admin-card p-5';
+
+// 2. Используем безопасные переменные (safeName, safePhone и т.д.)
+card.innerHTML = '<div class="flex justify-between items-start mb-2"><div><p class="text-[14px] font-semibold text-neutral-900">' + safeServices + fvBadge + '</p><p class="text-[12px] text-neutral-500 mt-1">' + b.date + ' в ' + b.time + '</p></div><span class="text-[10px] uppercase tracking-wide ' + sc + ' bg-neutral-100 px-2 py-1 rounded-full shrink-0 ml-2">' + st + '</span></div><div class="text-[11px] text-neutral-400 mb-1"><span>\u{1F464} ' + safeName + '</span><span class="ml-3">\u{1F4F1} ' + safePhone + '</span>' + tgInfo + '</div><p class="text-[10px] text-neutral-300 mb-3">' + (b.finalPrice ? formatPrice(b.finalPrice) + 'р' : '') + ' &middot; Заявка: ' + timeStr + '</p><div class="actions-container flex gap-2"></div>';
                 if (b.status === 'pending') {
                     var actions = card.querySelector('.actions-container');
                     var btnApp = document.createElement('button'); btnApp.className = 'flex-1 py-2.5 rounded-xl text-white text-[11px] uppercase tracking-wide font-semibold btn-green cursor-pointer'; btnApp.innerText = 'Подтвердить'; btnApp.addEventListener('click', function() { approveBooking(id, b, btnApp); });
@@ -1657,8 +1673,13 @@
                 }
                 list.appendChild(card);
             });
-        }, function(err) { handleDbError(err, 'Загрузка заявок'); });
+        }, function(err) { 
+    if (err.code === 'permission-denied') {
+        document.getElementById('admin-list').innerHTML = '<p class="text-center text-red-500 py-10">У вас нет прав для просмотра этого раздела.</p>';
+    } else {
+        handleDbError(err, 'Загрузка заявок'); 
     }
+});
 
     /* ================================================================
        АДМИН: ПОДТВЕРЖДЕНИЕ ЗАПИСИ

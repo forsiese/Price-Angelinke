@@ -99,10 +99,7 @@
             border-color: rgba(255, 255, 255, 0.3);
         }
 
-        .spotlight-card:focus-visible {
-            outline: 2px solid #161616;
-            outline-offset: 4px;
-        }
+        .spotlight-card:focus-visible { outline: 2px solid #161616; outline-offset: 4px; }
 
         .card-content {
             position: relative;
@@ -207,12 +204,6 @@
             color: #fff;
             border-color: #161616;
         }
-        .time-slot-delete {
-            background: #fee2e2;
-            color: #dc2626;
-            border-color: #fecaca;
-        }
-        .time-slot-delete:hover { background: #fecaca; }
 
         .tab-active { border-bottom: 2px solid #161616; color: #161616; }
         .tab-inactive { border-bottom: 2px solid transparent; color: #9ca3af; }
@@ -238,15 +229,43 @@
         .cal-disabled { color: #d1d5db; pointer-events: none; }
         .cal-selected { background: #161616 !important; color: #fff !important; }
         .cal-today { border: 1px solid #161616; }
-        .cal-has-slots::after {
-            content: '';
-            position: absolute;
-            bottom: 4px;
-            width: 4px;
-            height: 4px;
-            background: #d97706;
-            border-radius: 50%;
+        
+        /* Стили мульти-выбора для админа */
+        .cal-multi-selected { 
+            background: #2AABEE !important; 
+            color: #fff !important; 
+            border-color: #2AABEE !important;
         }
+
+        /* Сетка времени для админа */
+        .time-toggle {
+            padding: 10px 4px;
+            border-radius: 10px;
+            background: rgba(255, 255, 255, 0.6);
+            border: 1px solid rgba(0,0,0,0.08);
+            font-size: 12px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            text-align: center;
+        }
+        .time-toggle:hover { background: rgba(255,255,255,0.9); }
+        .time-toggle.is-selected {
+            background: #16a34a;
+            color: #fff;
+            border-color: #16a34a;
+        }
+        .quick-btn {
+            font-size: 11px;
+            padding: 6px 12px;
+            border-radius: 20px;
+            border: 1px solid #d1d5db;
+            background: #fff;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .quick-btn:hover { background: #f3f4f6; }
+        .quick-btn-danger { border-color: #fecaca; color: #dc2626; }
+        .quick-btn-danger:hover { background: #fee2e2; }
     </style>
 </head>
 <body class="flex justify-center items-start sm:items-center min-h-screen p-4 sm:p-8 relative selection:bg-neutral-900 selection:text-white">
@@ -388,7 +407,6 @@
                     </button>
                 </div>
 
-                <!-- Кастомный календарь -->
                 <div id="clientCalendar" class="mb-5"></div>
 
                 <div class="mt-4">
@@ -426,25 +444,32 @@
 
         <!-- Вкладка Расписание -->
         <div id="admin-schedule-view" class="hidden">
+            
             <div class="bg-white/40 border border-white/60 rounded-[24px] p-5 mb-6">
-                <h4 class="text-[12px] font-semibold tracking-[0.15em] uppercase text-neutral-700 mb-4 text-center">Управление слотами</h4>
-                
-                <div id="adminCalendar" class="mb-6"></div>
-
-                <div class="flex flex-col gap-3 mt-4">
-                    <p class="text-[12px] text-neutral-500 text-center">Добавить время на выбранную дату</p>
-                    <div class="flex gap-2">
-                        <input type="time" id="adminSchedTime" class="premium-input text-[14px] flex-1" aria-label="Время слота">
-                        <button onclick="addScheduleSlot()" class="premium-btn px-5 rounded-[16px] text-[12px] uppercase tracking-wide font-semibold whitespace-nowrap">Добавить</button>
-                    </div>
+                <div class="flex justify-between items-center mb-4">
+                    <h4 class="text-[12px] font-semibold tracking-[0.15em] uppercase text-neutral-700">Шаг 1: Выберите даты</h4>
+                    <span id="dateCounter" class="text-[11px] text-neutral-500 bg-neutral-100 px-2 py-1 rounded-full">Выбрано: 0</span>
                 </div>
+                <div id="adminCalendar" class="mb-2"></div>
+                <p class="text-[10px] text-neutral-400 text-center mb-4">Кликайте на дни, чтобы выбрать их (можно несколько)</p>
+            </div>
+
+            <div class="bg-white/40 border border-white/60 rounded-[24px] p-5 mb-6">
+                <h4 class="text-[12px] font-semibold tracking-[0.15em] uppercase text-neutral-700 mb-4 text-center">Шаг 2: Выберите время</h4>
+                <div class="flex flex-wrap gap-2 justify-center mb-4">
+                    <button onclick="setTimeTemplate('morning')" class="quick-btn">Утро (8-12)</button>
+                    <button onclick="setTimeTemplate('day')" class="quick-btn">День (12-16)</button>
+                    <button onclick="setTimeTemplate('evening')" class="quick-btn">Вечер (16-20)</button>
+                    <button onclick="setTimeTemplate('full')" class="quick-btn bg-neutral-900 text-white border-neutral-900">Весь день (8-20)</button>
+                    <button onclick="setTimeTemplate('clear')" class="quick-btn quick-btn-danger">Очистить часы</button>
+                </div>
+                <div id="adminTimeGrid" class="grid grid-cols-4 gap-2 mb-4"></div>
             </div>
 
             <div class="bg-white/40 border border-white/60 rounded-[24px] p-5">
-                <h4 class="text-[12px] font-semibold tracking-[0.15em] uppercase text-neutral-700 mb-4 text-center">Слоты на выбранную дату</h4>
-                <div id="adminSlotsList" class="flex flex-wrap gap-2 min-h-[50px] items-center justify-center">
-                    <p class="text-[12px] text-neutral-400 w-full text-center">Выберите дату в календаре</p>
-                </div>
+                <h4 class="text-[12px] font-semibold tracking-[0.15em] uppercase text-neutral-700 mb-4 text-center">Шаг 3: Действие</h4>
+                <button onclick="applySchedule()" class="premium-btn btn-green w-full h-[50px] mb-3 flex justify-center items-center rounded-[18px] text-[11px] uppercase font-semibold tracking-[0.12em]">Добавить время на выбранные даты</button>
+                <button onclick="clearSchedule()" class="premium-btn btn-red w-full h-[50px] flex justify-center items-center rounded-[18px] text-[11px] uppercase font-semibold tracking-[0.12em]">Удалить все слоты с выбранных дат</button>
             </div>
         </div>
     </main>
@@ -478,7 +503,7 @@
         const selectedServices = [];
         let totalPrice = 0;
         let selectedTimeSlot = null;
-        let isFirstVisit = !localStorage.getItem('hasBookedBefore'); // Проверка первого визита
+        let isFirstVisit = !localStorage.getItem('hasBookedBefore');
         
         const cards = document.querySelectorAll('.spotlight-card');
         const toast = document.getElementById('toast');
@@ -487,7 +512,10 @@
 
         // Состояния календарей
         let clientCalState = { month: new Date().getMonth(), year: new Date().getFullYear(), selectedDate: null };
-        let adminCalState = { month: new Date().getMonth(), year: new Date().getFullYear(), selectedDate: null };
+        let adminCalState = { month: new Date().getMonth(), year: new Date().getFullYear(), selectedDates: [] };
+        
+        // Выбранные часы в админке
+        let adminSelectedTimes = [];
 
         function showToast(message) {
             toast.textContent = message;
@@ -495,7 +523,6 @@
             setTimeout(() => toast.classList.remove('show'), 3000);
         }
 
-        // Применение скидки
         function updateTotalPrice() {
             let finalPrice = totalPrice;
             if (isFirstVisit && totalPrice > 0) {
@@ -572,8 +599,7 @@
             }
             const calendarBlock = document.getElementById('calendarBlock');
             calendarBlock.classList.remove('hidden');
-
-            renderCalendar('client'); // Рендер календаря
+            renderCalendar('client');
 
             setTimeout(() => {
                 calendarBlock.classList.remove('scale-95', 'opacity-0');
@@ -595,11 +621,12 @@
             return `${day}.${month}.${year}`;
         }
 
-        // ====== ЛОГИКА КАЛЕНДАРЯ ======
+        // ====== ЛОГИКА КАЛЕНДАРЕЙ ======
         function renderCalendar(target) {
             const state = target === 'client' ? clientCalState : adminCalState;
             const containerId = target === 'client' ? 'clientCalendar' : 'adminCalendar';
             const container = document.getElementById(containerId);
+            if(!container) return;
             
             const monthNames = ["Январь", "Февраль", "Март", "Апрель", "Май", "Июнь", "Июль", "Август", "Сентябрь", "Октябрь", "Ноябрь", "Декабрь"];
             
@@ -632,12 +659,10 @@
             };
 
             const grid = document.getElementById(`${target}-cal-grid`);
-            const firstDay = new Date(state.year, state.month, 1).getDay() || 7; // 0 (Вс) -> 7
+            const firstDay = new Date(state.year, state.month, 1).getDay() || 7;
             const daysInMonth = new Date(state.year, state.month + 1, 0).getDate();
             
-            for (let i = 1; i < firstDay; i++) {
-                grid.innerHTML += `<div></div>`;
-            }
+            for (let i = 1; i < firstDay; i++) grid.innerHTML += `<div></div>`;
 
             for (let day = 1; day <= daysInMonth; day++) {
                 const dateStr = `${state.year}-${String(state.month + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
@@ -645,35 +670,42 @@
                 const cellDate = new Date(state.year, state.month, day);
                 const isPast = cellDate < today;
                 const isToday = cellDate.getTime() === today.getTime();
-                const isSelected = state.selectedDate === dateStr;
+                
+                let isSelected = false;
+                if (target === 'client') {
+                    isSelected = clientCalState.selectedDate === dateStr;
+                } else {
+                    isSelected = adminCalState.selectedDates.includes(dateStr);
+                }
 
                 let classes = 'cal-day';
                 if (isPast) classes += ' cal-disabled';
                 if (isToday) classes += ' cal-today';
-                if (isSelected) classes += ' cal-selected';
+                if (isSelected) classes += target === 'client' ? ' cal-selected' : ' cal-multi-selected';
 
                 grid.innerHTML += `<div class="${classes}" data-date="${dateStr}">${day}</div>`;
             }
 
-            // Добавляем слушатели кликов
             grid.querySelectorAll('.cal-day:not(.cal-disabled)').forEach(el => {
                 el.onclick = () => {
                     const dateStr = el.getAttribute('data-date');
-                    state.selectedDate = dateStr;
-                    renderCalendar(target);
                     if (target === 'client') {
+                        clientCalState.selectedDate = dateStr;
+                        renderCalendar('client');
                         fetchAvailableTimes(dateStr);
                     } else {
-                        fetchAdminSchedule(dateStr);
+                        // Мульти-выбор для админа
+                        const idx = adminCalState.selectedDates.indexOf(dateStr);
+                        if (idx > -1) {
+                            adminCalState.selectedDates.splice(idx, 1);
+                        } else {
+                            adminCalState.selectedDates.push(dateStr);
+                        }
+                        document.getElementById('dateCounter').innerText = `Выбрано: ${adminCalState.selectedDates.length}`;
+                        renderCalendar('admin');
                     }
                 };
             });
-
-            // Если дата уже выбрана, подгружаем слоты (при перерисовке месяцев)
-            if (state.selectedDate) {
-                if (target === 'client') fetchAvailableTimes(state.selectedDate);
-                else fetchAdminSchedule(state.selectedDate);
-            }
         }
 
         function fetchAvailableTimes(dateStr) {
@@ -710,7 +742,6 @@
 
         function generateAndSend() {
             const rawDate = clientCalState.selectedDate;
-            
             if (!rawDate || !selectedTimeSlot) {
                 showToast('Пожалуйста, выберите дату и время.');
                 return;
@@ -727,7 +758,6 @@
                 proceduresText = `процедуры: ${otherServices} и ${last}`;
             }
 
-            // Добавляем пометку о первом визите и скидке
             let textMessage = `Здравствуйте, хочу записаться на ${proceduresText}. Дата ${formattedDate} ${selectedTimeSlot}.`;
             if (isFirstVisit) {
                 textMessage += ` (Это мой первый визит, применена скидка 15%)`;
@@ -742,11 +772,10 @@
                     time: selectedTimeSlot,
                     timestamp: firebase.firestore.FieldValue.serverTimestamp(),
                     status: 'pending',
-                    isFirstVisit: isFirstVisit // Сохраняем флаг в базу
+                    isFirstVisit: isFirstVisit
                 }).then(() => {
-                    // Помечаем, что клиент больше не первый раз
                     localStorage.setItem('hasBookedBefore', 'true');
-                    isFirstVisit = false; // Обновляем переменную в памяти
+                    isFirstVisit = false;
                 }).catch(error => console.error("Ошибка записи в БД:", error));
             }
 
@@ -818,6 +847,7 @@
                 viewSchedule.classList.remove('hidden');
                 viewBookings.classList.add('hidden');
                 renderCalendar('admin');
+                renderTimeGrid();
             }
         }
 
@@ -893,58 +923,93 @@
         }
 
         // ====== ЛОГИКА РАСПИСАНИЯ (АДМИН) ======
-        function addScheduleSlot() {
-            const date = adminCalState.selectedDate;
-            const time = document.getElementById('adminSchedTime').value;
-
-            if (!date) {
-                showToast('Сначала выберите дату в календаре.');
-                return;
-            }
-            if (!time) {
-                showToast('Укажите время для добавления.');
-                return;
-            }
-
-            db.collection("schedule").doc(date).set({
-                times: firebase.firestore.FieldValue.arrayUnion(time)
-            }, { merge: true }).then(() => {
-                document.getElementById('adminSchedTime').value = '';
-                showToast(`Слот ${time} добавлен`);
-                fetchAdminSchedule(date);
+        function renderTimeGrid() {
+            const grid = document.getElementById('adminTimeGrid');
+            grid.innerHTML = '';
+            const hours = ['08:00', '09:00', '10:00', '11:00', '12:00', '13:00', '14:00', '15:00', '16:00', '17:00', '18:00', '19:00', '20:00'];
+            
+            hours.forEach(time => {
+                const btn = document.createElement('div');
+                btn.className = 'time-toggle';
+                btn.innerText = time;
+                btn.onclick = () => {
+                    const idx = adminSelectedTimes.indexOf(time);
+                    if (idx > -1) {
+                        adminSelectedTimes.splice(idx, 1);
+                        btn.classList.remove('is-selected');
+                    } else {
+                        adminSelectedTimes.push(time);
+                        btn.classList.add('is-selected');
+                    }
+                };
+                grid.appendChild(btn);
             });
         }
 
-        function fetchAdminSchedule(dateStr) {
-            const list = document.getElementById('adminSlotsList');
-            list.innerHTML = '<p class="text-[12px] text-neutral-400 w-full text-center">Загрузка...</p>';
-
-            db.collection("schedule").doc(dateStr).onSnapshot(doc => {
-                list.innerHTML = '';
-                if (doc.exists && doc.data().times && doc.data().times.length > 0) {
-                    const times = doc.data().times.sort();
-                    times.forEach(time => {
-                        const btn = document.createElement('button');
-                        btn.className = 'time-slot time-slot-delete flex items-center gap-2';
-                        btn.innerHTML = `${time} <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" /></svg>`;
-                        btn.onclick = () => deleteScheduleSlot(dateStr, time);
-                        list.appendChild(btn);
-                    });
+        function setTimeTemplate(type) {
+            adminSelectedTimes = [];
+            if (type === 'morning') adminSelectedTimes = ['08:00', '09:00', '10:00', '11:00'];
+            if (type === 'day') adminSelectedTimes = ['12:00', '13:00', '14:00', '15:00'];
+            if (type === 'evening') adminSelectedTimes = ['16:00', '17:00', '18:00', '19:00', '20:00'];
+            if (type === 'full') adminSelectedTimes = ['08:00', '09:00', '10:00', '11:00', '12:00', '13:00', '14:00', '15:00', '16:00', '17:00', '18:00', '19:00', '20:00'];
+            
+            // Обновляем UI
+            document.querySelectorAll('#adminTimeGrid .time-toggle').forEach(btn => {
+                if (adminSelectedTimes.includes(btn.innerText)) {
+                    btn.classList.add('is-selected');
                 } else {
-                    list.innerHTML = '<p class="text-[12px] text-neutral-400 w-full text-center">На эту дату слотов нет</p>';
+                    btn.classList.remove('is-selected');
                 }
             });
         }
 
-        function deleteScheduleSlot(date, time) {
-            db.collection("schedule").doc(date).update({
-                times: firebase.firestore.FieldValue.arrayRemove(time)
+        function applySchedule() {
+            if (adminCalState.selectedDates.length === 0) {
+                showToast('Сначала выберите даты в календаре.');
+                return;
+            }
+            if (adminSelectedTimes.length === 0) {
+                showToast('Сначала выберите время (часы).');
+                return;
+            }
+
+            const batch = db.batch();
+            adminCalState.selectedDates.forEach(dateStr => {
+                const ref = db.collection("schedule").doc(dateStr);
+                batch.set(ref, { times: firebase.firestore.FieldValue.arrayUnion(...adminSelectedTimes) }, { merge: true });
+            });
+
+            batch.commit().then(() => {
+                showToast(`Успешно добавлено время на ${adminCalState.selectedDates.length} дат(ы).`);
+            }).catch(err => {
+                console.error(err);
+                showToast('Ошибка при сохранении.');
+            });
+        }
+
+        function clearSchedule() {
+            if (adminCalState.selectedDates.length === 0) {
+                showToast('Сначала выберите даты в календаре для очистки.');
+                return;
+            }
+
+            const batch = db.batch();
+            adminCalState.selectedDates.forEach(dateStr => {
+                const ref = db.collection("schedule").doc(dateStr);
+                batch.set(ref, { times: [] }, { merge: true });
+            });
+
+            batch.commit().then(() => {
+                showToast(`Расписание очищено для ${adminCalState.selectedDates.length} дат(ы).`);
+            }).catch(err => {
+                console.error(err);
+                showToast('Ошибка при очистке.');
             });
         }
 
         window.addEventListener('hashchange', checkAdminRoute);
         window.addEventListener('DOMContentLoaded', () => {
-            updateTotalPrice(); // Инициализация текста скидки
+            updateTotalPrice();
             checkAdminRoute();
         });
     </script>

@@ -1,0 +1,1160 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Premium Brow & Lash</title>
+    <meta name="description" content="Премиальные услуги бровиста и лэшмейкера. Запись онлайн.">
+    <meta property="og:title" content="Premium Brow & Lash">
+    <meta property="og:description" content="Премиальные услуги бровиста и лэшмейкера. Запись онлайн.">
+    <meta property="og:type" content="website">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@200;300;400;500;600&family=Playfair+Display:ital,wght@0,600;1,600;1,700&display=swap" rel="stylesheet">
+    <style>
+        .font-accent{font-family:'Playfair Display',serif}
+        body{font-family:'Montserrat',sans-serif;background:#F2F2F0;color:#161616;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;overflow-x:hidden;padding-bottom:100px}
+        .premium-heading{letter-spacing:-.03em;line-height:1.15}
+        .premium-text{letter-spacing:-.01em;line-height:1.4}
+        @keyframes premiumReveal{0%{clip-path:inset(100% 0 0 0);transform:translateY(40px) scale(.98);opacity:0}60%{opacity:1}100%{clip-path:inset(0 0 0 0);transform:translateY(0) scale(1);opacity:1}}
+        .reveal-item{opacity:0;animation:premiumReveal 1.4s cubic-bezier(.16,1,.3,1) forwards;will-change:transform,opacity,clip-path}
+        .delay-1{animation-delay:.15s}.delay-2{animation-delay:.35s}.delay-3{animation-delay:.55s}
+        .main-container-shadow{box-shadow:0 2px 5px rgba(22,22,22,.02),0 1px 2px rgba(22,22,22,.01)}
+        .spotlight-card{position:relative;background:rgba(255,255,255,.55);backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);border:1px solid rgba(255,255,255,.7);border-radius:28px;overflow:hidden;transform:translateZ(0);will-change:transform;transition:transform .6s cubic-bezier(.25,1,.5,1),box-shadow .5s,border-color .5s,background-color .5s}
+        .spotlight-card::before{content:'';position:absolute;top:var(--y,50%);left:var(--x,50%);transform:translate(-50%,-50%);width:260px;height:260px;background:radial-gradient(circle,rgba(255,255,255,.85) 0%,rgba(255,255,255,0) 70%);opacity:0;transition:opacity .4s ease;pointer-events:none;z-index:0}
+        .spotlight-card:hover{background-color:rgba(255,255,255,.8);border-color:rgba(255,255,255,1);box-shadow:0 4px 12px rgba(0,0,0,.03)}
+        .spotlight-card:hover::before{opacity:1}
+        .spotlight-card.is-selected{background-color:#161616;border-color:#161616;color:#fff;box-shadow:0 6px 15px rgba(0,0,0,.1)}
+        .spotlight-card.is-selected .premium-text{color:#fff}
+        .spotlight-card.is-selected p{color:rgba(255,255,255,.6)}
+        .spotlight-card.is-selected .price-badge{background-color:rgba(255,255,255,.2);color:#fff;border-color:rgba(255,255,255,.3)}
+        .spotlight-card:focus-visible{outline:2px solid #161616;outline-offset:4px}
+        .card-content{position:relative;z-index:1;transform:translateZ(30px);transition:transform .5s cubic-bezier(.25,1,.5,1)}
+        .premium-btn{background:#161616;color:#fff;box-shadow:0 4px 10px rgba(22,22,22,.08);transition:all .4s cubic-bezier(.25,1,.5,1);position:relative;overflow:hidden}
+        .premium-btn:focus-visible{outline:2px solid #2AABEE;outline-offset:4px}
+        .premium-btn:disabled{opacity:.5;pointer-events:none}
+        .btn-icon{opacity:0;transform:translateX(-10px);transition:all .4s cubic-bezier(.25,1,.5,1);position:absolute;left:24px}
+        .premium-btn:hover .btn-icon{opacity:1;transform:translateX(0)}
+        .btn-text{transition:transform .4s cubic-bezier(.25,1,.5,1)}
+        .premium-btn:hover .btn-text{transform:translateX(12px)}
+        .btn-tg:hover{background-color:#2AABEE;box-shadow:0 6px 15px rgba(42,171,238,.2);transform:translateY(-2px)}
+        .btn-green{background-color:#16a34a;box-shadow:0 4px 10px rgba(22,163,74,.15)}
+        .btn-green:hover{background-color:#15803d;transform:translateY(-2px)}
+        .btn-red{background-color:#dc2626;box-shadow:0 4px 10px rgba(220,38,38,.15)}
+        .btn-red:hover{background-color:#b91c1c;transform:translateY(-2px)}
+        .premium-input{background:rgba(255,255,255,.6);border:1px solid rgba(0,0,0,.08);border-radius:16px;padding:12px 16px;outline:none;transition:all .3s ease;width:100%;color:#161616;font-family:'Montserrat',sans-serif}
+        .premium-input:focus{border-color:#161616;background:rgba(255,255,255,.9)}
+        @keyframes floatGradient{0%{transform:translate(0,0) rotate(0deg) scale(1)}33%{transform:translate(40px,-60px) rotate(8deg) scale(1.08)}66%{transform:translate(-30px,30px) rotate(-4deg) scale(.95)}100%{transform:translate(0,0) rotate(0deg) scale(1)}}
+        .ambient-orb{position:absolute;border-radius:50%;filter:blur(60px);opacity:.55;animation:floatGradient 18s infinite ease-in-out;pointer-events:none;will-change:transform}
+        #toast{position:fixed;bottom:90px;left:50%;transform:translateX(-50%);background:#161616;color:#fff;padding:12px 24px;border-radius:12px;font-size:14px;z-index:200;box-shadow:0 4px 12px rgba(0,0,0,.1);text-align:center;max-width:90vw;opacity:0;visibility:hidden;pointer-events:none;transition:opacity .3s ease,visibility .3s ease}
+        #toast.show{opacity:1;visibility:visible}
+        .admin-card{background:rgba(255,255,255,.7);border:1px solid rgba(255,255,255,.8);border-radius:20px;backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);box-shadow:0 2px 8px rgba(0,0,0,.02)}
+        .status-pending{color:#d97706;font-weight:600}.status-approved{color:#16a34a;font-weight:600}.status-rejected{color:#dc2626;font-weight:600}
+        .time-slot{padding:10px 16px;border-radius:12px;background:rgba(255,255,255,.6);border:1px solid rgba(0,0,0,.08);font-size:14px;cursor:pointer;transition:all .3s ease;text-align:center}
+        .time-slot:hover{background:rgba(255,255,255,.9)}
+        .time-slot.is-selected{background:#161616;color:#fff;border-color:#161616}
+        .tab-active{border-bottom:2px solid #161616;color:#161616}.tab-inactive{border-bottom:2px solid transparent;color:#9ca3af}
+        .calendar-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:4px}
+        .cal-day{aspect-ratio:1;display:flex;align-items:center;justify-content:center;font-size:12px;border-radius:10px;cursor:pointer;transition:all .2s ease;position:relative}
+        .cal-day:hover:not(.cal-disabled){background:rgba(0,0,0,.05)}
+        .cal-disabled{color:#d1d5db;pointer-events:none}
+        .cal-selected{background:#161616!important;color:#fff!important}
+        .cal-today{border:1px solid #161616}
+        .cal-multi-selected{background:#2AABEE!important;color:#fff!important;border-color:#2AABEE!important}
+        .time-toggle{padding:10px 4px;border-radius:10px;background:rgba(255,255,255,.6);border:1px solid rgba(0,0,0,.08);font-size:12px;cursor:pointer;transition:all .2s ease;text-align:center}
+        .time-toggle:hover{background:rgba(255,255,255,.9)}
+        .time-toggle.is-selected{background:#16a34a;color:#fff;border-color:#16a34a}
+        .quick-btn{font-size:11px;padding:6px 12px;border-radius:20px;border:1px solid #d1d5db;background:#fff;cursor:pointer;transition:all .2s}
+        .quick-btn:hover{background:#f3f4f6}
+        .quick-btn-danger{border-color:#fecaca;color:#dc2626}
+        .quick-btn-danger:hover{background:#fee2e2}
+        .bottom-nav{position:fixed;bottom:10px;left:50%;transform:translateX(-50%);width:calc(100% - 20px);max-width:400px;background:rgba(255,255,255,.8);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border:1px solid rgba(255,255,255,.9);border-radius:24px;box-shadow:0 4px 20px rgba(0,0,0,.08);display:flex;justify-content:space-around;padding:10px;z-index:50}
+        .nav-item{display:flex;flex-direction:column;align-items:center;gap:4px;font-size:10px;color:#9ca3af;cursor:pointer;transition:color .3s}
+        .nav-item.active{color:#161616}
+        .nav-item svg{width:24px;height:24px}
+        .loader-dot{display:inline-block;width:8px;height:8px;border-radius:50%;background:currentColor;animation:bounce 1s infinite ease-in-out}
+        @keyframes bounce{0%,100%{transform:scale(.7)}50%{transform:scale(1.2)}}
+        .auth-container{width:100%;max-width:400px;min-height:100vh;display:flex;flex-direction:column;justify-content:center;align-items:center;padding:24px;position:relative;z-index:10}
+        .auth-card{width:100%;background:rgba(255,255,255,.35);backdrop-filter:blur(40px);-webkit-backdrop-filter:blur(40px);border:1px solid rgba(255,255,255,.5);border-radius:48px;padding:48px 32px;box-shadow:0 2px 5px rgba(22,22,22,.02)}
+        .auth-switch{color:#9ca3af;font-size:13px;text-align:center;margin-top:24px}
+        .auth-switch a{color:#161616;font-weight:600;cursor:pointer;text-decoration:underline;text-underline-offset:3px}
+        .field-error{color:#dc2626;font-size:11px;margin-top:4px;min-height:16px}
+        .spinner{width:20px;height:20px;border:2px solid rgba(255,255,255,.3);border-top-color:#fff;border-radius:50%;animation:spin .6s linear infinite;display:inline-block}
+        @keyframes spin{to{transform:rotate(360deg)}}
+        @keyframes fadeSlideIn{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+        .animate-in{animation:fadeSlideIn .5s cubic-bezier(.16,1,.3,1) forwards}
+    </style>
+</head>
+<body class="flex justify-center items-start sm:items-center min-h-screen p-0 sm:p-8 relative selection:bg-neutral-900 selection:text-white">
+
+    <!-- Фон -->
+    <div class="fixed inset-0 overflow-hidden pointer-events-none z-0" aria-hidden="true">
+        <div class="ambient-orb bg-amber-200/40 w-[500px] h-[500px] top-[-15%] left-[-15%]"></div>
+        <div class="ambient-orb bg-neutral-300/50 w-[400px] h-[400px] bottom-[5%] right-[-10%]" style="animation-delay:-6s"></div>
+    </div>
+
+    <!-- Тост -->
+    <div id="toast" role="alert" aria-live="assertive"></div>
+
+    <!-- ==================== ЭКРАН АВТОРИЗАЦИИ ==================== -->
+    <div id="auth-screen" class="auth-container hidden">
+        <div class="auth-card animate-in">
+            <h1 class="font-accent text-[2.4rem] italic font-semibold premium-heading text-neutral-900 text-center mb-2">Brow & Lash</h1>
+            <p class="text-[12px] text-neutral-400 text-center tracking-wide mb-8">Премиальные услуги для вашей красоты</p>
+
+            <!-- Форма входа -->
+            <form id="login-form" class="flex flex-col gap-4" novalidate>
+                <div>
+                    <label class="text-[12px] text-neutral-500 mb-2 block">Email</label>
+                    <input type="email" id="loginEmail" class="premium-input text-[14px]" placeholder="you@example.com" required autocomplete="email">
+                    <div class="field-error" id="loginEmailErr"></div>
+                </div>
+                <div>
+                    <label class="text-[12px] text-neutral-500 mb-2 block">Пароль</label>
+                    <input type="password" id="loginPassword" class="premium-input text-[14px]" placeholder="Введите пароль" required autocomplete="current-password">
+                    <div class="field-error" id="loginPassErr"></div>
+                </div>
+                <button type="submit" id="btnLogin" class="premium-btn h-[54px] mt-2 flex justify-center items-center rounded-[20px] font-semibold tracking-[.12em] text-[11px] uppercase outline-none w-full">Войти</button>
+                <div class="auth-switch">Нет аккаунта? <a id="showRegister">Зарегистрироваться</a></div>
+            </form>
+
+            <!-- Форма регистрации -->
+            <form id="register-form" class="flex flex-col gap-4 hidden" novalidate>
+                <div>
+                    <label class="text-[12px] text-neutral-500 mb-2 block">Фамилия</label>
+                    <input type="text" id="regLastName" class="premium-input text-[14px]" placeholder="Иванова" required>
+                </div>
+                <div>
+                    <label class="text-[12px] text-neutral-500 mb-2 block">Имя</label>
+                    <input type="text" id="regFirstName" class="premium-input text-[14px]" placeholder="Анна" required>
+                </div>
+                <div>
+                    <label class="text-[12px] text-neutral-500 mb-2 block">Email</label>
+                    <input type="email" id="regEmail" class="premium-input text-[14px]" placeholder="you@example.com" required autocomplete="email">
+                    <div class="field-error" id="regEmailErr"></div>
+                </div>
+                <div>
+                    <label class="text-[12px] text-neutral-500 mb-2 block">Пароль (минимум 6 символов)</label>
+                    <input type="password" id="regPassword" class="premium-input text-[14px]" placeholder="Минимум 6 символов" required autocomplete="new-password">
+                    <div class="field-error" id="regPassErr"></div>
+                </div>
+                <button type="submit" id="btnRegister" class="premium-btn btn-green h-[54px] mt-2 flex justify-center items-center rounded-[20px] font-semibold tracking-[.12em] text-[11px] uppercase outline-none w-full">Создать аккаунт</button>
+                <div class="auth-switch">Уже есть аккаунт? <a id="showLogin">Войти</a></div>
+            </form>
+        </div>
+    </div>
+
+    <!-- ==================== КЛИЕНТСКАЯ ЧАСТЬ ==================== -->
+    <main id="client-view" class="hidden relative w-full max-w-[420px] bg-white/35 backdrop-blur-3xl rounded-[48px] p-6 sm:p-8 border border-white/50 main-container-shadow z-10">
+
+        <!-- Вкладка: Услуги -->
+        <div id="tab-services">
+            <section class="mb-10 reveal-item delay-1" aria-labelledby="brows-title">
+                <div class="flex items-baseline justify-between mb-6 px-1">
+                    <h2 id="brows-title" class="font-accent text-[2.6rem] italic font-semibold premium-heading text-neutral-900">Брови</h2>
+                    <div class="h-[1px] flex-1 bg-neutral-300/40 mx-4 mt-8"></div>
+                    <span class="text-[9px] uppercase tracking-[.12em] text-neutral-400 font-medium shrink-0">Выберите услуги</span>
+                </div>
+                <ul class="flex flex-col gap-3.5 list-none p-0 m-0">
+                    <li><article class="spotlight-card p-5 cursor-pointer group" tabindex="0" role="button" aria-pressed="false" data-name="коррекция бровей" data-price="400"><div class="card-content flex justify-between items-center gap-4"><div class="flex-1 min-w-0 pr-1"><h3 class="text-[14.5px] font-semibold premium-text text-neutral-900 transition-colors duration-300">Коррекция</h3><p class="text-[12px] text-neutral-400 font-light mt-1 leading-snug transition-colors duration-300">(воск, пинцет)</p></div><span class="price-badge shrink-0 text-[13.5px] font-medium tracking-wide text-neutral-800 bg-white/60 border border-white/80 px-4 py-2 rounded-full">400р</span></div></article></li>
+                    <li><article class="spotlight-card p-5 cursor-pointer group" tabindex="0" role="button" aria-pressed="false" data-name="архитектура бровей" data-price="700"><div class="card-content flex justify-between items-center gap-4"><div class="flex-1 min-w-0 pr-1"><h3 class="text-[14.5px] font-semibold premium-text text-neutral-900 transition-colors duration-300">Архитектура бровей</h3><p class="text-[12px] text-neutral-400 font-light mt-1 leading-snug transition-colors duration-300">(коррекция, окрашивание)</p></div><span class="price-badge shrink-0 text-[13.5px] font-medium tracking-wide text-neutral-800 bg-white/60 border border-white/80 px-4 py-2 rounded-full">700р</span></div></article></li>
+                    <li><article class="spotlight-card p-5 cursor-pointer group" tabindex="0" role="button" aria-pressed="false" data-name="долговременная укладка" data-price="1200"><div class="card-content flex justify-between items-center gap-4"><div class="flex-1 min-w-0 pr-1"><h3 class="text-[14.5px] font-semibold premium-text text-neutral-900 transition-colors duration-300">Долговременная укладка</h3><p class="text-[12px] text-neutral-400 font-light mt-1 leading-snug transition-colors duration-300">(+коррекция, уход)</p></div><span class="price-badge shrink-0 text-[13.5px] font-medium tracking-wide text-neutral-800 bg-white/60 border border-white/80 px-4 py-2 rounded-full">1200р</span></div></article></li>
+                    <li><article class="spotlight-card p-5 cursor-pointer group" tabindex="0" role="button" aria-pressed="false" data-name="долговременная укладка +" data-price="1500"><div class="card-content flex justify-between items-center gap-4"><div class="flex-1 min-w-0 pr-1"><h3 class="text-[14.5px] font-semibold premium-text text-neutral-900 transition-colors duration-300">Долговременная укладка +</h3><p class="text-[12px] text-neutral-400 font-light mt-1 leading-snug transition-colors duration-300">(+коррекция, окрашивание, уход)</p></div><span class="price-badge shrink-0 text-[13.5px] font-medium tracking-wide text-neutral-800 bg-white/60 border border-white/80 px-4 py-2 rounded-full">1500р</span></div></article></li>
+                </ul>
+            </section>
+            <section class="mb-8 reveal-item delay-2" aria-labelledby="lash-title">
+                <div class="flex items-baseline justify-between mb-6 px-1">
+                    <h2 id="lash-title" class="font-accent text-[2.6rem] italic font-semibold premium-heading text-neutral-900">Ресницы</h2>
+                    <div class="h-[1px] flex-1 bg-neutral-300/40 mx-4 mt-8"></div>
+                    <span class="text-[9px] uppercase tracking-[.12em] text-neutral-400 font-medium shrink-0">Выберите услуги</span>
+                </div>
+                <ul class="flex flex-col gap-3.5 list-none p-0 m-0">
+                    <li><article class="spotlight-card p-5 cursor-pointer group" tabindex="0" role="button" aria-pressed="false" data-name="ламинирование ресниц" data-price="1200"><div class="card-content flex justify-between items-center gap-4"><div class="flex-1 min-w-0 pr-1"><h3 class="text-[14.5px] font-semibold premium-text text-neutral-900 transition-colors duration-300">Ламинирование ресниц</h3><p class="text-[12px] text-neutral-400 font-light mt-1 leading-snug transition-colors duration-300">(+окрашивание, уход)</p></div><span class="price-badge shrink-0 text-[13.5px] font-medium tracking-wide text-neutral-800 bg-white/60 border border-white/80 px-4 py-2 rounded-full">1200р</span></div></article></li>
+                    <li><article class="spotlight-card p-5 cursor-pointer group" tabindex="0" role="button" aria-pressed="false" data-name="окрашивание ресниц" data-price="300"><div class="card-content flex justify-between items-center gap-4"><div class="flex-1 min-w-0 pr-1"><h3 class="text-[14.5px] font-semibold premium-text text-neutral-900 transition-colors duration-300">Окрашивание ресниц</h3></div><span class="price-badge shrink-0 text-[13.5px] font-medium tracking-wide text-neutral-800 bg-white/60 border border-white/80 px-4 py-2 rounded-full">300р</span></div></article></li>
+                    <li><article class="spotlight-card p-5 cursor-pointer group" tabindex="0" role="button" aria-pressed="false" data-name="снятие наращенных ресниц" data-price="300"><div class="card-content flex justify-between items-center gap-4"><div class="flex-1 min-w-0 pr-1"><h3 class="text-[14.5px] font-semibold premium-text text-neutral-900 transition-colors duration-300">Снятие наращенных ресниц</h3></div><span class="price-badge shrink-0 text-[13.5px] font-medium tracking-wide text-neutral-800 bg-white/60 border border-white/80 px-4 py-2 rounded-full">300р</span></div></article></li>
+                </ul>
+            </section>
+            <div class="w-full mt-4 relative reveal-item delay-3">
+                <div class="bg-white/40 backdrop-blur-xl border border-white/60 rounded-[24px] p-5 text-center mb-6 transition-all duration-300">
+                    <p class="text-[14px] font-light tracking-wide text-neutral-600">Итоговая сумма:<br><span class="font-semibold text-neutral-900 text-[24px] mt-1 inline-block tracking-wide"><span id="totalPrice">0</span>р</span><span id="discountBadge" class="hidden ml-2 text-[14px] text-green-600 font-semibold align-middle">(-15%)</span></p>
+                    <p id="discountText" class="text-[11px] text-neutral-400 font-light mt-2">На первое посещение действует скидка 15%</p>
+                </div>
+                <button id="btnBookNow" class="premium-btn btn-tg w-full h-[54px] flex justify-center items-center rounded-[20px] font-semibold tracking-[.12em] text-[11px] uppercase outline-none">
+                    <svg class="btn-icon w-5 h-5 text-white" fill="currentColor" viewBox="0 0 24 24"><path d="M11.944 0A12 12 0 000 12a12 12 0 0012 12 12 12 0 0012-12A12 12 0 0012 0a12 12 0 00-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 01.171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/></svg>
+                    <span class="btn-text">Записаться</span>
+                </button>
+                <div id="calendarBlock" class="mt-6 p-5 bg-white/50 backdrop-blur-2xl border border-white/70 rounded-[28px] transition-all duration-500 hidden scale-95 opacity-0">
+                    <div class="flex justify-between items-center mb-4">
+                        <h4 class="text-[12px] font-semibold tracking-[.15em] uppercase text-neutral-700">Выберите дату</h4>
+                        <button id="btnCloseCalendar" class="text-neutral-400 hover:text-neutral-900 transition-colors" aria-label="Закрыть"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg></button>
+                    </div>
+                    <div id="clientCalendar" class="mb-5"></div>
+                    <div class="mt-4"><label class="text-[12px] text-neutral-500 mb-2 block">Доступное время</label><div id="timeSlotsContainer" class="flex flex-wrap gap-2 min-h-[45px] items-center"><p class="text-[12px] text-neutral-400">Выберите дату в календаре</p></div></div>
+                    <button id="btnSubmitBooking" disabled class="premium-btn h-[50px] mt-6 flex justify-center items-center rounded-[18px] font-semibold tracking-[.12em] text-[11px] uppercase outline-none w-full">Отправить запрос</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Вкладка: Мои записи -->
+        <div id="tab-appointments" class="hidden">
+            <h2 class="font-accent text-[2.2rem] italic font-semibold premium-heading text-neutral-900 mb-6 text-center">Мои записи</h2>
+            <div id="userAppointmentsList" class="flex flex-col gap-4"><p class="text-center text-neutral-500 py-10">Загрузка записей...</p></div>
+        </div>
+
+        <!-- Вкладка: Профиль -->
+        <div id="tab-profile" class="hidden">
+            <h2 class="font-accent text-[2.2rem] italic font-semibold premium-heading text-neutral-900 mb-6 text-center">Профиль</h2>
+            <div class="bg-white/40 border border-white/60 rounded-[24px] p-6 flex flex-col gap-4">
+                <div><label class="text-[12px] text-neutral-500 mb-2 block">Фамилия</label><input type="text" id="profileLastName" class="premium-input text-[14px]" placeholder="Иванова"></div>
+                <div><label class="text-[12px] text-neutral-500 mb-2 block">Имя</label><input type="text" id="profileFirstName" class="premium-input text-[14px]" placeholder="Анна"></div>
+                <div><label class="text-[12px] text-neutral-500 mb-2 block">Отчество (по желанию)</label><input type="text" id="profilePatronymic" class="premium-input text-[14px]" placeholder="Сергеевна"></div>
+                <div><label class="text-[12px] text-neutral-500 mb-2 block">Номер телефона</label><input type="tel" id="profilePhone" class="premium-input text-[14px]" placeholder="+7 (999) 123-45-67"></div>
+                <div><label class="text-[12px] text-neutral-500 mb-2 block">Telegram (без @)</label><input type="text" id="profileTelegram" class="premium-input text-[14px]" placeholder="username"></div>
+                <button id="btnSaveProfile" class="premium-btn btn-green h-[50px] mt-4 flex justify-center items-center rounded-[18px] font-semibold tracking-[.12em] text-[11px] uppercase outline-none w-full">Сохранить профиль</button>
+            </div>
+            <div class="mt-4 bg-white/30 border border-white/50 rounded-[20px] p-4">
+                <p class="text-[11px] text-neutral-400 text-center">Вы вошли как: <span id="profileEmail" class="text-neutral-600 font-medium"></span></p>
+            </div>
+            <button id="btnLogoutUser" class="w-full text-center text-[11px] uppercase tracking-[.12em] text-neutral-400 hover:text-red-500 transition-colors mt-6 cursor-pointer">Выйти из аккаунта</button>
+        </div>
+    </main>
+
+    <!-- Навигация клиента -->
+    <nav id="bottom-nav" class="bottom-nav hidden">
+        <div class="nav-item active" id="nav-services"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 10h16M4 14h16M4 18h16"/></svg><span>Услуги</span></div>
+        <div class="nav-item" id="nav-appointments"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg><span>Мои записи</span></div>
+        <div class="nav-item" id="nav-profile"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/></svg><span>Профиль</span></div>
+    </nav>
+
+    <!-- ==================== АДМИН ПАНЕЛЬ ==================== -->
+    <main id="admin-view" class="hidden relative w-full max-w-[500px] bg-white/35 backdrop-blur-3xl rounded-[48px] p-6 sm:p-8 border border-white/50 main-container-shadow z-10">
+        <div class="flex justify-between items-center mb-6">
+            <h2 class="font-accent text-[2rem] italic font-semibold text-neutral-900">Панель</h2>
+            <button id="btnLogoutAdmin" class="text-[11px] uppercase tracking-[.12em] text-neutral-500 hover:text-neutral-900 transition-colors cursor-pointer">Выйти</button>
+        </div>
+        <div class="flex gap-6 mb-8 border-b border-neutral-200">
+            <button id="tab-btn-bookings" class="pb-3 text-[12px] uppercase tracking-wide font-semibold tab-active cursor-pointer">Заявки</button>
+            <button id="tab-btn-schedule" class="pb-3 text-[12px] uppercase tracking-wide font-semibold tab-inactive cursor-pointer">Расписание</button>
+        </div>
+
+        <!-- Заявки -->
+        <div id="admin-bookings-view">
+            <div id="admin-list" class="flex flex-col gap-4"><p class="text-center text-neutral-500 py-10">Загрузка заявок...</p></div>
+        </div>
+
+        <!-- Расписание -->
+        <div id="admin-schedule-view" class="hidden">
+            <div class="bg-white/40 border border-white/60 rounded-[24px] p-5 mb-6">
+                <div class="flex justify-between items-center mb-4">
+                    <h4 class="text-[12px] font-semibold tracking-[.15em] uppercase text-neutral-700">Шаг 1: Выберите даты</h4>
+                    <span id="dateCounter" class="text-[11px] text-neutral-500 bg-neutral-100 px-2 py-1 rounded-full">Выбрано: 0</span>
+                </div>
+                <div id="adminCalendar" class="mb-2"></div>
+                <p class="text-[10px] text-neutral-400 text-center mb-4">Кликайте на дни для выбора (несколько)</p>
+            </div>
+            <div class="bg-white/40 border border-white/60 rounded-[24px] p-5 mb-6">
+                <h4 class="text-[12px] font-semibold tracking-[.15em] uppercase text-neutral-700 mb-4 text-center">Шаг 2: Выберите время</h4>
+                <div class="flex flex-wrap gap-2 justify-center mb-4">
+                    <button id="btnTplMorning" class="quick-btn cursor-pointer">Утро (8-12)</button>
+                    <button id="btnTplDay" class="quick-btn cursor-pointer">День (12-16)</button>
+                    <button id="btnTplEvening" class="quick-btn cursor-pointer">Вечер (16-20)</button>
+                    <button id="btnTplFull" class="quick-btn cursor-pointer bg-neutral-900 text-white border-neutral-900">Весь день (8-20)</button>
+                    <button id="btnTplClear" class="quick-btn quick-btn-danger cursor-pointer">Очистить часы</button>
+                </div>
+                <div id="adminTimeGrid" class="grid grid-cols-4 gap-2 mb-4"></div>
+            </div>
+            <div class="bg-white/40 border border-white/60 rounded-[24px] p-5">
+                <h4 class="text-[12px] font-semibold tracking-[.15em] uppercase text-neutral-700 mb-4 text-center">Шаг 3: Действие</h4>
+                <button id="btnApplySchedule" class="premium-btn btn-green w-full h-[50px] mb-3 flex justify-center items-center rounded-[18px] text-[11px] uppercase font-semibold tracking-[.12em] cursor-pointer">Добавить время на выбранные даты</button>
+                <button id="btnClearSchedule" class="premium-btn btn-red w-full h-[50px] flex justify-center items-center rounded-[18px] text-[11px] uppercase font-semibold tracking-[.12em] cursor-pointer">Удалить все слоты с выбранных дат</button>
+            </div>
+        </div>
+    </main>
+
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.17.2/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.17.2/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.17.2/firebase-firestore-compat.js"></script>
+
+    <script>
+    /* ============================
+       КОНФИГУРАЦИЯ
+    ============================ */
+    const firebaseConfig = {
+        apiKey: "AIzaSyAWygW7luBG8myNfXqIkm53PlniW7-_i_A",
+        authDomain: "browslashes-17fd3.firebaseapp.com",
+        projectId: "browslashes-17fd3",
+        storageBucket: "browslashes-17fd3.firebasestorage.app",
+        messagingSenderId: "208949431632",
+        appId: "1:208949431632:web:0bae3dbea1aabdbd73b055",
+        measurementId: "G-BFEE6HDL76"
+    };
+
+    let db = null, auth = null;
+    try {
+        if (typeof firebase !== 'undefined' && !firebase.apps.length) {
+            firebase.initializeApp(firebaseConfig);
+            auth = firebase.auth();
+            db = firebase.firestore();
+            db.enablePersistence({ synchronizeTabs: true }).catch(e => console.log("Persistence:", e.message));
+        } else if (typeof firebase !== 'undefined') {
+            auth = firebase.auth();
+            db = firebase.app().firestore();
+        }
+    } catch (e) {
+        console.error("Firebase init error:", e);
+    }
+
+    /* ============================
+       СОСТОЯНИЕ ПРИЛОЖЕНИЯ
+    ============================ */
+    let currentUser = null;       // Объект Firebase User
+    let currentUserData = null;   // Документ из Firestore (включая role)
+    let selectedServices = [];
+    let totalPrice = 0;
+    let selectedTimeSlot = null;
+    let isFirstVisit = false;
+    let unsubBookings = null;
+    let unsubProfile = null;
+
+    let clientCalState = { month: new Date().getMonth(), year: new Date().getFullYear(), selectedDate: null };
+    let adminCalState = { month: new Date().getMonth(), year: new Date().getFullYear(), selectedDates: [] };
+    let adminSelectedTimes = [];
+
+    /* ============================
+       УТИЛИТЫ
+    ============================ */
+    let toastTimer = null;
+    function showToast(msg) {
+        const t = document.getElementById('toast');
+        if (!t) return;
+        t.textContent = msg;
+        t.classList.add('show');
+        clearTimeout(toastTimer);
+        toastTimer = setTimeout(() => t.classList.remove('show'), 4000);
+    }
+
+    function handleDbError(err, ctx) {
+        console.error(`DB [${ctx}]:`, err);
+        if (err?.code === 'permission-denied') {
+            showToast(`Ошибка прав: ${ctx}. Проверьте Security Rules Firestore.`);
+        } else {
+            showToast(`Ошибка (${ctx}). Попробуйте позже.`);
+        }
+    }
+
+    function formatDate(ds) {
+        if (!ds) return '';
+        const [y, m, d] = ds.split('-');
+        return `${d}.${m}.${y}`;
+    }
+
+    function formatPrice(p) {
+        return p.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ' ');
+    }
+
+    function setLoading(btn, loading) {
+        if (loading) {
+            btn.dataset.origText = btn.innerText;
+            btn.innerHTML = '<span class="spinner"></span>';
+            btn.disabled = true;
+        } else {
+            btn.innerText = btn.dataset.origText || 'Готово';
+            btn.disabled = false;
+        }
+    }
+
+    /* ============================
+       TELEGRAM УВЕДОМЛЕНИЯ
+       Через Vercel Serverless Function
+    ============================ */
+    async function sendTelegram(message, chatId) {
+        try {
+            const res = await fetch('/api/notify', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ message, chatId: chatId || null })
+            });
+            const data = await res.json();
+            if (!data.ok && !data.fallback) {
+                console.warn('Telegram API error:', data.error);
+            }
+            return data;
+        } catch (e) {
+            // Fallback: если serverless недоступен (локальная разработка)
+            console.warn('Serverless unavailable, opening Telegram link as fallback');
+            const fallbackMsg = encodeURIComponent(message.replace(/<[^>]*>/g, ''));
+            window.open(`https://t.me/share/url?url=&text=${fallbackMsg}`, '_blank');
+            return { ok: false, fallback: true };
+        }
+    }
+
+    /* ============================
+       АВТОРИЗАЦИЯ
+    ============================ */
+    function showScreen(screen) {
+        document.getElementById('auth-screen').classList.add('hidden');
+        document.getElementById('client-view').classList.add('hidden');
+        document.getElementById('admin-view').classList.add('hidden');
+        document.getElementById('bottom-nav').classList.add('hidden');
+
+        if (screen === 'auth') {
+            document.getElementById('auth-screen').classList.remove('hidden');
+        } else if (screen === 'client') {
+            document.getElementById('client-view').classList.remove('hidden');
+            document.getElementById('bottom-nav').classList.remove('hidden');
+        } else if (screen === 'admin') {
+            document.getElementById('admin-view').classList.remove('hidden');
+        }
+    }
+
+    // Переключение форм
+    document.getElementById('showRegister').addEventListener('click', (e) => {
+        e.preventDefault();
+        document.getElementById('login-form').classList.add('hidden');
+        document.getElementById('register-form').classList.remove('hidden');
+        clearAuthErrors();
+    });
+    document.getElementById('showLogin').addEventListener('click', (e) => {
+        e.preventDefault();
+        document.getElementById('register-form').classList.add('hidden');
+        document.getElementById('login-form').classList.remove('hidden');
+        clearAuthErrors();
+    });
+
+    function clearAuthErrors() {
+        ['loginEmailErr','loginPassErr','regEmailErr','regPassErr'].forEach(id => {
+            const el = document.getElementById(id);
+            if (el) el.textContent = '';
+        });
+    }
+
+    function setFieldError(id, msg) {
+        const el = document.getElementById(id);
+        if (el) el.textContent = msg;
+    }
+
+    // Вход
+    document.getElementById('login-form').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        clearAuthErrors();
+        const email = document.getElementById('loginEmail').value.trim();
+        const pass = document.getElementById('loginPassword').value;
+        if (!email) { setFieldError('loginEmailErr', 'Введите email'); return; }
+        if (!pass) { setFieldError('loginPassErr', 'Введите пароль'); return; }
+
+        const btn = document.getElementById('btnLogin');
+        setLoading(btn, true);
+        try {
+            await auth.signInWithEmailAndPassword(email, pass);
+        } catch (err) {
+            if (err.code === 'auth/user-not-found' || err.code === 'auth/wrong-password' || err.code === 'auth/invalid-credential') {
+                setFieldError('loginPassErr', 'Неверный email или пароль');
+            } else if (err.code === 'auth/invalid-email') {
+                setFieldError('loginEmailErr', 'Некорректный email');
+            } else if (err.code === 'auth/too-many-requests') {
+                setFieldError('loginPassErr', 'Слишком много попыток. Подождите.');
+            } else {
+                setFieldError('loginPassErr', err.message);
+            }
+        } finally {
+            setLoading(btn, false);
+        }
+    });
+
+    // Регистрация
+    document.getElementById('register-form').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        clearAuthErrors();
+        const lastName = document.getElementById('regLastName').value.trim();
+        const firstName = document.getElementById('regFirstName').value.trim();
+        const email = document.getElementById('regEmail').value.trim();
+        const pass = document.getElementById('regPassword').value;
+
+        let valid = true;
+        if (!email) { setFieldError('regEmailErr', 'Введите email'); valid = false; }
+        if (pass.length < 6) { setFieldError('regPassErr', 'Минимум 6 символов'); valid = false; }
+        if (!valid) return;
+
+        const btn = document.getElementById('btnRegister');
+        setLoading(btn, true);
+        try {
+            const cred = await auth.createUserWithEmailAndPassword(email, pass);
+            // Проверяем: первый пользователь в системе = админ
+            const usersSnap = await db.collection('users').limit(1).get();
+            const role = 'client';
+            await db.collection('users').doc(cred.user.uid).set({
+                firstName, lastName,
+                patronymic: '', phone: '', telegram: '',
+                role,
+                createdAt: firebase.firestore.FieldValue.serverTimestamp()
+            });
+            if (role === 'admin') {
+                showToast('Вы создали аккаунт владельца. Добро пожаловать!');
+            }
+        } catch (err) {
+            if (err.code === 'auth/email-already-in-use') {
+                setFieldError('regEmailErr', 'Этот email уже зарегистрирован');
+            } else if (err.code === 'auth/weak-password') {
+                setFieldError('regPassErr', 'Пароль слишком слабый');
+            } else if (err.code === 'auth/invalid-email') {
+                setFieldError('regEmailErr', 'Некорректный email');
+            } else {
+                setFieldError('regEmailErr', err.message);
+            }
+            // Если не удалось создать документ, удаляем пользователя
+            try { await auth.currentUser.delete(); } catch(_) {}
+        } finally {
+            setLoading(btn, false);
+        }
+    });
+
+    // Выход
+    document.getElementById('btnLogoutUser').addEventListener('click', () => auth.signOut());
+    document.getElementById('btnLogoutAdmin').addEventListener('click', () => auth.signOut());
+
+    // Слушатель авторизации — главный роутер приложения
+    auth.onAuthStateChanged(async (user) => {
+        if (!user) {
+            currentUser = null;
+            currentUserData = null;
+            if (unsubBookings) { unsubBookings(); unsubBookings = null; }
+            if (unsubProfile) { unsubProfile(); unsubProfile = null; }
+            showScreen('auth');
+            return;
+        }
+
+        currentUser = user;
+        document.getElementById('profileEmail').textContent = user.email;
+
+        // Загружаем данные пользователя из Firestore
+        try {
+            const userDoc = await db.collection('users').doc(user.uid).get();
+            if (userDoc.exists) {
+                currentUserData = userDoc.data();
+            } else {
+                // Документ не существует (старый пользователь без роли) — создаём как клиента
+                const defaultData = { firstName: '', lastName: '', patronymic: '', phone: '', telegram: '', role: 'client', createdAt: firebase.firestore.FieldValue.serverTimestamp() };
+                await db.collection('users').doc(user.uid).set(defaultData);
+                currentUserData = defaultData;
+            }
+        } catch (err) {
+            handleDbError(err, 'Загрузка данных пользователя');
+            return;
+        }
+
+        if (currentUserData.role === 'admin') {
+            showScreen('admin');
+            switchAdminTab('bookings');
+        } else {
+            showScreen('client');
+            initClientData();
+            switchClientTab('services');
+        }
+    });
+
+    /* ============================
+       КЛИЕНТ: ИНИЦИАЛИЗАЦИЯ
+    ============================ */
+    function initClientData() {
+        // Заполняем профиль
+        if (unsubProfile) unsubProfile();
+        unsubProfile = db.collection('users').doc(currentUser.uid).onSnapshot(doc => {
+            if (!doc.exists) return;
+            const d = doc.data();
+            currentUserData = d;
+            document.getElementById('profileLastName').value = d.lastName || '';
+            document.getElementById('profileFirstName').value = d.firstName || '';
+            document.getElementById('profilePatronymic').value = d.patronymic || '';
+            document.getElementById('profilePhone').value = d.phone || '';
+            document.getElementById('profileTelegram').value = d.telegram || '';
+        }, err => handleDbError(err, 'Профиль'));
+
+        // Проверяем первый визит
+        db.collection('bookings').where('userId', '==', currentUser.uid).limit(1).get().then(snap => {
+            isFirstVisit = snap.empty;
+            updateTotalPrice();
+        }).catch(err => handleDbError(err, 'Проверка визита'));
+    }
+
+    /* ============================
+       КЛИЕНТ: НАВИГАЦИЯ
+    ============================ */
+    function switchClientTab(tab) {
+        document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
+        document.getElementById(`nav-${tab}`).classList.add('active');
+        ['services','appointments','profile'].forEach(t => {
+            document.getElementById(`tab-${t}`).classList.toggle('hidden', t !== tab);
+        });
+        if (tab === 'appointments') fetchUserAppointments();
+    }
+
+    document.getElementById('nav-services').addEventListener('click', () => switchClientTab('services'));
+    document.getElementById('nav-appointments').addEventListener('click', () => switchClientTab('appointments'));
+    document.getElementById('nav-profile').addEventListener('click', () => switchClientTab('profile'));
+
+    /* ============================
+       КЛИЕНТ: УСЛУГИ
+    ============================ */
+    function updateTotalPrice() {
+        let finalPrice = totalPrice;
+        const badge = document.getElementById('discountBadge');
+        const text = document.getElementById('discountText');
+        if (isFirstVisit && totalPrice > 0) {
+            finalPrice = Math.round(totalPrice * 0.85);
+            badge.classList.remove('hidden');
+            text.innerText = 'Скидка 15% на первый визит применена!';
+            text.className = 'text-[11px] text-green-600 font-medium mt-2';
+        } else {
+            badge.classList.add('hidden');
+            text.innerText = totalPrice > 0 ? 'На первое посещение действует скидка 15%' : 'Выберите услуги для расчёта суммы';
+            text.className = 'text-[11px] text-neutral-400 font-light mt-2';
+        }
+        document.getElementById('totalPrice').innerText = formatPrice(finalPrice);
+    }
+
+    // Spotlight-эффект и выбор карточек
+    document.querySelectorAll('.spotlight-card').forEach(card => {
+        card.addEventListener('mousemove', (e) => {
+            if (card.classList.contains('is-selected')) return;
+            const rect = card.getBoundingClientRect();
+            const x = e.clientX - rect.left, y = e.clientY - rect.top;
+            card.style.setProperty('--x', `${x}px`);
+            card.style.setProperty('--y', `${y}px`);
+            const cx = rect.width / 2, cy = rect.height / 2;
+            card.style.transform = `perspective(800px) rotateX(${((y - cy) / cy) * -5}deg) rotateY(${((x - cx) / cx) * 5}deg) scale3d(1.015,1.015,1.015)`;
+            const c = card.querySelector('.card-content');
+            if (c) c.style.transform = 'translateZ(25px)';
+        });
+        card.addEventListener('mouseleave', () => {
+            card.style.transform = '';
+            const c = card.querySelector('.card-content');
+            if (c) c.style.transform = '';
+        });
+
+        const toggle = () => {
+            const name = card.dataset.name, price = parseInt(card.dataset.price, 10);
+            const sel = card.classList.toggle('is-selected');
+            card.setAttribute('aria-pressed', sel);
+            if (sel) { totalPrice += price; selectedServices.push(name); }
+            else { totalPrice -= price; const i = selectedServices.indexOf(name); if (i > -1) selectedServices.splice(i, 1); }
+            updateTotalPrice();
+        };
+        card.addEventListener('click', toggle);
+        card.addEventListener('keydown', (e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); toggle(); } });
+    });
+
+    /* ============================
+       КЛИЕНТ: КАЛЕНДАРЬ И ВРЕМЯ
+    ============================ */
+    document.getElementById('btnBookNow').addEventListener('click', () => {
+        if (selectedServices.length === 0) { showToast('Выберите хотя бы одну процедуру'); return; }
+        const cal = document.getElementById('calendarBlock');
+        cal.classList.remove('hidden');
+        renderCalendar('client');
+        setTimeout(() => { cal.classList.remove('scale-95','opacity-0'); cal.classList.add('scale-100','opacity-100'); cal.scrollIntoView({ behavior: 'smooth', block: 'nearest' }); }, 50);
+    });
+
+    document.getElementById('btnCloseCalendar').addEventListener('click', closeCalendar);
+    function closeCalendar() {
+        const b = document.getElementById('calendarBlock');
+        b.classList.add('scale-95','opacity-0');
+        b.classList.remove('scale-100','opacity-100');
+        setTimeout(() => b.classList.add('hidden'), 500);
+    }
+
+    function renderCalendar(target) {
+        const state = target === 'client' ? clientCalState : adminCalState;
+        const container = document.getElementById(target === 'client' ? 'clientCalendar' : 'adminCalendar');
+        if (!container) return;
+
+        const mN = ["Январь","Февраль","Март","Апрель","Май","Июнь","Июль","Август","Сентябрь","Октябрь","Ноябрь","Декабрь"];
+        container.innerHTML = `
+            <div class="flex justify-between items-center mb-4">
+                <button id="${target}-prev" class="p-2 cursor-pointer"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg></button>
+                <span class="font-semibold text-sm">${mN[state.month]} ${state.year}</span>
+                <button id="${target}-next" class="p-2 cursor-pointer"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg></button>
+            </div>
+            <div class="calendar-grid text-center text-[10px] text-neutral-400 mb-2">
+                <div>Пн</div><div>Вт</div><div>Ср</div><div>Чт</div><div>Пт</div><div>Сб</div><div>Вс</div>
+            </div>
+            <div class="calendar-grid" id="${target}-grid"></div>`;
+
+        document.getElementById(`${target}-prev`).addEventListener('click', () => { state.month--; if (state.month < 0) { state.month = 11; state.year--; } renderCalendar(target); });
+        document.getElementById(`${target}-next`).addEventListener('click', () => { state.month++; if (state.month > 11) { state.month = 0; state.year++; } renderCalendar(target); });
+
+        const grid = document.getElementById(`${target}-grid`);
+        const fDay = new Date(state.year, state.month, 1).getDay() || 7;
+        const dInM = new Date(state.year, state.month + 1, 0).getDate();
+        const today = new Date(); today.setHours(0,0,0,0);
+
+        for (let i = 1; i < fDay; i++) grid.innerHTML += '<div></div>';
+
+        for (let day = 1; day <= dInM; day++) {
+            const dateStr = `${state.year}-${String(state.month+1).padStart(2,'0')}-${String(day).padStart(2,'0')}`;
+            const cellDate = new Date(state.year, state.month, day);
+            let cls = 'cal-day';
+            if (cellDate < today) cls += ' cal-disabled';
+            if (cellDate.getTime() === today.getTime()) cls += ' cal-today';
+
+            if (target === 'client') {
+                if (clientCalState.selectedDate === dateStr) cls += ' cal-selected';
+            } else {
+                if (adminCalState.selectedDates.includes(dateStr)) cls += ' cal-multi-selected';
+            }
+            grid.innerHTML += `<div class="${cls}" data-date="${dateStr}">${day}</div>`;
+        }
+
+        grid.querySelectorAll('.cal-day:not(.cal-disabled)').forEach(el => {
+            el.addEventListener('click', () => {
+                const ds = el.dataset.date;
+                if (target === 'client') {
+                    clientCalState.selectedDate = ds;
+                    renderCalendar('client');
+                    fetchAvailableTimes(ds);
+                } else {
+                    const idx = adminCalState.selectedDates.indexOf(ds);
+                    if (idx > -1) adminCalState.selectedDates.splice(idx, 1);
+                    else adminCalState.selectedDates.push(ds);
+                    document.getElementById('dateCounter').innerText = `Выбрано: ${adminCalState.selectedDates.length}`;
+                    renderCalendar('admin');
+                }
+            });
+        });
+    }
+
+    function fetchAvailableTimes(dateStr) {
+        if (!db) return;
+        const c = document.getElementById('timeSlotsContainer');
+        const btn = document.getElementById('btnSubmitBooking');
+        selectedTimeSlot = null;
+        btn.disabled = true;
+        c.innerHTML = '<p class="text-[12px] text-neutral-400">Загрузка...</p>';
+
+        db.collection('schedule').doc(dateStr).onSnapshot(doc => {
+            c.innerHTML = '';
+            const times = doc.exists && doc.data().times ? doc.data().times : [];
+            if (times.length > 0) {
+                times.sort().forEach(time => {
+                    const b = document.createElement('button');
+                    b.className = 'time-slot';
+                    b.innerText = time;
+                    b.addEventListener('click', () => {
+                        c.querySelectorAll('.time-slot').forEach(x => x.classList.remove('is-selected'));
+                        b.classList.add('is-selected');
+                        selectedTimeSlot = time;
+                        btn.disabled = false;
+                    });
+                    c.appendChild(b);
+                });
+            } else {
+                c.innerHTML = '<p class="text-[12px] text-neutral-400 w-full text-center">На эту дату нет свободного времени</p>';
+            }
+        }, err => handleDbError(err, 'Загрузка времени'));
+    }
+
+    /* ============================
+       КЛИЕНТ: ОТПРАВКА ЗАПИСИ
+    ============================ */
+    document.getElementById('btnSubmitBooking').addEventListener('click', submitBooking);
+
+    async function submitBooking() {
+        if (!db || !currentUser) return showToast('Система недоступна');
+        const rawDate = clientCalState.selectedDate;
+        if (!rawDate || !selectedTimeSlot) return showToast('Выберите дату и время');
+
+        const btn = document.getElementById('btnSubmitBooking');
+        setLoading(btn, true);
+
+        const formattedDate = formatDate(rawDate);
+        const servicesText = selectedServices.join(', ');
+        const priceText = isFirstVisit ? formatPrice(Math.round(totalPrice * 0.85)) + 'р (скидка 15%)' : formatPrice(totalPrice) + 'р';
+        const userName = `${currentUserData.lastName || ''} ${currentUserData.firstName || ''}`.trim() || 'Не указано';
+        const userPhone = currentUserData.phone || 'Не указан';
+        const userTg = currentUserData.telegram ? `@${currentUserData.telegram}` : 'Не указан';
+
+        try {
+            // 1. Сохраняем запись в Firestore
+            const bookingRef = await db.collection('bookings').add({
+                userId: currentUser.uid,
+                userName, userPhone, userTg,
+                services: servicesText,
+                date: formattedDate,
+                rawDate,
+                time: selectedTimeSlot,
+                totalPrice: totalPrice,
+                finalPrice: isFirstVisit ? Math.round(totalPrice * 0.85) : totalPrice,
+                isFirstVisit,
+                status: 'pending',
+                timestamp: firebase.firestore.FieldValue.serverTimestamp()
+            });
+
+            // 2. Уведомление админу в Telegram
+            const tgMsg = [
+                `📋 <b>НОВАЯ ЗАПИСЬ #${bookingRef.id.slice(-6)}</b>`,
+                ``,
+                `👤 ${userName}`,
+                `📱 ${userPhone}`,
+                `✈️ Telegram: ${userTg}`,
+                `📧 ${currentUser.email}`,
+                ``,
+                `💅 <b>Услуги:</b> ${servicesText}`,
+                `💰 <b>Сумма:</b> ${priceText}`,
+                `📅 ${formattedDate} в ${selectedTimeSlot}`,
+                isFirstVisit ? `⭐ Первый визит` : '',
+            ].filter(Boolean).join('\n');
+
+            await sendTelegram(tgMsg);
+
+            // 3. Обновляем состояние
+            if (isFirstVisit) {
+                isFirstVisit = false;
+                updateTotalPrice();
+            }
+
+            showToast('Запись отправлена! Ожидайте подтверждения.');
+            closeCalendar();
+
+            // 4. Сброс выбора
+            setTimeout(() => {
+                document.querySelectorAll('.spotlight-card').forEach(c => {
+                    c.classList.remove('is-selected');
+                    c.setAttribute('aria-pressed', 'false');
+                });
+                selectedServices.length = 0;
+                totalPrice = 0;
+                updateTotalPrice();
+                clientCalState.selectedDate = null;
+                selectedTimeSlot = null;
+            }, 800);
+
+        } catch (err) {
+            handleDbError(err, 'Создание записи');
+        } finally {
+            setLoading(btn, false);
+        }
+    }
+
+    /* ============================
+       КЛИЕНТ: МОИ ЗАПИСИ
+    ============================ */
+    function fetchUserAppointments() {
+        if (!db || !currentUser) return;
+        const list = document.getElementById('userAppointmentsList');
+        list.innerHTML = '<p class="text-center text-neutral-500 py-10">Загрузка...</p>';
+
+        db.collection('bookings').where('userId', '==', currentUser.uid).orderBy('timestamp', 'desc').onSnapshot(snap => {
+            if (snap.empty) { list.innerHTML = '<p class="text-center text-neutral-500 py-10">У вас пока нет записей.</p>'; return; }
+            list.innerHTML = '';
+            snap.forEach(doc => {
+                const b = doc.data();
+                let sc = 'status-pending', st = 'Ожидает';
+                if (b.status === 'approved') { sc = 'status-approved'; st = 'Подтверждена'; }
+                if (b.status === 'rejected') { sc = 'status-rejected'; st = 'Отклонена'; }
+
+                const card = document.createElement('div');
+                card.className = 'admin-card p-5';
+                card.innerHTML = `
+                    <div class="flex justify-between items-start mb-2">
+                        <p class="text-[14px] font-semibold text-neutral-900">${b.services}</p>
+                        <span class="text-[10px] uppercase tracking-wide ${sc} bg-neutral-100 px-2 py-1 rounded-full shrink-0 ml-2">${st}</span>
+                    </div>
+                    <p class="text-[12px] text-neutral-500">${b.date} в ${b.time}</p>
+                    <p class="text-[12px] text-neutral-400 mt-1">${b.finalPrice ? formatPrice(b.finalPrice) + 'р' : ''} ${b.isFirstVisit ? '· Первый визит' : ''}</p>`;
+                list.appendChild(card);
+            });
+        }, err => handleDbError(err, 'Мои записи'));
+    }
+
+    /* ============================
+       КЛИЕНТ: СОХРАНЕНИЕ ПРОФИЛЯ
+    ============================ */
+    document.getElementById('btnSaveProfile').addEventListener('click', async () => {
+        if (!db || !currentUser) return showToast('Система недоступна');
+        const btn = document.getElementById('btnSaveProfile');
+        setLoading(btn, true);
+
+        const lastName = document.getElementById('profileLastName').value.trim();
+        const firstName = document.getElementById('profileFirstName').value.trim();
+        const phone = document.getElementById('profilePhone').value.trim();
+
+        if (!firstName || !lastName || !phone) {
+            showToast('Заполните Фамилию, Имя и Телефон');
+            setLoading(btn, false);
+            return;
+        }
+
+        try {
+            await db.collection('users').doc(currentUser.uid).set({
+                lastName, firstName,
+                patronymic: document.getElementById('profilePatronymic').value.trim(),
+                phone,
+                telegram: document.getElementById('profileTelegram').value.trim().replace('@', ''),
+                updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+            }, { merge: true });
+            showToast('Профиль сохранён!');
+        } catch (err) {
+            handleDbError(err, 'Сохранение профиля');
+        } finally {
+            setLoading(btn, false);
+        }
+    });
+
+    /* ============================
+       АДМИН: НАВИГАЦИЯ
+    ============================ */
+    function switchAdminTab(tab) {
+        const bB = document.getElementById('tab-btn-bookings'), bS = document.getElementById('tab-btn-schedule');
+        const vB = document.getElementById('admin-bookings-view'), vS = document.getElementById('admin-schedule-view');
+        if (tab === 'bookings') {
+            bB.className = bB.className.replace('tab-inactive','tab-active');
+            bS.className = bS.className.replace('tab-active','tab-inactive');
+            vB.classList.remove('hidden'); vS.classList.add('hidden');
+            listenToBookings();
+        } else {
+            bS.className = bS.className.replace('tab-inactive','tab-active');
+            bB.className = bB.className.replace('tab-active','tab-inactive');
+            vS.classList.remove('hidden'); vB.classList.add('hidden');
+            if (unsubBookings) { unsubBookings(); unsubBookings = null; }
+            renderCalendar('admin');
+            renderTimeGrid();
+        }
+    }
+
+    document.getElementById('tab-btn-bookings').addEventListener('click', () => switchAdminTab('bookings'));
+    document.getElementById('tab-btn-schedule').addEventListener('click', () => switchAdminTab('schedule'));
+
+    /* ============================
+       АДМИН: ЗАЯВКИ
+    ============================ */
+    function listenToBookings() {
+        if (!db) return;
+        if (unsubBookings) unsubBookings();
+
+        unsubBookings = db.collection('bookings').orderBy('timestamp', 'desc').onSnapshot(snap => {
+            const list = document.getElementById('admin-list');
+            if (snap.empty) { list.innerHTML = '<p class="text-center text-neutral-500 py-10">Новых заявок нет.</p>'; return; }
+            list.innerHTML = '';
+
+            snap.forEach(doc => {
+                const b = doc.data(), id = doc.id;
+                let sc = 'status-pending', st = 'Ожидает';
+                if (b.status === 'approved') { sc = 'status-approved'; st = 'Подтверждена'; }
+                if (b.status === 'rejected') { sc = 'status-rejected'; st = 'Отклонена'; }
+
+                let timeStr = 'Только что';
+                if (b.timestamp && b.timestamp.toDate) {
+                    timeStr = b.timestamp.toDate().toLocaleString('ru-RU');
+                }
+
+                const firstBadge = b.isFirstVisit ? '<span class="ml-2 text-[10px] bg-green-100 text-green-700 px-2 py-1 rounded-full">1-й визит</span>' : '';
+
+                const card = document.createElement('div');
+                card.className = 'admin-card p-5';
+                card.innerHTML = `
+                    <div class="flex justify-between items-start mb-2">
+                        <div>
+                            <p class="text-[14px] font-semibold text-neutral-900">${b.services}${firstBadge}</p>
+                            <p class="text-[12px] text-neutral-500 mt-1">${b.date} в ${b.time}</p>
+                        </div>
+                        <span class="text-[10px] uppercase tracking-wide ${sc} bg-neutral-100 px-2 py-1 rounded-full shrink-0 ml-2">${st}</span>
+                    </div>
+                    <div class="text-[11px] text-neutral-400 mb-1">
+                        <span>👤 ${b.userName || '—'}</span>
+                        <span class="ml-3">📱 ${b.userPhone || '—'}</span>
+                        ${b.userTg && b.userTg !== 'Не указан' ? `<span class="ml-3">✈️ ${b.userTg}</span>` : ''}
+                    </div>
+                    <p class="text-[10px] text-neutral-300 mb-3">${b.finalPrice ? formatPrice(b.finalPrice) + 'р' : ''} · Заявка: ${timeStr}</p>
+                    <div class="actions-container flex gap-2"></div>`;
+
+                const actions = card.querySelector('.actions-container');
+
+                if (b.status === 'pending') {
+                    const btnApp = document.createElement('button');
+                    btnApp.className = 'flex-1 py-2.5 rounded-xl text-white text-[11px] uppercase tracking-wide font-semibold btn-green cursor-pointer';
+                    btnApp.innerText = 'Подтвердить';
+                    btnApp.addEventListener('click', () => approveBooking(id, b));
+
+                    const btnRej = document.createElement('button');
+                    btnRej.className = 'flex-1 py-2.5 rounded-xl text-white text-[11px] uppercase tracking-wide font-semibold btn-red cursor-pointer';
+                    btnRej.innerText = 'Отклонить';
+                    btnRej.addEventListener('click', () => rejectBooking(id, b));
+
+                    actions.appendChild(btnApp);
+                    actions.appendChild(btnRej);
+                }
+
+                list.appendChild(card);
+            });
+        }, err => handleDbError(err, 'Загрузка заявок'));
+    }
+
+    async function approveBooking(bookingId, booking) {
+        if (!db) return;
+        const btn = event.target;
+        const origText = btn.innerText;
+        btn.innerHTML = '<span class="spinner"></span>';
+        btn.disabled = true;
+
+        try {
+            // Удаляем слот из расписания (занимаем время)
+            await db.collection('schedule').doc(booking.rawDate).update({
+                times: firebase.firestore.FieldValue.arrayRemove(booking.time)
+            });
+
+            // Обновляем статус
+            await db.collection('bookings').doc(bookingId).update({ status: 'approved' });
+
+            // Уведомление в Telegram
+            const msg = [
+                `✅ <b>ЗАПИСЬ ПОДТВЕРЖДЕНА</b> #${bookingId.slice(-6)}`,
+                ``,
+                `👤 ${booking.userName}`,
+                `💅 ${booking.services}`,
+                `📅 ${booking.date} в ${booking.time}`,
+                `💰 ${booking.finalPrice ? formatPrice(booking.finalPrice) + 'р' : ''}`,
+            ].filter(Boolean).join('\n');
+
+            await sendTelegram(msg);
+            showToast('Запись подтверждена');
+
+        } catch (err) {
+            handleDbError(err, 'Подтверждение');
+            btn.innerText = origText;
+            btn.disabled = false;
+        }
+    }
+
+    async function rejectBooking(bookingId, booking) {
+        if (!db) return;
+        if (!confirm('Отклонить эту запись?')) return;
+
+        const btn = event.target;
+        const origText = btn.innerText;
+        btn.innerHTML = '<span class="spinner"></span>';
+        btn.disabled = true;
+
+        try {
+            await db.collection('bookings').doc(bookingId).update({ status: 'rejected' });
+
+            const msg = [
+                `❌ <b>ЗАПИСЬ ОТКЛОНЕНА</b> #${bookingId.slice(-6)}`,
+                ``,
+                `👤 ${booking.userName}`,
+                `💅 ${booking.services}`,
+                `📅 ${booking.date} в ${booking.time}`,
+            ].filter(Boolean).join('\n');
+
+            await sendTelegram(msg);
+            showToast('Запись отклонена');
+
+        } catch (err) {
+            handleDbError(err, 'Отклонение');
+            btn.innerText = origText;
+            btn.disabled = false;
+        }
+    }
+
+    /* ============================
+       АДМИН: РАСПИСАНИЕ
+    ============================ */
+    function renderTimeGrid() {
+        const grid = document.getElementById('adminTimeGrid');
+        grid.innerHTML = '';
+        for (let h = 8; h <= 20; h++) {
+            for (let m = 0; m < 60; m += 30) {
+                if (h === 20 && m > 0) break;
+                const time = `${String(h).padStart(2,'0')}:${String(m).padStart(2,'0')}`;
+                const btn = document.createElement('button');
+                btn.className = 'time-toggle';
+                btn.innerText = time;
+                btn.dataset.time = time;
+                if (adminSelectedTimes.includes(time)) btn.classList.add('is-selected');
+                btn.addEventListener('click', () => {
+                    const idx = adminSelectedTimes.indexOf(time);
+                    if (idx > -1) { adminSelectedTimes.splice(idx, 1); btn.classList.remove('is-selected'); }
+                    else { adminSelectedTimes.push(time); btn.classList.add('is-selected'); }
+                });
+                grid.appendChild(btn);
+            }
+        }
+    }
+
+    // Шаблоны времени
+    function selectTimeTemplate(startH, endH) {
+        adminSelectedTimes = [];
+        for (let h = startH; h < endH; h++) {
+            for (let m = 0; m < 60; m += 30) {
+                adminSelectedTimes.push(`${String(h).padStart(2,'0')}:${String(m).padStart(2,'0')}`);
+            }
+        }
+        renderTimeGrid();
+    }
+
+    document.getElementById('btnTplMorning').addEventListener('click', () => selectTimeTemplate(8, 12));
+    document.getElementById('btnTplDay').addEventListener('click', () => selectTimeTemplate(12, 16));
+    document.getElementById('btnTplEvening').addEventListener('click', () => selectTimeTemplate(16, 20));
+    document.getElementById('btnTplFull').addEventListener('click', () => selectTimeTemplate(8, 20));
+    document.getElementById('btnTplClear').addEventListener('click', () => { adminSelectedTimes = []; renderTimeGrid(); });
+
+    // Применить расписание
+    document.getElementById('btnApplySchedule').addEventListener('click', async () => {
+        if (!db) return;
+        if (adminCalState.selectedDates.length === 0) return showToast('Выберите хотя бы одну дату');
+        if (adminSelectedTimes.length === 0) return showToast('Выберите хотя бы один слот времени');
+
+        const btn = document.getElementById('btnApplySchedule');
+        setLoading(btn, true);
+
+        try {
+            const batch = db.batch();
+            adminCalState.selectedDates.forEach(dateStr => {
+                const ref = db.collection('schedule').doc(dateStr);
+                batch.set(ref, { times: firebase.firestore.FieldValue.arrayUnion(...adminSelectedTimes) }, { merge: true });
+            });
+            await batch.commit();
+            showToast(`Добавлено ${adminSelectedTimes.length} слотов на ${adminCalState.selectedDates.length} дат`);
+            adminCalState.selectedDates = [];
+            document.getElementById('dateCounter').innerText = 'Выбрано: 0';
+            renderCalendar('admin');
+        } catch (err) {
+            handleDbError(err, 'Добавление расписания');
+        } finally {
+            setLoading(btn, false);
+        }
+    });
+
+    // Очистить расписание
+    document.getElementById('btnClearSchedule').addEventListener('click', async () => {
+        if (!db) return;
+        if (adminCalState.selectedDates.length === 0) return showToast('Выберите даты для очистки');
+        if (!confirm(`Удалить ВСЕ слоты с ${adminCalState.selectedDates.length} выбранных дат?`)) return;
+
+        const btn = document.getElementById('btnClearSchedule');
+        setLoading(btn, true);
+
+        try {
+            const batch = db.batch();
+            adminCalState.selectedDates.forEach(dateStr => {
+                batch.set(db.collection('schedule').doc(dateStr), { times: [] }, { merge: true });
+            });
+            await batch.commit();
+            showToast('Слоты удалены');
+            adminCalState.selectedDates = [];
+            document.getElementById('dateCounter').innerText = 'Выбрано: 0';
+            renderCalendar('admin');
+        } catch (err) {
+            handleDbError(err, 'Очистка расписания');
+        } finally {
+            setLoading(btn, false);
+        }
+    });
+
+    /* ============================
+       ИНИЦИАЛИЗАЦИЯ
+    ============================ */
+    updateTotalPrice();
+    </script>
+</body>
+</html>

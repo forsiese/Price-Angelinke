@@ -26,7 +26,7 @@
             -webkit-font-smoothing: antialiased;
             -moz-osx-font-smoothing: grayscale;
             overflow-x: hidden;
-            padding-bottom: 100px; /* Место для нижней панели */
+            padding-bottom: 100px; /* Отступ для нижней панели */
         }
 
         .premium-heading { letter-spacing: -0.03em; line-height: 1.15; }
@@ -66,9 +66,11 @@
         .spotlight-card::before {
             content: '';
             position: absolute;
-            top: var(--y, 50%); left: var(--x, 50%);
+            top: var(--y, 50%); 
+            left: var(--x, 50%);
             transform: translate(-50%, -50%);
-            width: 260px; height: 260px;
+            width: 260px; 
+            height: 260px;
             background: radial-gradient(circle, rgba(255, 255, 255, 0.85) 0%, rgba(255, 255, 255, 0) 70%);
             opacity: 0;
             transition: opacity 0.4s ease;
@@ -115,9 +117,15 @@
             overflow: hidden;
         }
         .premium-btn:focus-visible { outline: 2px solid #2AABEE; outline-offset: 4px; }
-        .premium-btn:disabled { opacity: 0.4; pointer-events: none; }
+        .premium-btn:disabled { opacity: 0.5; pointer-events: none; }
 
-        .btn-icon { opacity: 0; transform: translateX(-10px); transition: all 0.4s cubic-bezier(0.25, 1, 0.5, 1); position: absolute; left: 24px; }
+        .btn-icon { 
+            opacity: 0; 
+            transform: translateX(-10px); 
+            transition: all 0.4s cubic-bezier(0.25, 1, 0.5, 1); 
+            position: absolute; 
+            left: 24px; 
+        }
         .premium-btn:hover .btn-icon { opacity: 1; transform: translateX(0); }
         .btn-text { transition: transform 0.4s cubic-bezier(0.25, 1, 0.5, 1); }
         .premium-btn:hover .btn-text { transform: translateX(12px); }
@@ -156,10 +164,9 @@
             will-change: transform;
         }
 
-        /* ИСПРАВЛЕННЫЙ TOAST: Больше не блокирует интерфейс */
         #toast {
             position: fixed;
-            bottom: 90px;
+            bottom: 90px; 
             left: 50%;
             transform: translateX(-50%);
             background: #161616;
@@ -167,20 +174,16 @@
             padding: 12px 24px;
             border-radius: 12px;
             font-size: 14px;
-            z-index: 100;
+            z-index: 200;
             box-shadow: 0 4px 12px rgba(0,0,0,0.1);
             text-align: center;
             max-width: 90vw;
             opacity: 0;
             visibility: hidden;
-            pointer-events: none; /* Не перехватывает клики, когда скрыт */
+            pointer-events: none; 
             transition: opacity 0.3s ease, visibility 0.3s ease;
         }
-        #toast.show {
-            opacity: 1;
-            visibility: visible;
-            pointer-events: auto;
-        }
+        #toast.show { opacity: 1; visibility: visible; }
 
         .admin-card {
             background: rgba(255, 255, 255, 0.7);
@@ -214,7 +217,11 @@
         .tab-active { border-bottom: 2px solid #161616; color: #161616; }
         .tab-inactive { border-bottom: 2px solid transparent; color: #9ca3af; }
 
-        .calendar-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 4px; }
+        .calendar-grid {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 4px;
+        }
         .cal-day {
             aspect-ratio: 1;
             display: flex;
@@ -232,10 +239,28 @@
         .cal-today { border: 1px solid #161616; }
         .cal-multi-selected { background: #2AABEE !important; color: #fff !important; border-color: #2AABEE !important; }
 
-        .time-toggle { padding: 10px 4px; border-radius: 10px; background: rgba(255, 255, 255, 0.6); border: 1px solid rgba(0,0,0,0.08); font-size: 12px; cursor: pointer; transition: all 0.2s ease; text-align: center; }
+        .time-toggle {
+            padding: 10px 4px;
+            border-radius: 10px;
+            background: rgba(255, 255, 255, 0.6);
+            border: 1px solid rgba(0,0,0,0.08);
+            font-size: 12px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            text-align: center;
+        }
         .time-toggle:hover { background: rgba(255,255,255,0.9); }
         .time-toggle.is-selected { background: #16a34a; color: #fff; border-color: #16a34a; }
-        .quick-btn { font-size: 11px; padding: 6px 12px; border-radius: 20px; border: 1px solid #d1d5db; background: #fff; cursor: pointer; transition: all 0.2s; }
+
+        .quick-btn {
+            font-size: 11px;
+            padding: 6px 12px;
+            border-radius: 20px;
+            border: 1px solid #d1d5db;
+            background: #fff;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
         .quick-btn:hover { background: #f3f4f6; }
         .quick-btn-danger { border-color: #fecaca; color: #dc2626; }
         .quick-btn-danger:hover { background: #fee2e2; }
@@ -270,6 +295,9 @@
         }
         .nav-item.active { color: #161616; }
         .nav-item svg { width: 24px; height: 24px; }
+        
+        .loader-dot { display: inline-block; width: 8px; height: 8px; border-radius: 50%; background: currentColor; animation: bounce 1s infinite ease-in-out; }
+        @keyframes bounce { 0%, 100% { transform: scale(0.7); } 50% { transform: scale(1.2); } }
     </style>
 </head>
 <body class="flex justify-center items-start sm:items-center min-h-screen p-4 sm:p-8 relative selection:bg-neutral-900 selection:text-white">
@@ -294,10 +322,50 @@
                 </div>
 
                 <ul class="flex flex-col gap-3.5 list-none p-0 m-0">
-                    <li><article class="spotlight-card p-5 cursor-pointer group" tabindex="0" role="button" aria-pressed="false" data-name="коррекция бровей" data-price="400"><div class="card-content flex justify-between items-center gap-4"><div class="flex-1 min-w-0 pr-1"><h3 class="text-[14.5px] font-semibold premium-text text-neutral-900 transition-colors duration-300">Коррекция</h3><p class="text-[12px] text-neutral-400 font-light mt-1 leading-snug transition-colors duration-300">(воск, пинцет)</p></div><span class="price-badge shrink-0 text-[13.5px] font-medium tracking-wide text-neutral-800 bg-white/60 border border-white/80 px-4 py-2 rounded-full">400р</span></div></article></li>
-                    <li><article class="spotlight-card p-5 cursor-pointer group" tabindex="0" role="button" aria-pressed="false" data-name="архитектура бровей" data-price="700"><div class="card-content flex justify-between items-center gap-4"><div class="flex-1 min-w-0 pr-1"><h3 class="text-[14.5px] font-semibold premium-text text-neutral-900 transition-colors duration-300">Архитектура бровей</h3><p class="text-[12px] text-neutral-400 font-light mt-1 leading-snug transition-colors duration-300">(коррекция, окрашивание)</p></div><span class="price-badge shrink-0 text-[13.5px] font-medium tracking-wide text-neutral-800 bg-white/60 border border-white/80 px-4 py-2 rounded-full">700р</span></div></article></li>
-                    <li><article class="spotlight-card p-5 cursor-pointer group" tabindex="0" role="button" aria-pressed="false" data-name="долговременная укладка" data-price="1200"><div class="card-content flex justify-between items-center gap-4"><div class="flex-1 min-w-0 pr-1"><h3 class="text-[14.5px] font-semibold premium-text text-neutral-900 transition-colors duration-300">Долговременная укладка</h3><p class="text-[12px] text-neutral-400 font-light mt-1 leading-snug transition-colors duration-300">(+коррекция, уход)</p></div><span class="price-badge shrink-0 text-[13.5px] font-medium tracking-wide text-neutral-800 bg-white/60 border border-white/80 px-4 py-2 rounded-full">1200р</span></div></article></li>
-                    <li><article class="spotlight-card p-5 cursor-pointer group" tabindex="0" role="button" aria-pressed="false" data-name="долговременная укладка +" data-price="1500"><div class="card-content flex justify-between items-center gap-4"><div class="flex-1 min-w-0 pr-1"><h3 class="text-[14.5px] font-semibold premium-text text-neutral-900 transition-colors duration-300">Долговременная укладка +</h3><p class="text-[12px] text-neutral-400 font-light mt-1 leading-snug transition-colors duration-300">(+коррекция, окрашивание, уход)</p></div><span class="price-badge shrink-0 text-[13.5px] font-medium tracking-wide text-neutral-800 bg-white/60 border border-white/80 px-4 py-2 rounded-full">1500р</span></div></article></li>
+                    <li>
+                        <article class="spotlight-card p-5 cursor-pointer group" tabindex="0" role="button" aria-pressed="false" data-name="коррекция бровей" data-price="400">
+                            <div class="card-content flex justify-between items-center gap-4">
+                                <div class="flex-1 min-w-0 pr-1">
+                                    <h3 class="text-[14.5px] font-semibold premium-text text-neutral-900 transition-colors duration-300">Коррекция</h3>
+                                    <p class="text-[12px] text-neutral-400 font-light mt-1 leading-snug transition-colors duration-300">(воск, пинцет)</p>
+                                </div>
+                                <span class="price-badge shrink-0 text-[13.5px] font-medium tracking-wide text-neutral-800 bg-white/60 border border-white/80 px-4 py-2 rounded-full">400р</span>
+                            </div>
+                        </article>
+                    </li>
+                    <li>
+                        <article class="spotlight-card p-5 cursor-pointer group" tabindex="0" role="button" aria-pressed="false" data-name="архитектура бровей" data-price="700">
+                            <div class="card-content flex justify-between items-center gap-4">
+                                <div class="flex-1 min-w-0 pr-1">
+                                    <h3 class="text-[14.5px] font-semibold premium-text text-neutral-900 transition-colors duration-300">Архитектура бровей</h3>
+                                    <p class="text-[12px] text-neutral-400 font-light mt-1 leading-snug transition-colors duration-300">(коррекция, окрашивание)</p>
+                                </div>
+                                <span class="price-badge shrink-0 text-[13.5px] font-medium tracking-wide text-neutral-800 bg-white/60 border border-white/80 px-4 py-2 rounded-full">700р</span>
+                            </div>
+                        </article>
+                    </li>
+                    <li>
+                        <article class="spotlight-card p-5 cursor-pointer group" tabindex="0" role="button" aria-pressed="false" data-name="долговременная укладка" data-price="1200">
+                            <div class="card-content flex justify-between items-center gap-4">
+                                <div class="flex-1 min-w-0 pr-1">
+                                    <h3 class="text-[14.5px] font-semibold premium-text text-neutral-900 transition-colors duration-300">Долговременная укладка</h3>
+                                    <p class="text-[12px] text-neutral-400 font-light mt-1 leading-snug transition-colors duration-300">(+коррекция, уход)</p>
+                                </div>
+                                <span class="price-badge shrink-0 text-[13.5px] font-medium tracking-wide text-neutral-800 bg-white/60 border border-white/80 px-4 py-2 rounded-full">1200р</span>
+                            </div>
+                        </article>
+                    </li>
+                    <li>
+                        <article class="spotlight-card p-5 cursor-pointer group" tabindex="0" role="button" aria-pressed="false" data-name="долговременная укладка +" data-price="1500">
+                            <div class="card-content flex justify-between items-center gap-4">
+                                <div class="flex-1 min-w-0 pr-1">
+                                    <h3 class="text-[14.5px] font-semibold premium-text text-neutral-900 transition-colors duration-300">Долговременная укладка +</h3>
+                                    <p class="text-[12px] text-neutral-400 font-light mt-1 leading-snug transition-colors duration-300">(+коррекция, окрашивание, уход)</p>
+                                </div>
+                                <span class="price-badge shrink-0 text-[13.5px] font-medium tracking-wide text-neutral-800 bg-white/60 border border-white/80 px-4 py-2 rounded-full">1500р</span>
+                            </div>
+                        </article>
+                    </li>
                 </ul>
             </section>
 
@@ -309,9 +377,37 @@
                 </div>
 
                 <ul class="flex flex-col gap-3.5 list-none p-0 m-0">
-                    <li><article class="spotlight-card p-5 cursor-pointer group" tabindex="0" role="button" aria-pressed="false" data-name="ламинирование ресниц" data-price="1200"><div class="card-content flex justify-between items-center gap-4"><div class="flex-1 min-w-0 pr-1"><h3 class="text-[14.5px] font-semibold premium-text text-neutral-900 transition-colors duration-300">Ламинирование ресниц</h3><p class="text-[12px] text-neutral-400 font-light mt-1 leading-snug transition-colors duration-300">(+окрашивание, уход)</p></div><span class="price-badge shrink-0 text-[13.5px] font-medium tracking-wide text-neutral-800 bg-white/60 border border-white/80 px-4 py-2 rounded-full">1200р</span></div></article></li>
-                    <li><article class="spotlight-card p-5 cursor-pointer group" tabindex="0" role="button" aria-pressed="false" data-name="окрашивание ресниц" data-price="300"><div class="card-content flex justify-between items-center gap-4"><div class="flex-1 min-w-0 pr-1"><h3 class="text-[14.5px] font-semibold premium-text text-neutral-900 transition-colors duration-300">Окрашивание ресниц</h3></div><span class="price-badge shrink-0 text-[13.5px] font-medium tracking-wide text-neutral-800 bg-white/60 border border-white/80 px-4 py-2 rounded-full">300р</span></div></article></li>
-                    <li><article class="spotlight-card p-5 cursor-pointer group" tabindex="0" role="button" aria-pressed="false" data-name="снятие наращенных ресниц" data-price="300"><div class="card-content flex justify-between items-center gap-4"><div class="flex-1 min-w-0 pr-1"><h3 class="text-[14.5px] font-semibold premium-text text-neutral-900 transition-colors duration-300">Снятие наращенных ресниц</h3></div><span class="price-badge shrink-0 text-[13.5px] font-medium tracking-wide text-neutral-800 bg-white/60 border border-white/80 px-4 py-2 rounded-full">300р</span></div></article></li>
+                    <li>
+                        <article class="spotlight-card p-5 cursor-pointer group" tabindex="0" role="button" aria-pressed="false" data-name="ламинирование ресниц" data-price="1200">
+                            <div class="card-content flex justify-between items-center gap-4">
+                                <div class="flex-1 min-w-0 pr-1">
+                                    <h3 class="text-[14.5px] font-semibold premium-text text-neutral-900 transition-colors duration-300">Ламинирование ресниц</h3>
+                                    <p class="text-[12px] text-neutral-400 font-light mt-1 leading-snug transition-colors duration-300">(+окрашивание, уход)</p>
+                                </div>
+                                <span class="price-badge shrink-0 text-[13.5px] font-medium tracking-wide text-neutral-800 bg-white/60 border border-white/80 px-4 py-2 rounded-full">1200р</span>
+                            </div>
+                        </article>
+                    </li>
+                    <li>
+                        <article class="spotlight-card p-5 cursor-pointer group" tabindex="0" role="button" aria-pressed="false" data-name="окрашивание ресниц" data-price="300">
+                            <div class="card-content flex justify-between items-center gap-4">
+                                <div class="flex-1 min-w-0 pr-1">
+                                    <h3 class="text-[14.5px] font-semibold premium-text text-neutral-900 transition-colors duration-300">Окрашивание ресниц</h3>
+                                </div>
+                                <span class="price-badge shrink-0 text-[13.5px] font-medium tracking-wide text-neutral-800 bg-white/60 border border-white/80 px-4 py-2 rounded-full">300р</span>
+                            </div>
+                        </article>
+                    </li>
+                    <li>
+                        <article class="spotlight-card p-5 cursor-pointer group" tabindex="0" role="button" aria-pressed="false" data-name="снятие наращенных ресниц" data-price="300">
+                            <div class="card-content flex justify-between items-center gap-4">
+                                <div class="flex-1 min-w-0 pr-1">
+                                    <h3 class="text-[14.5px] font-semibold premium-text text-neutral-900 transition-colors duration-300">Снятие наращенных ресниц</h3>
+                                </div>
+                                <span class="price-badge shrink-0 text-[13.5px] font-medium tracking-wide text-neutral-800 bg-white/60 border border-white/80 px-4 py-2 rounded-full">300р</span>
+                            </div>
+                        </article>
+                    </li>
                 </ul>
             </section>
 
@@ -324,9 +420,7 @@
                         </span>
                         <span id="discountBadge" class="hidden ml-2 text-[14px] text-green-600 font-semibold align-middle">(-15%)</span>
                     </p>
-                    <p id="discountText" class="text-[11px] text-neutral-400 font-light mt-2">
-                        На первое посещение действует скидка 15%
-                    </p>
+                    <p id="discountText" class="text-[11px] text-neutral-400 font-light mt-2">На первое посещение действует скидка 15%</p>
                 </div>
 
                 <button onclick="chooseMessenger('telegram')" class="premium-btn btn-tg w-full h-[54px] flex justify-center items-center rounded-[20px] font-semibold tracking-[0.12em] text-[11px] uppercase outline-none">
@@ -348,9 +442,7 @@
                             <p class="text-[12px] text-neutral-400">Выберите дату в календаре</p>
                         </div>
                     </div>
-                    <button onclick="generateAndSend()" id="submitBookingBtn" disabled class="premium-btn h-[50px] mt-6 flex justify-center items-center rounded-[18px] font-semibold tracking-[0.12em] text-[11px] uppercase outline-none w-full">
-                        Отправить запрос
-                    </button>
+                    <button onclick="generateAndSend()" id="submitBookingBtn" disabled class="premium-btn h-[50px] mt-6 flex justify-center items-center rounded-[18px] font-semibold tracking-[0.12em] text-[11px] uppercase outline-none w-full">Отправить запрос</button>
                 </div>
             </div>
         </div>
@@ -384,18 +476,13 @@
                     <label class="text-[12px] text-neutral-500 mb-2 block">Номер телефона</label>
                     <input type="tel" id="profilePhone" class="premium-input text-[14px]" placeholder="+7 (999) 123-45-67">
                 </div>
-                <button onclick="saveProfile()" class="premium-btn btn-green h-[50px] mt-4 flex justify-center items-center rounded-[18px] font-semibold tracking-[0.12em] text-[11px] uppercase outline-none w-full">
-                    Сохранить профиль
-                </button>
+                <button id="btnSaveProfile" class="premium-btn btn-green h-[50px] mt-4 flex justify-center items-center rounded-[18px] font-semibold tracking-[0.12em] text-[11px] uppercase outline-none w-full">Сохранить профиль</button>
             </div>
 
-            <button onclick="logoutUser()" class="w-full text-center text-[11px] uppercase tracking-[0.12em] text-neutral-400 hover:text-red-500 transition-colors mt-6">
-                Выйти из аккаунта
-            </button>
+            <button onclick="logoutUser()" class="w-full text-center text-[11px] uppercase tracking-[0.12em] text-neutral-400 hover:text-red-500 transition-colors mt-6">Выйти из аккаунта</button>
         </div>
     </main>
 
-    <!-- Нижняя навигация (только для клиента) -->
     <nav id="bottom-nav" class="bottom-nav">
         <div class="nav-item active" onclick="switchClientTab('services')" id="nav-services">
             <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 10h16M4 14h16M4 18h16" /></svg>
@@ -453,8 +540,8 @@
 
             <div class="bg-white/40 border border-white/60 rounded-[24px] p-5">
                 <h4 class="text-[12px] font-semibold tracking-[0.15em] uppercase text-neutral-700 mb-4 text-center">Шаг 3: Действие</h4>
-                <button onclick="applySchedule()" class="premium-btn btn-green w-full h-[50px] mb-3 flex justify-center items-center rounded-[18px] text-[11px] uppercase font-semibold tracking-[0.12em]">Добавить время на выбранные даты</button>
-                <button onclick="clearSchedule()" class="premium-btn btn-red w-full h-[50px] flex justify-center items-center rounded-[18px] text-[11px] uppercase font-semibold tracking-[0.12em]">Удалить все слоты с выбранных дат</button>
+                <button id="btnApplySchedule" class="premium-btn btn-green w-full h-[50px] mb-3 flex justify-center items-center rounded-[18px] text-[11px] uppercase font-semibold tracking-[0.12em]">Добавить время на выбранные даты</button>
+                <button id="btnClearSchedule" class="premium-btn btn-red w-full h-[50px] flex justify-center items-center rounded-[18px] text-[11px] uppercase font-semibold tracking-[0.12em]">Удалить все слоты с выбранных дат</button>
             </div>
         </div>
     </main>
@@ -466,7 +553,6 @@
     <script>
         const ADMIN_PIN = "1234";
         const TG_USERNAME = "aandvl";
-        
         const firebaseConfig = {
             apiKey: "AIzaSyAWygW7luBG8myNfXqIkm53PlniW7-_i_A",
             authDomain: "browslashes-17fd3.firebaseapp.com",
@@ -477,43 +563,57 @@
             measurementId: "G-BFEE6HDL76"
         };
 
+        // Строгая инициализация Firebase
         let db = null;
         try {
-            if (!firebase.apps.length) {
+            if (typeof firebase !== 'undefined' && !firebase.apps.length) {
                 firebase.initializeApp(firebaseConfig);
                 db = firebase.firestore();
-            } else {
+            } else if (typeof firebase !== 'undefined' && firebase.apps.length) {
                 db = firebase.app().firestore();
             }
         } catch (e) {
-            console.error("Ошибка инициализации Firebase:", e);
+            console.error("Firebase Init Error:", e);
         }
 
+        // Генерация UUID локально, чтобы не зависеть от доступности БД при создании профиля
+        function generateUUID() {
+            return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+                const r = Math.random() * 16 | 0, v = c == 'x' ? r : (r & 0x3 | 0x8);
+                return v.toString(16);
+            });
+        }
+
+        // Глобальное состояние
         const selectedServices = [];
         let totalPrice = 0;
         let selectedTimeSlot = null;
         let isFirstVisit = !localStorage.getItem('hasBookedBefore');
-        
-        let currentUserId = localStorage.getItem('appUserId');
-        let currentUserData = null;
-
-        const cards = document.querySelectorAll('.spotlight-card');
-        const toast = document.getElementById('toast');
-        const clientView = document.getElementById('client-view');
-        const adminView = document.getElementById('admin-view');
-        const bottomNav = document.getElementById('bottom-nav');
+        let currentUserId = localStorage.getItem('appUserId') || generateUUID();
+        localStorage.setItem('appUserId', currentUserId);
 
         let clientCalState = { month: new Date().getMonth(), year: new Date().getFullYear(), selectedDate: null };
         let adminCalState = { month: new Date().getMonth(), year: new Date().getFullYear(), selectedDates: [] };
         let adminSelectedTimes = [];
 
-        // Улучшенный showToast с очисткой таймера
+        // UI Утилиты
         let toastTimer = null;
         function showToast(message) {
-            toast.textContent = message;
-            toast.classList.add('show');
+            const t = document.getElementById('toast');
+            if (!t) return;
+            t.textContent = message;
+            t.classList.add('show');
             clearTimeout(toastTimer);
-            toastTimer = setTimeout(() => toast.classList.remove('show'), 3500);
+            toastTimer = setTimeout(() => t.classList.remove('show'), 4000);
+        }
+
+        function handleDbError(err, context) {
+            console.error(`DB Error [${context}]:`, err);
+            if (err && err.code === 'permission-denied') {
+                showToast(`Ошибка прав Firestore: ${context}. Проверьте правила безопасности.`);
+            } else {
+                showToast(`Ошибка БД (${context}). Попробуйте позже.`);
+            }
         }
 
         function updateTotalPrice() {
@@ -524,7 +624,7 @@
                 document.getElementById('discountText').innerText = `Скидка 15% на первый визит применена!`;
                 document.getElementById('discountText').classList.remove('text-neutral-400');
                 document.getElementById('discountText').classList.add('text-green-600', 'font-medium');
-            } else if (!isFirstVisit || totalPrice === 0) {
+            } else {
                 document.getElementById('discountBadge').classList.add('hidden');
                 document.getElementById('discountText').innerText = `На первое посещение действует скидка 15%`;
                 document.getElementById('discountText').classList.add('text-neutral-400');
@@ -536,46 +636,50 @@
         // ====== ЛОГИКА ПРОФИЛЯ ======
         function initUser() {
             if (!db) return;
-            if (!currentUserId) {
-                currentUserId = db.collection('users').doc().id;
-                localStorage.setItem('appUserId', currentUserId);
-            }
             db.collection('users').doc(currentUserId).onSnapshot(doc => {
                 if (doc.exists) {
-                    currentUserData = doc.data();
-                    const ln = document.getElementById('profileLastName');
-                    const fn = document.getElementById('profileFirstName');
-                    const pn = document.getElementById('profilePatronymic');
-                    const ph = document.getElementById('profilePhone');
-                    if(ln) ln.value = currentUserData.lastName || '';
-                    if(fn) fn.value = currentUserData.firstName || '';
-                    if(pn) pn.value = currentUserData.patronymic || '';
-                    if(ph) ph.value = currentUserData.phone || '';
+                    const data = doc.data();
+                    document.getElementById('profileLastName').value = data.lastName || '';
+                    document.getElementById('profileFirstName').value = data.firstName || '';
+                    document.getElementById('profilePatronymic').value = data.patronymic || '';
+                    document.getElementById('profilePhone').value = data.phone || '';
                 }
-            }, err => console.error("Error fetching user:", err));
+            }, err => handleDbError(err, 'Загрузка профиля'));
         }
 
-        function saveProfile() {
+        async function saveProfile() {
             if (!db) return showToast('База данных недоступна');
+            const btn = document.getElementById('btnSaveProfile');
+            const originalText = btn.innerText;
+            btn.innerHTML = '<span class="loader-dot"></span>';
+            btn.disabled = true;
+
             const lastName = document.getElementById('profileLastName').value.trim();
             const firstName = document.getElementById('profileFirstName').value.trim();
-            const patronymic = document.getElementById('profilePatronymic').value.trim();
             const phone = document.getElementById('profilePhone').value.trim();
 
             if (!firstName || !lastName || !phone) {
                 showToast('Заполните Фамилию, Имя и Телефон.');
+                btn.innerText = originalText;
+                btn.disabled = false;
                 return;
             }
 
-            db.collection('users').doc(currentUserId).set({
-                lastName, firstName, patronymic, phone,
-                updatedAt: firebase.firestore.FieldValue.serverTimestamp()
-            }, { merge: true }).then(() => {
+            try {
+                await db.collection('users').doc(currentUserId).set({
+                    lastName,
+                    firstName,
+                    patronymic: document.getElementById('profilePatronymic').value.trim(),
+                    phone,
+                    updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+                }, { merge: true });
                 showToast('Профиль успешно сохранен!');
-            }).catch(err => {
-                console.error(err);
-                showToast('Ошибка сохранения профиля. Проверьте правила Firebase.');
-            });
+            } catch (err) {
+                handleDbError(err, 'Сохранение профиля');
+            } finally {
+                btn.innerText = originalText;
+                btn.disabled = false;
+            }
         }
 
         function logoutUser() {
@@ -586,15 +690,14 @@
 
         function switchClientTab(tab) {
             document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
-            const navEl = document.getElementById(`nav-${tab}`);
-            if(navEl) navEl.classList.add('active');
-
+            document.getElementById(`nav-${tab}`).classList.add('active');
+            
             document.getElementById('tab-services').classList.add('hidden');
             document.getElementById('tab-appointments').classList.add('hidden');
             document.getElementById('tab-profile').classList.add('hidden');
-
+            
             document.getElementById(`tab-${tab}`).classList.remove('hidden');
-
+            
             if (tab === 'appointments') fetchUserAppointments();
         }
 
@@ -602,26 +705,19 @@
             if (!db) return;
             const list = document.getElementById('userAppointmentsList');
             list.innerHTML = '<p class="text-center text-neutral-500 py-10">Загрузка записей...</p>';
-
+            
             db.collection('bookings').where('userId', '==', currentUserId).onSnapshot(snapshot => {
                 if (snapshot.empty) {
                     list.innerHTML = '<p class="text-center text-neutral-500 py-10">У вас пока нет записей.</p>';
                     return;
                 }
-
                 list.innerHTML = '';
-                const bookings = snapshot.docs.sort((a, b) => {
-                    const aDate = a.data().timestamp?.toMillis() || 0;
-                    const bDate = b.data().timestamp?.toMillis() || 0;
-                    return bDate - aDate;
-                });
-
-                bookings.forEach(doc => {
+                snapshot.docs.sort((a, b) => (b.data().timestamp?.toMillis() || 0) - (a.data().timestamp?.toMillis() || 0)).forEach(doc => {
                     const b = doc.data();
                     let statusClass = 'status-pending', statusText = 'Ожидает';
                     if (b.status === 'approved') { statusClass = 'status-approved'; statusText = 'Подтверждена'; }
                     if (b.status === 'rejected') { statusClass = 'status-rejected'; statusText = 'Отклонена'; }
-
+                    
                     const card = document.createElement('div');
                     card.className = 'admin-card p-5';
                     card.innerHTML = `
@@ -635,123 +731,152 @@
                     `;
                     list.appendChild(card);
                 });
-            }, err => {
-                console.error(err);
-                list.innerHTML = '<p class="text-center text-red-500 py-10">Ошибка загрузки записей.</p>';
-            });
+            }, err => handleDbError(err, 'Загрузка записей'));
         }
 
         // ====== ЛОГИКА УСЛУГ ======
-        cards.forEach(card => {
+        document.querySelectorAll('.spotlight-card').forEach(card => {
             card.addEventListener('mousemove', (e) => {
                 if (card.classList.contains('is-selected')) return;
                 const rect = card.getBoundingClientRect();
                 const x = e.clientX - rect.left, y = e.clientY - rect.top;
-                card.style.setProperty('--x', `${x}px`); card.style.setProperty('--y', `${y}px`);
+                card.style.setProperty('--x', `${x}px`);
+                card.style.setProperty('--y', `${y}px`);
+                
                 const centerX = rect.width / 2, centerY = rect.height / 2;
-                const rotateX = ((y - centerY) / centerY) * -5, rotateY = ((x - centerX) / centerX) * 5;
+                const rotateX = ((y - centerY) / centerY) * -5;
+                const rotateY = ((x - centerX) / centerX) * 5;
+                
                 card.style.transform = `perspective(800px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale3d(1.015, 1.015, 1.015)`;
                 const content = card.querySelector('.card-content');
-                if(content) content.style.transform = `translateZ(25px) translateX(${rotateY * 0.5}px) translateY(${rotateX * -0.5}px)`;
+                if(content) content.style.transform = `translateZ(25px)`;
             });
 
             card.addEventListener('mouseleave', () => {
-                card.style.transform = ''; const content = card.querySelector('.card-content');
-                if(content) content.style.transform = '';
+                card.style.transform = '';
+                const c = card.querySelector('.card-content');
+                if(c) c.style.transform = '';
             });
 
             const toggleSelection = () => {
-                const name = card.getAttribute('data-name'), price = parseInt(card.getAttribute('data-price'), 10);
+                const name = card.getAttribute('data-name');
+                const price = parseInt(card.getAttribute('data-price'), 10);
                 const isSelected = card.classList.toggle('is-selected');
-                card.setAttribute('aria-pressed', isSelected);
-                if (isSelected) { totalPrice += price; selectedServices.push(name); } 
-                else { totalPrice -= price; const index = selectedServices.indexOf(name); if (index > -1) selectedServices.splice(index, 1); }
+                
+                if (isSelected) {
+                    totalPrice += price;
+                    selectedServices.push(name);
+                } else {
+                    totalPrice -= price;
+                    const i = selectedServices.indexOf(name);
+                    if (i > -1) selectedServices.splice(i, 1);
+                }
                 updateTotalPrice();
             };
 
             card.addEventListener('click', toggleSelection);
-            card.addEventListener('keydown', (e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); toggleSelection(); } });
+            card.addEventListener('keydown', (e) => {
+                if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault();
+                    toggleSelection();
+                }
+            });
         });
 
         function chooseMessenger(messenger) {
-            if (selectedServices.length === 0) { 
-                showToast('Пожалуйста, выберите сначала хотя бы одну процедуру.'); 
-                return; 
+            if (selectedServices.length === 0) {
+                showToast('Пожалуйста, выберите сначала хотя бы одну процедуру.');
+                return;
             }
-            const calendarBlock = document.getElementById('calendarBlock');
-            calendarBlock.classList.remove('hidden');
+            const calBlock = document.getElementById('calendarBlock');
+            calBlock.classList.remove('hidden');
             renderCalendar('client');
             setTimeout(() => {
-                calendarBlock.classList.remove('scale-95', 'opacity-0');
-                calendarBlock.classList.add('scale-100', 'opacity-100');
-                calendarBlock.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+                calBlock.classList.remove('scale-95', 'opacity-0');
+                calBlock.classList.add('scale-100', 'opacity-100');
+                calBlock.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
             }, 50);
         }
 
         function closeCalendar() {
-            const calendarBlock = document.getElementById('calendarBlock');
-            calendarBlock.classList.add('scale-95', 'opacity-0');
-            calendarBlock.classList.remove('scale-100', 'opacity-100');
-            setTimeout(() => calendarBlock.classList.add('hidden'), 500);
+            const b = document.getElementById('calendarBlock');
+            b.classList.add('scale-95', 'opacity-0');
+            b.classList.remove('scale-100', 'opacity-100');
+            setTimeout(() => b.classList.add('hidden'), 500);
         }
 
-        function formatDate(dateString) { if (!dateString) return ''; const [year, month, day] = dateString.split('-'); return `${day}.${month}.${year}`; }
+        function formatDate(ds) {
+            if (!ds) return '';
+            const [y, m, d] = ds.split('-');
+            return `${d}.${m}.${y}`;
+        }
 
         // ====== ЛОГИКА КАЛЕНДАРЕЙ ======
         function renderCalendar(target) {
             const state = target === 'client' ? clientCalState : adminCalState;
-            const containerId = target === 'client' ? 'clientCalendar' : 'adminCalendar';
-            const container = document.getElementById(containerId);
+            const container = document.getElementById(target === 'client' ? 'clientCalendar' : 'adminCalendar');
             if(!container) return;
             
-            const monthNames = ["Январь", "Февраль", "Март", "Апрель", "Май", "Июнь", "Июль", "Август", "Сентябрь", "Октябрь", "Ноябрь", "Декабрь"];
+            const mN = ["Январь", "Февраль", "Март", "Апрель", "Май", "Июнь", "Июль", "Август", "Сентябрь", "Октябрь", "Ноябрь", "Декабрь"];
             
-            let html = `
+            container.innerHTML = `
                 <div class="flex justify-between items-center mb-4">
-                    <button id="${target}-cal-prev" class="p-2 rounded-lg hover:bg-neutral-200/50 transition-colors"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" /></svg></button>
-                    <span class="font-semibold text-sm">${monthNames[state.month]} ${state.year}</span>
-                    <button id="${target}-cal-next" class="p-2 rounded-lg hover:bg-neutral-200/50 transition-colors"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" /></svg></button>
+                    <button id="${target}-prev" class="p-2">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" /></svg>
+                    </button>
+                    <span class="font-semibold text-sm">${mN[state.month]} ${state.year}</span>
+                    <button id="${target}-next" class="p-2">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" /></svg>
+                    </button>
                 </div>
-                <div class="calendar-grid text-center text-[10px] text-neutral-400 mb-2"><div>Пн</div><div>Вт</div><div>Ср</div><div>Чт</div><div>Пт</div><div>Сб</div><div>Вс</div></div>
-                <div class="calendar-grid" id="${target}-cal-grid"></div>`;
-            container.innerHTML = html;
+                <div class="calendar-grid text-center text-[10px] text-neutral-400 mb-2">
+                    <div>Пн</div><div>Вт</div><div>Ср</div><div>Чт</div><div>Пт</div><div>Сб</div><div>Вс</div>
+                </div>
+                <div class="calendar-grid" id="${target}-grid"></div>
+            `;
+            
+            document.getElementById(`${target}-prev`).onclick = () => {
+                state.month--;
+                if (state.month < 0) { state.month = 11; state.year--; }
+                renderCalendar(target);
+            };
+            
+            document.getElementById(`${target}-next`).onclick = () => {
+                state.month++;
+                if (state.month > 11) { state.month = 0; state.year++; }
+                renderCalendar(target);
+            };
 
-            document.getElementById(`${target}-cal-prev`).onclick = () => { state.month--; if (state.month < 0) { state.month = 11; state.year--; } renderCalendar(target); };
-            document.getElementById(`${target}-cal-next`).onclick = () => { state.month++; if (state.month > 11) { state.month = 0; state.year++; } renderCalendar(target); };
-
-            const grid = document.getElementById(`${target}-cal-grid`);
-            const firstDay = new Date(state.year, state.month, 1).getDay() || 7;
-            const daysInMonth = new Date(state.year, state.month + 1, 0).getDate();
-            for (let i = 1; i < firstDay; i++) grid.innerHTML += `<div></div>`;
-
-            for (let day = 1; day <= daysInMonth; day++) {
+            const grid = document.getElementById(`${target}-grid`);
+            const fDay = new Date(state.year, state.month, 1).getDay() || 7;
+            const dInM = new Date(state.year, state.month + 1, 0).getDate();
+            
+            for (let i = 1; i < fDay; i++) grid.innerHTML += `<div></div>`;
+            
+            for (let day = 1; day <= dInM; day++) {
                 const dateStr = `${state.year}-${String(state.month + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
                 const today = new Date(); today.setHours(0,0,0,0);
                 const cellDate = new Date(state.year, state.month, day);
-                const isPast = cellDate < today;
-                const isToday = cellDate.getTime() === today.getTime();
-                let isSelected = false;
-                if (target === 'client') isSelected = clientCalState.selectedDate === dateStr;
-                else isSelected = adminCalState.selectedDates.includes(dateStr);
-
-                let classes = 'cal-day';
-                if (isPast) classes += ' cal-disabled';
-                if (isToday) classes += ' cal-today';
-                if (isSelected) classes += target === 'client' ? ' cal-selected' : ' cal-multi-selected';
-                grid.innerHTML += `<div class="${classes}" data-date="${dateStr}">${day}</div>`;
+                let isSelected = target === 'client' ? clientCalState.selectedDate === dateStr : adminCalState.selectedDates.includes(dateStr);
+                let cls = 'cal-day';
+                if (cellDate < today) cls += ' cal-disabled';
+                if (cellDate.getTime() === today.getTime()) cls += ' cal-today';
+                if (isSelected) cls += target === 'client' ? ' cal-selected' : ' cal-multi-selected';
+                grid.innerHTML += `<div class="${cls}" data-date="${dateStr}">${day}</div>`;
             }
-
+            
             grid.querySelectorAll('.cal-day:not(.cal-disabled)').forEach(el => {
                 el.onclick = () => {
                     const dateStr = el.getAttribute('data-date');
                     if (target === 'client') {
-                        clientCalState.selectedDate = dateStr; renderCalendar('client'); fetchAvailableTimes(dateStr);
+                        clientCalState.selectedDate = dateStr;
+                        renderCalendar('client');
+                        fetchAvailableTimes(dateStr);
                     } else {
                         const idx = adminCalState.selectedDates.indexOf(dateStr);
                         if (idx > -1) adminCalState.selectedDates.splice(idx, 1);
                         else adminCalState.selectedDates.push(dateStr);
-                        const counter = document.getElementById('dateCounter');
-                        if(counter) counter.innerText = `Выбрано: ${adminCalState.selectedDates.length}`;
+                        document.getElementById('dateCounter').innerText = `Выбрано: ${adminCalState.selectedDates.length}`;
                         renderCalendar('admin');
                     }
                 };
@@ -760,163 +885,221 @@
 
         function fetchAvailableTimes(dateStr) {
             if (!db) return;
-            const container = document.getElementById('timeSlotsContainer'), submitBtn = document.getElementById('submitBookingBtn');
-            selectedTimeSlot = null; submitBtn.disabled = true;
-            container.innerHTML = '<p class="text-[12px] text-neutral-400">Загрузка...</p>';
+            const c = document.getElementById('timeSlotsContainer'), btn = document.getElementById('submitBookingBtn');
+            selectedTimeSlot = null;
+            btn.disabled = true;
+            c.innerHTML = '<p class="text-[12px] text-neutral-400">Загрузка...</p>';
+            
             db.collection("schedule").doc(dateStr).onSnapshot(doc => {
-                container.innerHTML = '';
+                c.innerHTML = '';
                 if (doc.exists && doc.data().times && doc.data().times.length > 0) {
                     doc.data().times.sort().forEach(time => {
-                        const btn = document.createElement('button'); btn.className = 'time-slot'; btn.innerText = time;
-                        btn.onclick = () => selectTimeSlot(btn, time); container.appendChild(btn);
+                        const b = document.createElement('button');
+                        b.className = 'time-slot';
+                        b.innerText = time;
+                        b.onclick = () => {
+                            document.querySelectorAll('#timeSlotsContainer .time-slot').forEach(x => x.classList.remove('is-selected'));
+                            b.classList.add('is-selected');
+                            selectedTimeSlot = time;
+                            btn.disabled = false;
+                        };
+                        c.appendChild(b);
                     });
-                } else container.innerHTML = '<p class="text-[12px] text-neutral-400 w-full text-center">На эту дату нет свободного времени</p>';
-            }, err => console.error(err));
+                } else {
+                    c.innerHTML = '<p class="text-[12px] text-neutral-400 w-full text-center">На эту дату нет свободного времени</p>';
+                }
+            }, err => handleDbError(err, 'Загрузка времени'));
         }
 
-        function selectTimeSlot(btn, time) {
-            document.querySelectorAll('#timeSlotsContainer .time-slot').forEach(b => b.classList.remove('is-selected'));
-            btn.classList.add('is-selected'); selectedTimeSlot = time;
-            document.getElementById('submitBookingBtn').disabled = false;
-        }
-
-        function generateAndSend() {
+        async function generateAndSend() {
             if (!db) return showToast('База данных недоступна');
             const rawDate = clientCalState.selectedDate;
-            if (!rawDate || !selectedTimeSlot) { showToast('Пожалуйста, выберите дату и время.'); return; }
-
+            if (!rawDate || !selectedTimeSlot) return showToast('Выберите дату и время.');
+            
             const formattedDate = formatDate(rawDate);
-            let proceduresText = '';
-            if (selectedServices.length === 1) proceduresText = `процедуру: ${selectedServices[0]}`;
-            else if (selectedServices.length > 1) { const last = selectedServices[selectedServices.length - 1]; const otherServices = selectedServices.slice(0, -1).join(', '); proceduresText = `процедуры: ${otherServices} и ${last}`; }
-
-            let textMessage = `Здравствуйте, хочу записаться на ${proceduresText}. Дата ${formattedDate} ${selectedTimeSlot}.`;
-            if (isFirstVisit) textMessage += ` (Это мой первый визит, применена скидка 15%)`;
-            const encodedText = encodeURIComponent(textMessage);
-
-            db.collection("bookings").add({
-                services: selectedServices.join(', '), date: formattedDate, rawDate: rawDate, time: selectedTimeSlot,
-                timestamp: firebase.firestore.FieldValue.serverTimestamp(), status: 'pending',
-                isFirstVisit: isFirstVisit, userId: currentUserId
-            }).then(() => { 
-                localStorage.setItem('hasBookedBefore', 'true'); 
-                isFirstVisit = false; 
+            let pText = selectedServices.length === 1 
+                ? `процедуру: ${selectedServices[0]}` 
+                : `процедуры: ${selectedServices.slice(0, -1).join(', ')} и ${selectedServices[selectedServices.length - 1]}`;
+                
+            let msg = `Здравствуйте, хочу записаться на ${pText}. Дата ${formattedDate} ${selectedTimeSlot}.`;
+            if (isFirstVisit) msg += ` (Это мой первый визит, применена скидка 15%)`;
+            
+            try {
+                await db.collection("bookings").add({
+                    services: selectedServices.join(', '),
+                    date: formattedDate,
+                    rawDate,
+                    time: selectedTimeSlot,
+                    timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+                    status: 'pending',
+                    isFirstVisit,
+                    userId: currentUserId
+                });
+                
+                localStorage.setItem('hasBookedBefore', 'true');
+                isFirstVisit = false;
                 updateTotalPrice();
-            }).catch(err => {
-                console.error("Ошибка записи в БД:", err);
-                showToast("Ошибка: не удалось создать заявку. Проверьте правила Firestore.");
-            });
-
-            window.open(`https://t.me/${TG_USERNAME}?text=${encodedText}`, '_blank', 'noopener,noreferrer');
-            closeCalendar();
-            setTimeout(() => {
-                cards.forEach(c => { c.classList.remove('is-selected'); c.setAttribute('aria-pressed', 'false'); });
-                selectedServices.length = 0; totalPrice = 0; updateTotalPrice();
-            }, 1000);
+                
+                window.open(`https://t.me/${TG_USERNAME}?text=${encodeURIComponent(msg)}`, '_blank', 'noopener,noreferrer');
+                closeCalendar();
+                
+                setTimeout(() => {
+                    document.querySelectorAll('.spotlight-card').forEach(c => {
+                        c.classList.remove('is-selected');
+                        c.setAttribute('aria-pressed', 'false');
+                    });
+                    selectedServices.length = 0;
+                    totalPrice = 0;
+                    updateTotalPrice();
+                }, 1000);
+            } catch (err) {
+                handleDbError(err, 'Создание заявки');
+            }
         }
 
-        // ====== ЛОГИКА АДМИНА ======
+        // ====== ЛОГИКА АДМИНКИ ======
         function checkAdminRoute() {
             if (window.location.hash === '#admin') {
-                const isAdmin = sessionStorage.getItem('isAdmin');
-                if (isAdmin === 'true') showAdminPanel();
-                else {
+                if (sessionStorage.getItem('isAdmin') === 'true') {
+                    showAdminPanel();
+                } else {
                     const pin = prompt('Введите PIN-код:');
-                    if (pin === ADMIN_PIN) { sessionStorage.setItem('isAdmin', 'true'); showAdminPanel(); }
-                    else { alert('Неверный PIN-код.'); window.location.hash = ''; }
+                    if (pin === ADMIN_PIN) {
+                        sessionStorage.setItem('isAdmin', 'true');
+                        showAdminPanel();
+                    } else {
+                        alert('Неверный PIN-код.');
+                        window.location.hash = '';
+                    }
                 }
             } else {
-                adminView.classList.add('hidden');
-                clientView.classList.remove('hidden');
-                bottomNav.classList.remove('hidden');
+                document.getElementById('admin-view').classList.add('hidden');
+                document.getElementById('client-view').classList.remove('hidden');
+                document.getElementById('bottom-nav').classList.remove('hidden');
             }
         }
 
         function showAdminPanel() {
-            clientView.classList.add('hidden');
-            bottomNav.classList.add('hidden');
-            adminView.classList.remove('hidden');
+            document.getElementById('client-view').classList.add('hidden');
+            document.getElementById('bottom-nav').classList.add('hidden');
+            document.getElementById('admin-view').classList.remove('hidden');
             switchAdminTab('bookings');
         }
 
         function logoutAdmin() {
-            sessionStorage.removeItem('isAdmin'); window.location.hash = ''; window.location.reload();
+            sessionStorage.removeItem('isAdmin');
+            window.location.hash = '';
+            window.location.reload();
         }
 
         function switchAdminTab(tab) {
-            const btnBookings = document.getElementById('tab-btn-bookings'), btnSchedule = document.getElementById('tab-btn-schedule');
-            const viewBookings = document.getElementById('admin-bookings-view'), viewSchedule = document.getElementById('admin-schedule-view');
+            const bB = document.getElementById('tab-btn-bookings'), bS = document.getElementById('tab-btn-schedule');
+            const vB = document.getElementById('admin-bookings-view'), vS = document.getElementById('admin-schedule-view');
+            
             if (tab === 'bookings') {
-                btnBookings.classList.replace('tab-inactive', 'tab-active');
-                btnSchedule.classList.replace('tab-active', 'tab-inactive');
-                viewBookings.classList.remove('hidden'); viewSchedule.classList.add('hidden');
+                bB.classList.replace('tab-inactive', 'tab-active');
+                bS.classList.replace('tab-active', 'tab-inactive');
+                vB.classList.remove('hidden');
+                vS.classList.add('hidden');
                 listenToBookings();
             } else {
-                btnSchedule.classList.replace('tab-inactive', 'tab-active');
-                btnBookings.classList.replace('tab-active', 'tab-inactive');
-                viewSchedule.classList.remove('hidden'); viewBookings.classList.add('hidden');
-                renderCalendar('admin'); renderTimeGrid();
+                bS.classList.replace('tab-inactive', 'tab-active');
+                bB.classList.replace('tab-active', 'tab-inactive');
+                vS.classList.remove('hidden');
+                vB.classList.add('hidden');
+                renderCalendar('admin');
+                renderTimeGrid();
             }
         }
 
-        let unsubscribeBookings = null;
+        let unsubBookings = null;
         function listenToBookings() {
             if (!db) return;
-            if (unsubscribeBookings) unsubscribeBookings();
-            unsubscribeBookings = db.collection("bookings").orderBy("timestamp", "desc").onSnapshot(snapshot => {
+            if (unsubBookings) unsubBookings();
+            
+            unsubBookings = db.collection("bookings").orderBy("timestamp", "desc").onSnapshot(snap => {
                 const list = document.getElementById('admin-list');
-                if (snapshot.empty) { list.innerHTML = '<p class="text-center text-neutral-500 py-10">Новых заявок нет.</p>'; return; }
+                if (snap.empty) {
+                    list.innerHTML = '<p class="text-center text-neutral-500 py-10">Новых заявок нет.</p>';
+                    return;
+                }
                 list.innerHTML = '';
-                snapshot.forEach(doc => {
+                snap.forEach(doc => {
                     const b = doc.data(), id = doc.id;
-                    let statusClass = 'status-pending', statusText = 'Ожидает';
-                    if (b.status === 'approved') { statusClass = 'status-approved'; statusText = 'Подтверждена'; }
-                    if (b.status === 'rejected') { statusClass = 'status-rejected'; statusText = 'Отклонена'; }
-                    let dateStr = 'Только что';
-                    if (b.timestamp && b.timestamp.toDate) dateStr = b.timestamp.toDate().toLocaleString('ru-RU');
-                    const visitBadge = b.isFirstVisit ? `<span class="ml-2 text-[10px] bg-green-100 text-green-700 px-2 py-1 rounded-full">1-й визит</span>` : '';
-
+                    let sC = 'status-pending', sT = 'Ожидает';
+                    if (b.status === 'approved') { sC = 'status-approved'; sT = 'Подтверждена'; }
+                    if (b.status === 'rejected') { sC = 'status-rejected'; sT = 'Отклонена'; }
+                    
+                    let dStr = 'Только что';
+                    if (b.timestamp && b.timestamp.toDate) dStr = b.timestamp.toDate().toLocaleString('ru-RU');
+                    
+                    const vB = b.isFirstVisit ? `<span class="ml-2 text-[10px] bg-green-100 text-green-700 px-2 py-1 rounded-full">1-й визит</span>` : '';
                     const card = document.createElement('div');
                     card.className = 'admin-card p-5';
                     card.innerHTML = `
                         <div class="flex justify-between items-start mb-3">
                             <div>
-                                <p class="text-[14px] font-semibold text-neutral-900">${b.services} ${visitBadge}</p>
+                                <p class="text-[14px] font-semibold text-neutral-900">${b.services} ${vB}</p>
                                 <p class="text-[12px] text-neutral-500 mt-1">${b.date} в ${b.time}</p>
                             </div>
-                            <span class="text-[10px] uppercase tracking-wide ${statusClass} bg-neutral-100 px-2 py-1 rounded-full">${statusText}</span>
+                            <span class="text-[10px] uppercase tracking-wide ${sC} bg-neutral-100 px-2 py-1 rounded-full">${sT}</span>
                         </div>
-                        <p class="text-[10px] text-neutral-400 mb-4">Заявка от: ${dateStr}</p>
+                        <p class="text-[10px] text-neutral-400 mb-4">Заявка от: ${dStr}</p>
                         ${b.status === 'pending' ? `
                         <div class="flex gap-2 mt-2">
-                            <button onclick="approveBooking('${id}', '${b.rawDate}', '${b.time}')" class="flex-1 py-2 rounded-xl text-white text-[11px] uppercase tracking-wide font-semibold btn-green transition-all">Подтвердить</button>
-                            <button onclick="updateBookingStatus('${id}', 'rejected')" class="flex-1 py-2 rounded-xl text-white text-[11px] uppercase tracking-wide font-semibold btn-red transition-all">Отклонить</button>
-                        </div>` : ''}`;
+                            <button onclick="approveBooking('${id}', '${b.rawDate}', '${b.time}')" class="flex-1 py-2 rounded-xl text-white text-[11px] uppercase tracking-wide font-semibold btn-green">Подтвердить</button>
+                            <button onclick="updateBookingStatus('${id}', 'rejected')" class="flex-1 py-2 rounded-xl text-white text-[11px] uppercase tracking-wide font-semibold btn-red">Отклонить</button>
+                        </div>` : ''}
+                    `;
                     list.appendChild(card);
                 });
-            }, err => console.error(err));
+            }, err => handleDbError(err, 'Загрузка заявок'));
         }
 
-        function approveBooking(bookingId, rawDate, time) {
+        async function approveBooking(bookingId, rawDate, time) {
             if (!db) return;
-            db.collection("schedule").doc(rawDate).update({ times: firebase.firestore.FieldValue.arrayRemove(time) })
-            .then(() => db.collection("bookings").doc(bookingId).update({ status: 'approved' }))
-            .catch(() => db.collection("bookings").doc(bookingId).update({ status: 'approved' }));
+            try {
+                await db.collection("schedule").doc(rawDate).update({
+                    times: firebase.firestore.FieldValue.arrayRemove(time)
+                });
+                await db.collection("bookings").doc(bookingId).update({ status: 'approved' });
+            } catch (err) {
+                // Если слота уже нет, просто подтверждаем
+                try {
+                    await db.collection("bookings").doc(bookingId).update({ status: 'approved' });
+                } catch (e) {
+                    handleDbError(e, 'Подтверждение');
+                }
+            }
         }
 
-        function updateBookingStatus(id, status) { if (db) db.collection("bookings").doc(id).update({ status: status }); }
+        async function updateBookingStatus(id, status) {
+            if (db) {
+                try {
+                    await db.collection("bookings").doc(id).update({ status });
+                } catch(e) {
+                    handleDbError(e, 'Статус');
+                }
+            }
+        }
 
         function renderTimeGrid() {
-            const grid = document.getElementById('adminTimeGrid'); 
+            const grid = document.getElementById('adminTimeGrid');
             if(!grid) return;
             grid.innerHTML = '';
-            const hours = ['08:00', '09:00', '10:00', '11:00', '12:00', '13:00', '14:00', '15:00', '16:00', '17:00', '18:00', '19:00', '20:00'];
-            hours.forEach(time => {
-                const btn = document.createElement('div'); btn.className = 'time-toggle'; btn.innerText = time;
+            ['08:00', '09:00', '10:00', '11:00', '12:00', '13:00', '14:00', '15:00', '16:00', '17:00', '18:00', '19:00', '20:00'].forEach(time => {
+                const btn = document.createElement('div');
+                btn.className = 'time-toggle';
+                btn.innerText = time;
                 btn.onclick = () => {
-                    const idx = adminSelectedTimes.indexOf(time);
-                    if (idx > -1) { adminSelectedTimes.splice(idx, 1); btn.classList.remove('is-selected'); } 
-                    else { adminSelectedTimes.push(time); btn.classList.add('is-selected'); }
+                    const i = adminSelectedTimes.indexOf(time);
+                    if (i > -1) {
+                        adminSelectedTimes.splice(i, 1);
+                        btn.classList.remove('is-selected');
+                    } else {
+                        adminSelectedTimes.push(time);
+                        btn.classList.add('is-selected');
+                    }
                 };
                 grid.appendChild(btn);
             });
@@ -928,51 +1111,73 @@
             if (type === 'day') adminSelectedTimes = ['12:00', '13:00', '14:00', '15:00'];
             if (type === 'evening') adminSelectedTimes = ['16:00', '17:00', '18:00', '19:00', '20:00'];
             if (type === 'full') adminSelectedTimes = ['08:00', '09:00', '10:00', '11:00', '12:00', '13:00', '14:00', '15:00', '16:00', '17:00', '18:00', '19:00', '20:00'];
+            
             document.querySelectorAll('#adminTimeGrid .time-toggle').forEach(btn => {
                 if (adminSelectedTimes.includes(btn.innerText)) btn.classList.add('is-selected');
                 else btn.classList.remove('is-selected');
             });
         }
 
-        function applySchedule() {
+        async function applySchedule() {
             if (!db) return showToast('База данных недоступна');
-            if (adminCalState.selectedDates.length === 0) return showToast('Сначала выберите даты в календаре.');
-            if (adminSelectedTimes.length === 0) return showToast('Сначала выберите время (часы).');
+            if (adminCalState.selectedDates.length === 0) return showToast('Сначала выберите даты.');
+            if (adminSelectedTimes.length === 0) return showToast('Сначала выберите время.');
             
+            const btn = document.getElementById('btnApplySchedule');
+            btn.innerHTML = '<span class="loader-dot"></span>';
+            btn.disabled = true;
+
             const batch = db.batch();
             adminCalState.selectedDates.forEach(dateStr => {
-                const ref = db.collection("schedule").doc(dateStr);
-                batch.set(ref, { times: firebase.firestore.FieldValue.arrayUnion(...adminSelectedTimes) }, { merge: true });
+                batch.set(
+                    db.collection("schedule").doc(dateStr), 
+                    { times: firebase.firestore.FieldValue.arrayUnion(...adminSelectedTimes) }, 
+                    { merge: true }
+                );
             });
-            
-            batch.commit().then(() => {
+
+            try {
+                await batch.commit();
                 showToast(`Успешно добавлено время на ${adminCalState.selectedDates.length} дат(ы).`);
-            }).catch(err => {
-                console.error(err);
-                showToast('Ошибка сохранения. Проверьте права доступа Firebase.');
-            });
+            } catch (err) {
+                handleDbError(err, 'Сохранение расписания');
+            } finally {
+                btn.innerText = 'Добавить время на выбранные даты';
+                btn.disabled = false;
+            }
         }
 
-        function clearSchedule() {
+        async function clearSchedule() {
             if (!db) return showToast('База данных недоступна');
-            if (adminCalState.selectedDates.length === 0) return showToast('Сначала выберите даты в календаре для очистки.');
+            if (adminCalState.selectedDates.length === 0) return showToast('Сначала выберите даты для очистки.');
             
+            const btn = document.getElementById('btnClearSchedule');
+            btn.innerHTML = '<span class="loader-dot"></span>';
+            btn.disabled = true;
+
             const batch = db.batch();
             adminCalState.selectedDates.forEach(dateStr => {
-                const ref = db.collection("schedule").doc(dateStr);
-                batch.set(ref, { times: [] }, { merge: true });
+                batch.set(db.collection("schedule").doc(dateStr), { times: [] }, { merge: true });
             });
-            
-            batch.commit().then(() => {
+
+            try {
+                await batch.commit();
                 showToast(`Расписание очищено для ${adminCalState.selectedDates.length} дат(ы).`);
-            }).catch(err => {
-                console.error(err);
-                showToast('Ошибка очистки. Проверьте права доступа Firebase.');
-            });
+            } catch (err) {
+                handleDbError(err, 'Очистка расписания');
+            } finally {
+                btn.innerText = 'Удалить все слоты с выбранных дат';
+                btn.disabled = false;
+            }
         }
 
+        // Явные слушатели событий для избежания проблем с областью видимости
         window.addEventListener('hashchange', checkAdminRoute);
         window.addEventListener('DOMContentLoaded', () => {
+            document.getElementById('btnSaveProfile').addEventListener('click', saveProfile);
+            document.getElementById('btnApplySchedule').addEventListener('click', applySchedule);
+            document.getElementById('btnClearSchedule').addEventListener('click', clearSchedule);
+            
             initUser();
             updateTotalPrice();
             checkAdminRoute();

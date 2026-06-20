@@ -1619,9 +1619,9 @@
         setTimeout(function() {
             contactMap = L.map('contact-map').setView([54.8885, 52.3224], 17);
 
-            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-                attribution: '&copy; OpenStreetMap'
-            }).addTo(contactMap);
+            L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
+    attribution: ''
+}).addTo(contactMap);
 
             L.marker([54.8885, 52.3224])
                 .addTo(contactMap)

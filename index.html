@@ -26,7 +26,7 @@
             -webkit-font-smoothing: antialiased;
             -moz-osx-font-smoothing: grayscale;
             overflow-x: hidden;
-            padding-bottom: 80px; /* Место для нижней панели */
+            padding-bottom: 100px; /* Место для нижней панели */
         }
 
         .premium-heading { letter-spacing: -0.03em; line-height: 1.15; }
@@ -141,7 +141,7 @@
         .premium-input:focus { border-color: #161616; background: rgba(255, 255, 255, 0.9); }
 
         @keyframes floatGradient {
-            0% { transform: translate(0, 0) rotate(0deg) scale(1); }
+            0% { transform: translate(0,0) rotate(0deg) scale(1); }
             33% { transform: translate(40px, -60px) rotate(8deg) scale(1.08); }
             66% { transform: translate(-30px, 30px) rotate(-4deg) scale(0.95); }
             100% { transform: translate(0, 0) rotate(0deg) scale(1); }
@@ -156,23 +156,31 @@
             will-change: transform;
         }
 
+        /* ИСПРАВЛЕННЫЙ TOAST: Больше не блокирует интерфейс */
         #toast {
             position: fixed;
-            bottom: 90px; /* Подняли над нижней панелью */
+            bottom: 90px;
             left: 50%;
-            transform: translateX(-50%) translateY(100px);
+            transform: translateX(-50%);
             background: #161616;
             color: #fff;
             padding: 12px 24px;
             border-radius: 12px;
             font-size: 14px;
             z-index: 100;
-            transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
             box-shadow: 0 4px 12px rgba(0,0,0,0.1);
             text-align: center;
             max-width: 90vw;
+            opacity: 0;
+            visibility: hidden;
+            pointer-events: none; /* Не перехватывает клики, когда скрыт */
+            transition: opacity 0.3s ease, visibility 0.3s ease;
         }
-        #toast.show { transform: translateX(-50%) translateY(0); }
+        #toast.show {
+            opacity: 1;
+            visibility: visible;
+            pointer-events: auto;
+        }
 
         .admin-card {
             background: rgba(255, 255, 255, 0.7);
@@ -206,7 +214,6 @@
         .tab-active { border-bottom: 2px solid #161616; color: #161616; }
         .tab-inactive { border-bottom: 2px solid transparent; color: #9ca3af; }
 
-        /* Стили для кастомного календаря */
         .calendar-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 4px; }
         .cal-day {
             aspect-ratio: 1;
@@ -233,7 +240,6 @@
         .quick-btn-danger { border-color: #fecaca; color: #dc2626; }
         .quick-btn-danger:hover { background: #fee2e2; }
 
-        /* Нижняя навигация */
         .bottom-nav {
             position: fixed;
             bottom: 10px;
@@ -471,12 +477,16 @@
             measurementId: "G-BFEE6HDL76"
         };
 
-        let db;
+        let db = null;
         try {
-            firebase.initializeApp(firebaseConfig);
-            db = firebase.firestore();
+            if (!firebase.apps.length) {
+                firebase.initializeApp(firebaseConfig);
+                db = firebase.firestore();
+            } else {
+                db = firebase.app().firestore();
+            }
         } catch (e) {
-            console.error("Ошибка инициализации Firebase", e);
+            console.error("Ошибка инициализации Firebase:", e);
         }
 
         const selectedServices = [];
@@ -484,7 +494,6 @@
         let selectedTimeSlot = null;
         let isFirstVisit = !localStorage.getItem('hasBookedBefore');
         
-        // Профиль пользователя
         let currentUserId = localStorage.getItem('appUserId');
         let currentUserData = null;
 
@@ -498,10 +507,13 @@
         let adminCalState = { month: new Date().getMonth(), year: new Date().getFullYear(), selectedDates: [] };
         let adminSelectedTimes = [];
 
+        // Улучшенный showToast с очисткой таймера
+        let toastTimer = null;
         function showToast(message) {
             toast.textContent = message;
             toast.classList.add('show');
-            setTimeout(() => toast.classList.remove('show'), 3000);
+            clearTimeout(toastTimer);
+            toastTimer = setTimeout(() => toast.classList.remove('show'), 3500);
         }
 
         function updateTotalPrice() {
@@ -512,7 +524,7 @@
                 document.getElementById('discountText').innerText = `Скидка 15% на первый визит применена!`;
                 document.getElementById('discountText').classList.remove('text-neutral-400');
                 document.getElementById('discountText').classList.add('text-green-600', 'font-medium');
-            } else if (!isFirstVisit) {
+            } else if (!isFirstVisit || totalPrice === 0) {
                 document.getElementById('discountBadge').classList.add('hidden');
                 document.getElementById('discountText').innerText = `На первое посещение действует скидка 15%`;
                 document.getElementById('discountText').classList.add('text-neutral-400');
@@ -523,6 +535,7 @@
 
         // ====== ЛОГИКА ПРОФИЛЯ ======
         function initUser() {
+            if (!db) return;
             if (!currentUserId) {
                 currentUserId = db.collection('users').doc().id;
                 localStorage.setItem('appUserId', currentUserId);
@@ -530,15 +543,20 @@
             db.collection('users').doc(currentUserId).onSnapshot(doc => {
                 if (doc.exists) {
                     currentUserData = doc.data();
-                    document.getElementById('profileLastName').value = currentUserData.lastName || '';
-                    document.getElementById('profileFirstName').value = currentUserData.firstName || '';
-                    document.getElementById('profilePatronymic').value = currentUserData.patronymic || '';
-                    document.getElementById('profilePhone').value = currentUserData.phone || '';
+                    const ln = document.getElementById('profileLastName');
+                    const fn = document.getElementById('profileFirstName');
+                    const pn = document.getElementById('profilePatronymic');
+                    const ph = document.getElementById('profilePhone');
+                    if(ln) ln.value = currentUserData.lastName || '';
+                    if(fn) fn.value = currentUserData.firstName || '';
+                    if(pn) pn.value = currentUserData.patronymic || '';
+                    if(ph) ph.value = currentUserData.phone || '';
                 }
-            });
+            }, err => console.error("Error fetching user:", err));
         }
 
         function saveProfile() {
+            if (!db) return showToast('База данных недоступна');
             const lastName = document.getElementById('profileLastName').value.trim();
             const firstName = document.getElementById('profileFirstName').value.trim();
             const patronymic = document.getElementById('profilePatronymic').value.trim();
@@ -554,6 +572,9 @@
                 updatedAt: firebase.firestore.FieldValue.serverTimestamp()
             }, { merge: true }).then(() => {
                 showToast('Профиль успешно сохранен!');
+            }).catch(err => {
+                console.error(err);
+                showToast('Ошибка сохранения профиля. Проверьте правила Firebase.');
             });
         }
 
@@ -565,7 +586,8 @@
 
         function switchClientTab(tab) {
             document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
-            document.getElementById(`nav-${tab}`).classList.add('active');
+            const navEl = document.getElementById(`nav-${tab}`);
+            if(navEl) navEl.classList.add('active');
 
             document.getElementById('tab-services').classList.add('hidden');
             document.getElementById('tab-appointments').classList.add('hidden');
@@ -577,6 +599,7 @@
         }
 
         function fetchUserAppointments() {
+            if (!db) return;
             const list = document.getElementById('userAppointmentsList');
             list.innerHTML = '<p class="text-center text-neutral-500 py-10">Загрузка записей...</p>';
 
@@ -587,7 +610,6 @@
                 }
 
                 list.innerHTML = '';
-                // Сортируем локально
                 const bookings = snapshot.docs.sort((a, b) => {
                     const aDate = a.data().timestamp?.toMillis() || 0;
                     const bDate = b.data().timestamp?.toMillis() || 0;
@@ -613,6 +635,9 @@
                     `;
                     list.appendChild(card);
                 });
+            }, err => {
+                console.error(err);
+                list.innerHTML = '<p class="text-center text-red-500 py-10">Ошибка загрузки записей.</p>';
             });
         }
 
@@ -649,7 +674,10 @@
         });
 
         function chooseMessenger(messenger) {
-            if (selectedServices.length === 0) { showToast('Пожалуйста, выберите сначала хотя бы одну процедуру.'); return; }
+            if (selectedServices.length === 0) { 
+                showToast('Пожалуйста, выберите сначала хотя бы одну процедуру.'); 
+                return; 
+            }
             const calendarBlock = document.getElementById('calendarBlock');
             calendarBlock.classList.remove('hidden');
             renderCalendar('client');
@@ -722,7 +750,8 @@
                         const idx = adminCalState.selectedDates.indexOf(dateStr);
                         if (idx > -1) adminCalState.selectedDates.splice(idx, 1);
                         else adminCalState.selectedDates.push(dateStr);
-                        document.getElementById('dateCounter').innerText = `Выбрано: ${adminCalState.selectedDates.length}`;
+                        const counter = document.getElementById('dateCounter');
+                        if(counter) counter.innerText = `Выбрано: ${adminCalState.selectedDates.length}`;
                         renderCalendar('admin');
                     }
                 };
@@ -730,6 +759,7 @@
         }
 
         function fetchAvailableTimes(dateStr) {
+            if (!db) return;
             const container = document.getElementById('timeSlotsContainer'), submitBtn = document.getElementById('submitBookingBtn');
             selectedTimeSlot = null; submitBtn.disabled = true;
             container.innerHTML = '<p class="text-[12px] text-neutral-400">Загрузка...</p>';
@@ -741,7 +771,7 @@
                         btn.onclick = () => selectTimeSlot(btn, time); container.appendChild(btn);
                     });
                 } else container.innerHTML = '<p class="text-[12px] text-neutral-400 w-full text-center">На эту дату нет свободного времени</p>';
-            });
+            }, err => console.error(err));
         }
 
         function selectTimeSlot(btn, time) {
@@ -751,6 +781,7 @@
         }
 
         function generateAndSend() {
+            if (!db) return showToast('База данных недоступна');
             const rawDate = clientCalState.selectedDate;
             if (!rawDate || !selectedTimeSlot) { showToast('Пожалуйста, выберите дату и время.'); return; }
 
@@ -763,15 +794,18 @@
             if (isFirstVisit) textMessage += ` (Это мой первый визит, применена скидка 15%)`;
             const encodedText = encodeURIComponent(textMessage);
 
-            // Привязываем заявку к профилю
-            if (db) {
-                db.collection("bookings").add({
-                    services: selectedServices.join(', '), date: formattedDate, rawDate: rawDate, time: selectedTimeSlot,
-                    timestamp: firebase.firestore.FieldValue.serverTimestamp(), status: 'pending',
-                    isFirstVisit: isFirstVisit, userId: currentUserId // ID пользователя
-                }).then(() => { localStorage.setItem('hasBookedBefore', 'true'); isFirstVisit = false; })
-                .catch(error => console.error("Ошибка записи в БД:", error));
-            }
+            db.collection("bookings").add({
+                services: selectedServices.join(', '), date: formattedDate, rawDate: rawDate, time: selectedTimeSlot,
+                timestamp: firebase.firestore.FieldValue.serverTimestamp(), status: 'pending',
+                isFirstVisit: isFirstVisit, userId: currentUserId
+            }).then(() => { 
+                localStorage.setItem('hasBookedBefore', 'true'); 
+                isFirstVisit = false; 
+                updateTotalPrice();
+            }).catch(err => {
+                console.error("Ошибка записи в БД:", err);
+                showToast("Ошибка: не удалось создать заявку. Проверьте правила Firestore.");
+            });
 
             window.open(`https://t.me/${TG_USERNAME}?text=${encodedText}`, '_blank', 'noopener,noreferrer');
             closeCalendar();
@@ -860,7 +894,7 @@
                         </div>` : ''}`;
                     list.appendChild(card);
                 });
-            });
+            }, err => console.error(err));
         }
 
         function approveBooking(bookingId, rawDate, time) {
@@ -873,7 +907,9 @@
         function updateBookingStatus(id, status) { if (db) db.collection("bookings").doc(id).update({ status: status }); }
 
         function renderTimeGrid() {
-            const grid = document.getElementById('adminTimeGrid'); grid.innerHTML = '';
+            const grid = document.getElementById('adminTimeGrid'); 
+            if(!grid) return;
+            grid.innerHTML = '';
             const hours = ['08:00', '09:00', '10:00', '11:00', '12:00', '13:00', '14:00', '15:00', '16:00', '17:00', '18:00', '19:00', '20:00'];
             hours.forEach(time => {
                 const btn = document.createElement('div'); btn.className = 'time-toggle'; btn.innerText = time;
@@ -899,24 +935,40 @@
         }
 
         function applySchedule() {
+            if (!db) return showToast('База данных недоступна');
             if (adminCalState.selectedDates.length === 0) return showToast('Сначала выберите даты в календаре.');
             if (adminSelectedTimes.length === 0) return showToast('Сначала выберите время (часы).');
+            
             const batch = db.batch();
             adminCalState.selectedDates.forEach(dateStr => {
                 const ref = db.collection("schedule").doc(dateStr);
                 batch.set(ref, { times: firebase.firestore.FieldValue.arrayUnion(...adminSelectedTimes) }, { merge: true });
             });
-            batch.commit().then(() => showToast(`Успешно добавлено время на ${adminCalState.selectedDates.length} дат(ы).`));
+            
+            batch.commit().then(() => {
+                showToast(`Успешно добавлено время на ${adminCalState.selectedDates.length} дат(ы).`);
+            }).catch(err => {
+                console.error(err);
+                showToast('Ошибка сохранения. Проверьте права доступа Firebase.');
+            });
         }
 
         function clearSchedule() {
+            if (!db) return showToast('База данных недоступна');
             if (adminCalState.selectedDates.length === 0) return showToast('Сначала выберите даты в календаре для очистки.');
+            
             const batch = db.batch();
             adminCalState.selectedDates.forEach(dateStr => {
                 const ref = db.collection("schedule").doc(dateStr);
                 batch.set(ref, { times: [] }, { merge: true });
             });
-            batch.commit().then(() => showToast(`Расписание очищено для ${adminCalState.selectedDates.length} дат(ы).`));
+            
+            batch.commit().then(() => {
+                showToast(`Расписание очищено для ${adminCalState.selectedDates.length} дат(ы).`);
+            }).catch(err => {
+                console.error(err);
+                showToast('Ошибка очистки. Проверьте права доступа Firebase.');
+            });
         }
 
         window.addEventListener('hashchange', checkAdminRoute);

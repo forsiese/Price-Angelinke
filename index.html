@@ -48,17 +48,18 @@
         .delay-3 { animation-delay: 0.55s; }
 
         .main-container-shadow {
-            box-shadow: 0 60px 120px rgba(22, 22, 22, 0.04), 0 20px 40px rgba(22, 22, 22, 0.02), 0 4px 10px rgba(22, 22, 22, 0.01);
+            box-shadow: 0 12px 30px rgba(22, 22, 22, 0.04), 0 4px 10px rgba(22, 22, 22, 0.02);
         }
 
         .spotlight-card {
             position: relative;
             background: rgba(255, 255, 255, 0.55);
             backdrop-filter: blur(24px);
+            -webkit-backdrop-filter: blur(24px);
             border: 1px solid rgba(255, 255, 255, 0.7);
             border-radius: 28px;
             overflow: hidden;
-            transform-style: preserve-3d;
+            transform: translateZ(0); 
             will-change: transform;
             transition: transform 0.6s cubic-bezier(0.25, 1, 0.5, 1), box-shadow 0.5s, border-color 0.5s, background-color 0.5s;
         }
@@ -79,7 +80,7 @@
         .spotlight-card:hover {
             background-color: rgba(255, 255, 255, 0.8);
             border-color: rgba(255, 255, 255, 1);
-            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.04), 0 10px 20px rgba(0, 0, 0, 0.02);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.03);
         }
         .spotlight-card:hover::before { opacity: 1; }
 
@@ -87,7 +88,7 @@
             background-color: #161616;
             border-color: #161616;
             color: #ffffff;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.15);
         }
         .spotlight-card.is-selected .premium-text { color: #ffffff; }
         .spotlight-card.is-selected p { color: rgba(255, 255, 255, 0.6); }
@@ -112,22 +113,23 @@
         .premium-btn {
             background: #161616;
             color: #ffffff;
-            box-shadow: 0 20px 40px rgba(22, 22, 22, 0.15), 0 4px 12px rgba(22, 22, 22, 0.08);
+            box-shadow: 0 10px 25px rgba(22, 22, 22, 0.12);
             transition: all 0.4s cubic-bezier(0.25, 1, 0.5, 1);
             position: relative;
             overflow: hidden;
         }
         .premium-btn:focus-visible { outline: 2px solid #2AABEE; outline-offset: 4px; }
+        .premium-btn:disabled { opacity: 0.4; pointer-events: none; }
 
         .btn-icon { opacity: 0; transform: translateX(-10px); transition: all 0.4s cubic-bezier(0.25, 1, 0.5, 1); position: absolute; left: 24px; }
         .premium-btn:hover .btn-icon { opacity: 1; transform: translateX(0); }
         .btn-text { transition: transform 0.4s cubic-bezier(0.25, 1, 0.5, 1); }
         .premium-btn:hover .btn-text { transform: translateX(12px); }
 
-        .btn-tg:hover { background-color: #2AABEE; box-shadow: 0 16px 32px rgba(42, 171, 238, 0.3); transform: translateY(-2px); }
-        .btn-green { background-color: #16a34a; }
+        .btn-tg:hover { background-color: #2AABEE; box-shadow: 0 12px 25px rgba(42, 171, 238, 0.25); transform: translateY(-2px); }
+        .btn-green { background-color: #16a34a; box-shadow: 0 10px 20px rgba(22, 163, 74, 0.2); }
         .btn-green:hover { background-color: #15803d; transform: translateY(-2px); }
-        .btn-red { background-color: #dc2626; }
+        .btn-red { background-color: #dc2626; box-shadow: 0 10px 20px rgba(220, 38, 38, 0.2); }
         .btn-red:hover { background-color: #b91c1c; transform: translateY(-2px); }
 
         .premium-input {
@@ -151,7 +153,7 @@
         .ambient-orb {
             position: absolute;
             border-radius: 50%;
-            filter: blur(90px);
+            filter: blur(60px); 
             opacity: 0.55;
             animation: floatGradient 18s infinite ease-in-out;
             pointer-events: none;
@@ -170,8 +172,9 @@
             font-size: 14px;
             z-index: 100;
             transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.15);
             text-align: center;
+            max-width: 90vw;
         }
         #toast.show { transform: translateX(-50%) translateY(0); }
 
@@ -180,27 +183,60 @@
             border: 1px solid rgba(255, 255, 255, 0.8);
             border-radius: 20px;
             backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.03);
         }
         .status-pending { color: #d97706; font-weight: 600; }
         .status-approved { color: #16a34a; font-weight: 600; }
         .status-rejected { color: #dc2626; font-weight: 600; }
+
+        /* Стили для кнопок времени (слотов) */
+        .time-slot {
+            padding: 10px 16px;
+            border-radius: 12px;
+            background: rgba(255, 255, 255, 0.6);
+            border: 1px solid rgba(0,0,0,0.08);
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: center;
+        }
+        .time-slot:hover { background: rgba(255,255,255,0.9); }
+        .time-slot.is-selected {
+            background: #161616;
+            color: #fff;
+            border-color: #161616;
+        }
+        .time-slot-delete {
+            background: #fee2e2;
+            color: #dc2626;
+            border-color: #fecaca;
+        }
+        .time-slot-delete:hover { background: #fecaca; }
+
+        .tab-active {
+            border-bottom: 2px solid #161616;
+            color: #161616;
+        }
+        .tab-inactive {
+            border-bottom: 2px solid transparent;
+            color: #9ca3af;
+        }
     </style>
 </head>
 <body class="flex justify-center items-start sm:items-center min-h-screen p-4 sm:p-8 relative selection:bg-neutral-900 selection:text-white">
 
     <div class="fixed inset-0 overflow-hidden pointer-events-none z-0" aria-hidden="true">
-        <div class="ambient-orb bg-amber-200/40 w-[600px] h-[600px] top-[-15%] left-[-15%]"></div>
-        <div class="ambient-orb bg-neutral-300/50 w-[500px] h-[500px] bottom-[5%] right-[-10%]" style="animation-delay: -6s;"></div>
+        <div class="ambient-orb bg-amber-200/40 w-[500px] h-[500px] top-[-15%] left-[-15%]"></div>
+        <div class="ambient-orb bg-neutral-300/50 w-[400px] h-[400px] bottom-[5%] right-[-10%]" style="animation-delay: -6s;"></div>
     </div>
 
     <div id="toast" role="alert" aria-live="assertive">Пожалуйста, выберите процедуру.</div>
 
-    <!-- ========================================== -->
-    <!-- КЛИЕНТСКАЯ ЧАСТЬ (ОСНОВНАЯ СТРАНИЦА)        -->
-    <!-- ========================================== -->
+    <!-- КЛИЕНТСКАЯ ЧАСТЬ -->
     <main id="client-view" class="relative w-full max-w-[420px] bg-white/35 backdrop-blur-3xl rounded-[48px] p-6 sm:p-8 border border-white/50 main-container-shadow z-10">
         
-        <!-- СЕКЦИЯ 1: БРОВИ -->
+        <!-- БРОВИ -->
         <section class="mb-10 reveal-item delay-1" aria-labelledby="brows-title">
             <div class="flex items-baseline justify-between mb-6 px-1">
                 <h2 id="brows-title" class="font-accent text-[2.6rem] italic font-semibold premium-heading text-neutral-900">Брови</h2>
@@ -256,7 +292,7 @@
             </ul>
         </section>
 
-        <!-- СЕКЦИЯ 2: РЕСНИЦЫ -->
+        <!-- РЕСНИЦЫ -->
         <section class="mb-8 reveal-item delay-2" aria-labelledby="lash-title">
             <div class="flex items-baseline justify-between mb-6 px-1">
                 <h2 id="lash-title" class="font-accent text-[2.6rem] italic font-semibold premium-heading text-neutral-900">Ресницы</h2>
@@ -299,7 +335,7 @@
             </ul>
         </section>
 
-        <!-- СЕКЦИЯ 3: ИТОГИ И КНОПКА ЗАПИСИ -->
+        <!-- ИТОГИ И КНОПКА -->
         <div class="w-full mt-4 relative reveal-item delay-3">
             <div class="bg-white/40 backdrop-blur-xl border border-white/60 rounded-[24px] p-5 text-center mb-6 transition-all duration-300">
                 <p class="text-[14px] font-light tracking-wide text-neutral-600">
@@ -318,7 +354,6 @@
                 <span class="btn-text">Записаться в Telegram</span>
             </button>
 
-            <!-- Интерактивный календарь -->
             <div id="calendarBlock" class="mt-6 p-5 bg-white/50 backdrop-blur-2xl border border-white/70 rounded-[28px] transition-all duration-500 hidden scale-95 opacity-0">
                 <div class="flex justify-between items-center mb-4">
                     <h4 class="text-[12px] font-semibold tracking-[0.15em] uppercase text-neutral-700">Выберите дату и время</h4>
@@ -327,10 +362,20 @@
                     </button>
                 </div>
 
-                <div class="flex flex-col gap-3">
-                    <input type="date" id="bookDate" class="premium-input text-[14px]" aria-label="Дата записи">
-                    <input type="time" id="bookTime" class="premium-input text-[14px]" aria-label="Время записи">
-                    <button onclick="generateAndSend()" class="premium-btn h-[50px] mt-2 flex justify-center items-center rounded-[18px] font-semibold tracking-[0.12em] text-[11px] uppercase outline-none w-full">
+                <div class="flex flex-col gap-4">
+                    <div>
+                        <label class="text-[12px] text-neutral-500 mb-2 block">Дата</label>
+                        <input type="date" id="bookDate" class="premium-input text-[14px]" aria-label="Дата записи" onchange="fetchAvailableTimes()">
+                    </div>
+                    
+                    <div>
+                        <label class="text-[12px] text-neutral-500 mb-2 block">Доступное время</label>
+                        <div id="timeSlotsContainer" class="flex flex-wrap gap-2 min-h-[45px] items-center">
+                            <p class="text-[12px] text-neutral-400">Сначала выберите дату</p>
+                        </div>
+                    </div>
+
+                    <button onclick="generateAndSend()" id="submitBookingBtn" disabled class="premium-btn h-[50px] mt-2 flex justify-center items-center rounded-[18px] font-semibold tracking-[0.12em] text-[11px] uppercase outline-none w-full">
                         Отправить запрос
                     </button>
                 </div>
@@ -338,32 +383,79 @@
         </div>
     </main>
 
-    <!-- ========================================== -->
-    <!-- АДМИН ПАНЕЛЬ (СКРЫТАЯ)                      -->
-    <!-- ========================================== -->
+    <!-- АДМИН ПАНЕЛЬ -->
     <main id="admin-view" class="hidden relative w-full max-w-[500px] bg-white/35 backdrop-blur-3xl rounded-[48px] p-6 sm:p-8 border border-white/50 main-container-shadow z-10">
-        <div class="flex justify-between items-center mb-8">
-            <h2 class="font-accent text-[2rem] italic font-semibold text-neutral-900">Заявки</h2>
+        <div class="flex justify-between items-center mb-6">
+            <h2 class="font-accent text-[2rem] italic font-semibold text-neutral-900">Панель</h2>
             <a href="#" onclick="logoutAdmin()" class="text-[11px] uppercase tracking-[0.12em] text-neutral-500 hover:text-neutral-900 transition-colors">Выйти</a>
         </div>
-        
-        <div id="admin-list" class="flex flex-col gap-4">
-            <!-- Заявки будут отрисованы здесь -->
+
+        <!-- Вкладки админки -->
+        <div class="flex gap-6 mb-8 border-b border-neutral-200">
+            <button onclick="switchAdminTab('bookings')" id="tab-btn-bookings" class="pb-3 text-[12px] uppercase tracking-wide font-semibold tab-active">Заявки</button>
+            <button onclick="switchAdminTab('schedule')" id="tab-btn-schedule" class="pb-3 text-[12px] uppercase tracking-wide font-semibold tab-inactive">Расписание</button>
+        </div>
+
+        <!-- Вкладка Заявки -->
+        <div id="admin-bookings-view">
+            <div id="admin-list" class="flex flex-col gap-4">
+                <p class="text-center text-neutral-500 py-10">Загрузка заявок...</p>
+            </div>
+        </div>
+
+        <!-- Вкладка Расписание -->
+        <div id="admin-schedule-view" class="hidden">
+            <div class="bg-white/40 border border-white/60 rounded-[24px] p-5 mb-6">
+                <h4 class="text-[12px] font-semibold tracking-[0.15em] uppercase text-neutral-700 mb-4">Добавить слот</h4>
+                <div class="flex flex-col gap-3">
+                    <input type="date" id="adminSchedDate" class="premium-input text-[14px]" aria-label="Дата слота">
+                    <div class="flex gap-2">
+                        <input type="time" id="adminSchedTime" class="premium-input text-[14px] flex-1" aria-label="Время слота">
+                        <button onclick="addScheduleSlot()" class="premium-btn px-5 rounded-[16px] text-[12px] uppercase tracking-wide font-semibold whitespace-nowrap">Добавить</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-white/40 border border-white/60 rounded-[24px] p-5">
+                <h4 class="text-[12px] font-semibold tracking-[0.15em] uppercase text-neutral-700 mb-4">Управление слотами</h4>
+                <input type="date" id="adminViewSchedDate" class="premium-input text-[14px] mb-4" onchange="fetchAdminSchedule()" aria-label="Просмотр слотов на дату">
+                <div id="adminSlotsList" class="flex flex-wrap gap-2 min-h-[50px] items-center">
+                    <p class="text-[12px] text-neutral-400 w-full text-center">Выберите дату для просмотра</p>
+                </div>
+            </div>
         </div>
     </main>
 
-    <!-- ЛОГИКА ПРИЛОЖЕНИЯ -->
+    <!-- Firebase SDK (Облачная база данных) -->
+    <script src="https://www.gstatic.com/firebasejs/9.17.2/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.17.2/firebase-firestore-compat.js"></script>
+    
     <script>
-        // ====== НАСТРОЙКИ АДМИНА ======
-        const ADMIN_PIN = "1234"; // ПИН-код для входа в админку
-        const TG_USERNAME = "aandvl"; // Ваш юзернейм в Telegram (без @)
-        // ==============================
+        // ====== НАСТРОЙКИ ======
+        const ADMIN_PIN = "1234"; // Ваш PIN-код
+        const TG_USERNAME = "aandvl"; // Ваш юзернейм в Telegram
+        
+        const firebaseConfig = {
+            apiKey: "AIzaSyAWygW7luBG8myNfXqIkm53PlniW7-_i_A",
+            authDomain: "browslashes-17fd3.firebaseapp.com",
+            projectId: "browslashes-17fd3",
+            storageBucket: "browslashes-17fd3.firebasestorage.app",
+            messagingSenderId: "208949431632",
+            appId: "1:208949431632:web:0bae3dbea1aabdbd73b055",
+            measurementId: "G-BFEE6HDL76"
+        };
+
+        let db;
+        try {
+            firebase.initializeApp(firebaseConfig);
+            db = firebase.firestore();
+        } catch (e) {
+            console.error("Ошибка инициализации Firebase", e);
+        }
 
         const selectedServices = [];
         let totalPrice = 0;
-        let selectedMessenger = '';
-        let bookings = JSON.parse(localStorage.getItem('bookings')) || [];
-
+        let selectedTimeSlot = null;
         const cards = document.querySelectorAll('.spotlight-card');
         const toast = document.getElementById('toast');
         const clientView = document.getElementById('client-view');
@@ -375,15 +467,13 @@
             setTimeout(() => toast.classList.remove('show'), 3000);
         }
 
-        // ====== ЛОГИКА КЛИЕНТСКОЙ ЧАСТИ ======
+        // ====== ЛОГИКА КЛИЕНТА ======
         cards.forEach(card => {
             card.addEventListener('mousemove', (e) => {
                 if (card.classList.contains('is-selected')) return;
-
                 const rect = card.getBoundingClientRect();
                 const x = e.clientX - rect.left;
                 const y = e.clientY - rect.top;
-
                 card.style.setProperty('--x', `${x}px`);
                 card.style.setProperty('--y', `${y}px`);
 
@@ -393,11 +483,8 @@
                 const rotateY = ((x - centerX) / centerX) * 5;
 
                 card.style.transform = `perspective(800px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale3d(1.015, 1.015, 1.015)`;
-                
                 const content = card.querySelector('.card-content');
-                if(content) {
-                    content.style.transform = `translateZ(25px) translateX(${rotateY * 0.5}px) translateY(${rotateX * -0.5}px)`;
-                }
+                if(content) content.style.transform = `translateZ(25px) translateX(${rotateY * 0.5}px) translateY(${rotateX * -0.5}px)`;
             });
 
             card.addEventListener('mouseleave', () => {
@@ -432,22 +519,19 @@
             });
         });
 
-        function setCurrentDateTime() {
-            const now = new Date();
-            const pad = (num) => String(num).padStart(2, '0');
-            document.getElementById('bookDate').value = `${now.getFullYear()}-${pad(now.getMonth() + 1)}-${pad(now.getDate())}`;
-            document.getElementById('bookTime').value = `${pad(now.getHours())}:${pad(now.getMinutes())}`;
-        }
-
         function chooseMessenger(messenger) {
             if (selectedServices.length === 0) {
                 showToast('Пожалуйста, выберите сначала хотя бы одну процедуру.');
                 return;
             }
-            selectedMessenger = messenger;
             const calendarBlock = document.getElementById('calendarBlock');
             calendarBlock.classList.remove('hidden');
-            setCurrentDateTime();
+
+            // Устанавливаем сегодняшнюю дату по умолчанию
+            const today = new Date();
+            const pad = (num) => String(num).padStart(2, '0');
+            document.getElementById('bookDate').value = `${today.getFullYear()}-${pad(today.getMonth() + 1)}-${pad(today.getDate())}`;
+            fetchAvailableTimes(); // Сразу грузим слоты на сегодня
 
             setTimeout(() => {
                 calendarBlock.classList.remove('scale-95', 'opacity-0');
@@ -466,16 +550,54 @@
         function formatDate(dateString) {
             if (!dateString) return '';
             const [year, month, day] = dateString.split('-');
-            if (!year || !month || !day) return dateString;
             return `${day}.${month}.${year}`;
+        }
+
+        // Загрузка слотов для клиента
+        function fetchAvailableTimes() {
+            const dateStr = document.getElementById('bookDate').value;
+            const container = document.getElementById('timeSlotsContainer');
+            const submitBtn = document.getElementById('submitBookingBtn');
+            
+            selectedTimeSlot = null;
+            submitBtn.disabled = true;
+
+            if (!dateStr) {
+                container.innerHTML = '<p class="text-[12px] text-neutral-400">Сначала выберите дату</p>';
+                return;
+            }
+
+            container.innerHTML = '<p class="text-[12px] text-neutral-400">Загрузка...</p>';
+
+            db.collection("schedule").doc(dateStr).onSnapshot(doc => {
+                container.innerHTML = '';
+                if (doc.exists && doc.data().times && doc.data().times.length > 0) {
+                    const times = doc.data().times.sort();
+                    times.forEach(time => {
+                        const btn = document.createElement('button');
+                        btn.className = 'time-slot';
+                        btn.innerText = time;
+                        btn.onclick = () => selectTimeSlot(btn, time);
+                        container.appendChild(btn);
+                    });
+                } else {
+                    container.innerHTML = '<p class="text-[12px] text-neutral-400 w-full text-center">На эту дату нет свободного времени</p>';
+                }
+            });
+        }
+
+        function selectTimeSlot(btn, time) {
+            document.querySelectorAll('#timeSlotsContainer .time-slot').forEach(b => b.classList.remove('is-selected'));
+            btn.classList.add('is-selected');
+            selectedTimeSlot = time;
+            document.getElementById('submitBookingBtn').disabled = false;
         }
 
         function generateAndSend() {
             const rawDate = document.getElementById('bookDate').value;
-            const time = document.getElementById('bookTime').value;
-
-            if (!rawDate || !time) {
-                showToast('Пожалуйста, заполните дату и время для записи.');
+            
+            if (!rawDate || !selectedTimeSlot) {
+                showToast('Пожалуйста, выберите дату и время.');
                 return;
             }
 
@@ -490,47 +612,42 @@
                 proceduresText = `процедуры: ${otherServices} и ${last}`;
             }
 
-            // Текст БЕЗ суммы
-            const textMessage = `Здравствуйте, хочу записаться на ${proceduresText}. Дата ${formattedDate} ${time}.`;
+            const textMessage = `Здравствуйте, хочу записаться на ${proceduresText}. Дата ${formattedDate} ${selectedTimeSlot}.`;
             const encodedText = encodeURIComponent(textMessage);
 
-            // Сохраняем заявку в LocalStorage
-            const newBooking = {
-                id: Date.now(),
-                services: selectedServices.join(', '),
-                date: formattedDate,
-                time: time,
-                timestamp: new Date().toLocaleString('ru-RU'),
-                status: 'pending' // pending, approved, rejected
-            };
-            bookings.push(newBooking);
-            localStorage.setItem('bookings', JSON.stringify(bookings));
+            // Сохраняем заявку в базу
+            if (db) {
+                db.collection("bookings").add({
+                    services: selectedServices.join(', '),
+                    date: formattedDate,
+                    rawDate: rawDate, // сохраняем для удаления слота при подтверждении
+                    time: selectedTimeSlot,
+                    timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+                    status: 'pending'
+                }).catch(error => console.error("Ошибка записи в БД:", error));
+            }
 
             let finalLink = `https://t.me/${TG_USERNAME}?text=${encodedText}`;
-
             window.open(finalLink, '_blank', 'noopener,noreferrer');
             closeCalendar();
             
-            // Сброс выбора после отправки
+            // Сброс выбора
             setTimeout(() => {
-                cards.forEach(c => {
-                    c.classList.remove('is-selected');
-                    c.setAttribute('aria-pressed', 'false');
-                });
+                cards.forEach(c => { c.classList.remove('is-selected'); c.setAttribute('aria-pressed', 'false'); });
                 selectedServices.length = 0;
                 totalPrice = 0;
                 document.getElementById('totalPrice').innerText = '0';
             }, 1000);
         }
 
-        // ====== ЛОГИКА АДМИН ПАНЕЛИ ======
+        // ====== ЛОГИКА АДМИНА ======
         function checkAdminRoute() {
             if (window.location.hash === '#admin') {
                 const isAdmin = sessionStorage.getItem('isAdmin');
                 if (isAdmin === 'true') {
                     showAdminPanel();
                 } else {
-                    const pin = prompt('Введите PIN-код для доступа к панели администратора:');
+                    const pin = prompt('Введите PIN-код:');
                     if (pin === ADMIN_PIN) {
                         sessionStorage.setItem('isAdmin', 'true');
                         showAdminPanel();
@@ -547,7 +664,7 @@
         function showAdminPanel() {
             clientView.classList.add('hidden');
             adminView.classList.remove('hidden');
-            renderAdminBookings();
+            switchAdminTab('bookings'); // По умолчанию открываем заявки
         }
 
         function showClientPanel() {
@@ -561,56 +678,156 @@
             showClientPanel();
         }
 
-        function renderAdminBookings() {
-            const list = document.getElementById('admin-list');
-            list.innerHTML = '';
+        function switchAdminTab(tab) {
+            const btnBookings = document.getElementById('tab-btn-bookings');
+            const btnSchedule = document.getElementById('tab-btn-schedule');
+            const viewBookings = document.getElementById('admin-bookings-view');
+            const viewSchedule = document.getElementById('admin-schedule-view');
 
-            if (bookings.length === 0) {
-                list.innerHTML = '<p class="text-center text-neutral-500 py-10">Новых заявок нет.</p>';
-                return;
+            if (tab === 'bookings') {
+                btnBookings.classList.replace('tab-inactive', 'tab-active');
+                btnSchedule.classList.replace('tab-active', 'tab-inactive');
+                viewBookings.classList.remove('hidden');
+                viewSchedule.classList.add('hidden');
+                listenToBookings();
+            } else {
+                btnSchedule.classList.replace('tab-inactive', 'tab-active');
+                btnBookings.classList.replace('tab-active', 'tab-inactive');
+                viewSchedule.classList.remove('hidden');
+                viewBookings.classList.add('hidden');
             }
+        }
 
-            // Сортируем: новые сверху
-            bookings.sort((a, b) => b.id - a.id);
+        let unsubscribeBookings = null;
+        function listenToBookings() {
+            if (!db) return;
+            if (unsubscribeBookings) unsubscribeBookings();
 
-            bookings.forEach(b => {
-                let statusClass = 'status-pending';
-                let statusText = 'Ожидает';
-                if (b.status === 'approved') { statusClass = 'status-approved'; statusText = 'Подтверждена'; }
-                if (b.status === 'rejected') { statusClass = 'status-rejected'; statusText = 'Отклонена'; }
+            unsubscribeBookings = db.collection("bookings")
+                .orderBy("timestamp", "desc")
+                .onSnapshot(snapshot => {
+                    const list = document.getElementById('admin-list');
+                    if (snapshot.empty) {
+                        list.innerHTML = '<p class="text-center text-neutral-500 py-10">Новых заявок нет.</p>';
+                        return;
+                    }
 
-                const card = document.createElement('div');
-                card.className = 'admin-card p-5 shadow-sm';
-                card.innerHTML = `
-                    <div class="flex justify-between items-start mb-3">
-                        <div>
-                            <p class="text-[14px] font-semibold text-neutral-900">${b.services}</p>
-                            <p class="text-[12px] text-neutral-500 mt-1">${b.date} в ${b.time}</p>
-                        </div>
-                        <span class="text-[10px] uppercase tracking-wide ${statusClass} bg-neutral-100 px-2 py-1 rounded-full">${statusText}</span>
-                    </div>
-                    <p class="text-[10px] text-neutral-400 mb-4">Заявка от: ${b.timestamp}</p>
-                    
-                    ${b.status === 'pending' ? `
-                    <div class="flex gap-2 mt-2">
-                        <button onclick="updateBookingStatus(${b.id}, 'approved')" class="flex-1 py-2 rounded-xl text-white text-[11px] uppercase tracking-wide font-semibold btn-green transition-all">Подтвердить</button>
-                        <button onclick="updateBookingStatus(${b.id}, 'rejected')" class="flex-1 py-2 rounded-xl text-white text-[11px] uppercase tracking-wide font-semibold btn-red transition-all">Отклонить</button>
-                    </div>
-                    ` : ''}
-                `;
-                list.appendChild(card);
+                    list.innerHTML = '';
+                    snapshot.forEach(doc => {
+                        const b = doc.data();
+                        const id = doc.id;
+                        
+                        let statusClass = 'status-pending';
+                        let statusText = 'Ожидает';
+                        if (b.status === 'approved') { statusClass = 'status-approved'; statusText = 'Подтверждена'; }
+                        if (b.status === 'rejected') { statusClass = 'status-rejected'; statusText = 'Отклонена'; }
+
+                        let dateStr = 'Только что';
+                        if (b.timestamp && b.timestamp.toDate) {
+                            dateStr = b.timestamp.toDate().toLocaleString('ru-RU');
+                        }
+
+                        const card = document.createElement('div');
+                        card.className = 'admin-card p-5';
+                        card.innerHTML = `
+                            <div class="flex justify-between items-start mb-3">
+                                <div>
+                                    <p class="text-[14px] font-semibold text-neutral-900">${b.services}</p>
+                                    <p class="text-[12px] text-neutral-500 mt-1">${b.date} в ${b.time}</p>
+                                </div>
+                                <span class="text-[10px] uppercase tracking-wide ${statusClass} bg-neutral-100 px-2 py-1 rounded-full">${statusText}</span>
+                            </div>
+                            <p class="text-[10px] text-neutral-400 mb-4">Заявка от: ${dateStr}</p>
+                            
+                            ${b.status === 'pending' ? `
+                            <div class="flex gap-2 mt-2">
+                                <button onclick="approveBooking('${id}', '${b.rawDate}', '${b.time}')" class="flex-1 py-2 rounded-xl text-white text-[11px] uppercase tracking-wide font-semibold btn-green transition-all">Подтвердить</button>
+                                <button onclick="updateBookingStatus('${id}', 'rejected')" class="flex-1 py-2 rounded-xl text-white text-[11px] uppercase tracking-wide font-semibold btn-red transition-all">Отклонить</button>
+                            </div>
+                            ` : ''}
+                        `;
+                        list.appendChild(card);
+                    });
+                });
+        }
+
+        // Подтверждение заявки (и удаление слота из расписания)
+        function approveBooking(bookingId, rawDate, time) {
+            if (!db) return;
+            
+            // Удаляем слот из расписания
+            db.collection("schedule").doc(rawDate).update({
+                times: firebase.firestore.FieldValue.arrayRemove(time)
+            }).then(() => {
+                // Меняем статус заявки
+                db.collection("bookings").doc(bookingId).update({ status: 'approved' });
+            }).catch(error => {
+                console.error("Ошибка подтверждения:", error);
+                // Даже если слот не найден, подтверждаем заявку
+                db.collection("bookings").doc(bookingId).update({ status: 'approved' });
             });
         }
 
         function updateBookingStatus(id, status) {
-            bookings = bookings.map(b => b.id === id ? { ...b, status: status } : b);
-            localStorage.setItem('bookings', JSON.stringify(bookings));
-            renderAdminBookings();
+            if (db) {
+                db.collection("bookings").doc(id).update({ status: status });
+            }
         }
 
-        // Слушаем изменение хеша в URL (для перехода в админку)
+        // ====== ЛОГИКА РАСПИСАНИЯ (АДМИН) ======
+        function addScheduleSlot() {
+            const date = document.getElementById('adminSchedDate').value;
+            const time = document.getElementById('adminSchedTime').value;
+
+            if (!date || !time) {
+                showToast('Выберите дату и время для добавления слота.');
+                return;
+            }
+
+            db.collection("schedule").doc(date).set({
+                times: firebase.firestore.FieldValue.arrayUnion(time)
+            }, { merge: true }).then(() => {
+                document.getElementById('adminSchedTime').value = '';
+                showToast(`Слот ${time} добавлен на ${formatDate(date)}`);
+                // Если просматриваем эту же дату, обновляем список
+                if (document.getElementById('adminViewSchedDate').value === date) {
+                    fetchAdminSchedule();
+                }
+            });
+        }
+
+        function fetchAdminSchedule() {
+            const date = document.getElementById('adminViewSchedDate').value;
+            const list = document.getElementById('adminSlotsList');
+
+            if (!date) return;
+
+            list.innerHTML = '<p class="text-[12px] text-neutral-400 w-full text-center">Загрузка...</p>';
+
+            db.collection("schedule").doc(date).onSnapshot(doc => {
+                list.innerHTML = '';
+                if (doc.exists && doc.data().times && doc.data().times.length > 0) {
+                    const times = doc.data().times.sort();
+                    times.forEach(time => {
+                        const btn = document.createElement('button');
+                        btn.className = 'time-slot time-slot-delete flex items-center gap-2';
+                        btn.innerHTML = `${time} <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" /></svg>`;
+                        btn.onclick = () => deleteScheduleSlot(date, time);
+                        list.appendChild(btn);
+                    });
+                } else {
+                    list.innerHTML = '<p class="text-[12px] text-neutral-400 w-full text-center">На эту дату слотов нет</p>';
+                }
+            });
+        }
+
+        function deleteScheduleSlot(date, time) {
+            db.collection("schedule").doc(date).update({
+                times: firebase.firestore.FieldValue.arrayRemove(time)
+            });
+        }
+
         window.addEventListener('hashchange', checkAdminRoute);
-        // Проверяем при загрузке страницы
         window.addEventListener('DOMContentLoaded', checkAdminRoute);
     </script>
 </body>

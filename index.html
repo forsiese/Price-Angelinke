@@ -26,6 +26,7 @@
             -webkit-font-smoothing: antialiased;
             -moz-osx-font-smoothing: grayscale;
             overflow-x: hidden;
+            padding-bottom: 80px; /* Место для нижней панели */
         }
 
         .premium-heading { letter-spacing: -0.03em; line-height: 1.15; }
@@ -47,10 +48,7 @@
         .delay-2 { animation-delay: 0.35s; }
         .delay-3 { animation-delay: 0.55s; }
 
-        /* Оптимизация теней для iOS */
-        .main-container-shadow {
-            box-shadow: 0 2px 5px rgba(22, 22, 22, 0.02), 0 1px 2px rgba(22, 22, 22, 0.01);
-        }
+        .main-container-shadow { box-shadow: 0 2px 5px rgba(22, 22, 22, 0.02), 0 1px 2px rgba(22, 22, 22, 0.01); }
 
         .spotlight-card {
             position: relative;
@@ -160,7 +158,7 @@
 
         #toast {
             position: fixed;
-            bottom: 20px;
+            bottom: 90px; /* Подняли над нижней панелью */
             left: 50%;
             transform: translateX(-50%) translateY(100px);
             background: #161616;
@@ -209,11 +207,7 @@
         .tab-inactive { border-bottom: 2px solid transparent; color: #9ca3af; }
 
         /* Стили для кастомного календаря */
-        .calendar-grid {
-            display: grid;
-            grid-template-columns: repeat(7, 1fr);
-            gap: 4px;
-        }
+        .calendar-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 4px; }
         .cal-day {
             aspect-ratio: 1;
             display: flex;
@@ -229,43 +223,47 @@
         .cal-disabled { color: #d1d5db; pointer-events: none; }
         .cal-selected { background: #161616 !important; color: #fff !important; }
         .cal-today { border: 1px solid #161616; }
-        
-        /* Стили мульти-выбора для админа */
-        .cal-multi-selected { 
-            background: #2AABEE !important; 
-            color: #fff !important; 
-            border-color: #2AABEE !important;
-        }
+        .cal-multi-selected { background: #2AABEE !important; color: #fff !important; border-color: #2AABEE !important; }
 
-        /* Сетка времени для админа */
-        .time-toggle {
-            padding: 10px 4px;
-            border-radius: 10px;
-            background: rgba(255, 255, 255, 0.6);
-            border: 1px solid rgba(0,0,0,0.08);
-            font-size: 12px;
-            cursor: pointer;
-            transition: all 0.2s ease;
-            text-align: center;
-        }
+        .time-toggle { padding: 10px 4px; border-radius: 10px; background: rgba(255, 255, 255, 0.6); border: 1px solid rgba(0,0,0,0.08); font-size: 12px; cursor: pointer; transition: all 0.2s ease; text-align: center; }
         .time-toggle:hover { background: rgba(255,255,255,0.9); }
-        .time-toggle.is-selected {
-            background: #16a34a;
-            color: #fff;
-            border-color: #16a34a;
-        }
-        .quick-btn {
-            font-size: 11px;
-            padding: 6px 12px;
-            border-radius: 20px;
-            border: 1px solid #d1d5db;
-            background: #fff;
-            cursor: pointer;
-            transition: all 0.2s;
-        }
+        .time-toggle.is-selected { background: #16a34a; color: #fff; border-color: #16a34a; }
+        .quick-btn { font-size: 11px; padding: 6px 12px; border-radius: 20px; border: 1px solid #d1d5db; background: #fff; cursor: pointer; transition: all 0.2s; }
         .quick-btn:hover { background: #f3f4f6; }
         .quick-btn-danger { border-color: #fecaca; color: #dc2626; }
         .quick-btn-danger:hover { background: #fee2e2; }
+
+        /* Нижняя навигация */
+        .bottom-nav {
+            position: fixed;
+            bottom: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: calc(100% - 20px);
+            max-width: 400px;
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.9);
+            border-radius: 24px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+            display: flex;
+            justify-content: space-around;
+            padding: 10px;
+            z-index: 50;
+        }
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+            font-size: 10px;
+            color: #9ca3af;
+            cursor: pointer;
+            transition: color 0.3s;
+        }
+        .nav-item.active { color: #161616; }
+        .nav-item svg { width: 24px; height: 24px; }
     </style>
 </head>
 <body class="flex justify-center items-start sm:items-center min-h-screen p-4 sm:p-8 relative selection:bg-neutral-900 selection:text-white">
@@ -280,148 +278,132 @@
     <!-- КЛИЕНТСКАЯ ЧАСТЬ -->
     <main id="client-view" class="relative w-full max-w-[420px] bg-white/35 backdrop-blur-3xl rounded-[48px] p-6 sm:p-8 border border-white/50 main-container-shadow z-10">
         
-        <!-- БРОВИ -->
-        <section class="mb-10 reveal-item delay-1" aria-labelledby="brows-title">
-            <div class="flex items-baseline justify-between mb-6 px-1">
-                <h2 id="brows-title" class="font-accent text-[2.6rem] italic font-semibold premium-heading text-neutral-900">Брови</h2>
-                <div class="h-[1px] flex-1 bg-neutral-300/40 mx-4 mt-8"></div>
-                <span class="text-[9px] uppercase tracking-[0.12em] text-neutral-400 font-medium shrink-0">Выберите услуги</span>
-            </div>
+        <!-- ВКЛАДКА: УСЛУГИ -->
+        <div id="tab-services">
+            <section class="mb-10 reveal-item delay-1" aria-labelledby="brows-title">
+                <div class="flex items-baseline justify-between mb-6 px-1">
+                    <h2 id="brows-title" class="font-accent text-[2.6rem] italic font-semibold premium-heading text-neutral-900">Брови</h2>
+                    <div class="h-[1px] flex-1 bg-neutral-300/40 mx-4 mt-8"></div>
+                    <span class="text-[9px] uppercase tracking-[0.12em] text-neutral-400 font-medium shrink-0">Выберите услуги</span>
+                </div>
 
-            <ul class="flex flex-col gap-3.5 list-none p-0 m-0">
-                <li>
-                    <article class="spotlight-card p-5 cursor-pointer group" tabindex="0" role="button" aria-pressed="false" data-name="коррекция бровей" data-price="400">
-                        <div class="card-content flex justify-between items-center gap-4">
-                            <div class="flex-1 min-w-0 pr-1">
-                                <h3 class="text-[14.5px] font-semibold premium-text text-neutral-900 transition-colors duration-300">Коррекция</h3>
-                                <p class="text-[12px] text-neutral-400 font-light mt-1 leading-snug transition-colors duration-300">(воск, пинцет)</p>
-                            </div>
-                            <span class="price-badge shrink-0 text-[13.5px] font-medium tracking-wide text-neutral-800 bg-white/60 border border-white/80 px-4 py-2 rounded-full">400р</span>
-                        </div>
-                    </article>
-                </li>
-                <li>
-                    <article class="spotlight-card p-5 cursor-pointer group" tabindex="0" role="button" aria-pressed="false" data-name="архитектура бровей" data-price="700">
-                        <div class="card-content flex justify-between items-center gap-4">
-                            <div class="flex-1 min-w-0 pr-1">
-                                <h3 class="text-[14.5px] font-semibold premium-text text-neutral-900 transition-colors duration-300">Архитектура бровей</h3>
-                                <p class="text-[12px] text-neutral-400 font-light mt-1 leading-snug transition-colors duration-300">(коррекция, окрашивание)</p>
-                            </div>
-                            <span class="price-badge shrink-0 text-[13.5px] font-medium tracking-wide text-neutral-800 bg-white/60 border border-white/80 px-4 py-2 rounded-full">700р</span>
-                        </div>
-                    </article>
-                </li>
-                <li>
-                    <article class="spotlight-card p-5 cursor-pointer group" tabindex="0" role="button" aria-pressed="false" data-name="долговременная укладка" data-price="1200">
-                        <div class="card-content flex justify-between items-center gap-4">
-                            <div class="flex-1 min-w-0 pr-1">
-                                <h3 class="text-[14.5px] font-semibold premium-text text-neutral-900 transition-colors duration-300">Долговременная укладка</h3>
-                                <p class="text-[12px] text-neutral-400 font-light mt-1 leading-snug transition-colors duration-300">(+коррекция, уход)</p>
-                            </div>
-                            <span class="price-badge shrink-0 text-[13.5px] font-medium tracking-wide text-neutral-800 bg-white/60 border border-white/80 px-4 py-2 rounded-full">1200р</span>
-                        </div>
-                    </article>
-                </li>
-                <li>
-                    <article class="spotlight-card p-5 cursor-pointer group" tabindex="0" role="button" aria-pressed="false" data-name="долговременная укладка +" data-price="1500">
-                        <div class="card-content flex justify-between items-center gap-4">
-                            <div class="flex-1 min-w-0 pr-1">
-                                <h3 class="text-[14.5px] font-semibold premium-text text-neutral-900 transition-colors duration-300">Долговременная укладка +</h3>
-                                <p class="text-[12px] text-neutral-400 font-light mt-1 leading-snug transition-colors duration-300">(+коррекция, окрашивание, уход)</p>
-                            </div>
-                            <span class="price-badge shrink-0 text-[13.5px] font-medium tracking-wide text-neutral-800 bg-white/60 border border-white/80 px-4 py-2 rounded-full">1500р</span>
-                        </div>
-                    </article>
-                </li>
-            </ul>
-        </section>
+                <ul class="flex flex-col gap-3.5 list-none p-0 m-0">
+                    <li><article class="spotlight-card p-5 cursor-pointer group" tabindex="0" role="button" aria-pressed="false" data-name="коррекция бровей" data-price="400"><div class="card-content flex justify-between items-center gap-4"><div class="flex-1 min-w-0 pr-1"><h3 class="text-[14.5px] font-semibold premium-text text-neutral-900 transition-colors duration-300">Коррекция</h3><p class="text-[12px] text-neutral-400 font-light mt-1 leading-snug transition-colors duration-300">(воск, пинцет)</p></div><span class="price-badge shrink-0 text-[13.5px] font-medium tracking-wide text-neutral-800 bg-white/60 border border-white/80 px-4 py-2 rounded-full">400р</span></div></article></li>
+                    <li><article class="spotlight-card p-5 cursor-pointer group" tabindex="0" role="button" aria-pressed="false" data-name="архитектура бровей" data-price="700"><div class="card-content flex justify-between items-center gap-4"><div class="flex-1 min-w-0 pr-1"><h3 class="text-[14.5px] font-semibold premium-text text-neutral-900 transition-colors duration-300">Архитектура бровей</h3><p class="text-[12px] text-neutral-400 font-light mt-1 leading-snug transition-colors duration-300">(коррекция, окрашивание)</p></div><span class="price-badge shrink-0 text-[13.5px] font-medium tracking-wide text-neutral-800 bg-white/60 border border-white/80 px-4 py-2 rounded-full">700р</span></div></article></li>
+                    <li><article class="spotlight-card p-5 cursor-pointer group" tabindex="0" role="button" aria-pressed="false" data-name="долговременная укладка" data-price="1200"><div class="card-content flex justify-between items-center gap-4"><div class="flex-1 min-w-0 pr-1"><h3 class="text-[14.5px] font-semibold premium-text text-neutral-900 transition-colors duration-300">Долговременная укладка</h3><p class="text-[12px] text-neutral-400 font-light mt-1 leading-snug transition-colors duration-300">(+коррекция, уход)</p></div><span class="price-badge shrink-0 text-[13.5px] font-medium tracking-wide text-neutral-800 bg-white/60 border border-white/80 px-4 py-2 rounded-full">1200р</span></div></article></li>
+                    <li><article class="spotlight-card p-5 cursor-pointer group" tabindex="0" role="button" aria-pressed="false" data-name="долговременная укладка +" data-price="1500"><div class="card-content flex justify-between items-center gap-4"><div class="flex-1 min-w-0 pr-1"><h3 class="text-[14.5px] font-semibold premium-text text-neutral-900 transition-colors duration-300">Долговременная укладка +</h3><p class="text-[12px] text-neutral-400 font-light mt-1 leading-snug transition-colors duration-300">(+коррекция, окрашивание, уход)</p></div><span class="price-badge shrink-0 text-[13.5px] font-medium tracking-wide text-neutral-800 bg-white/60 border border-white/80 px-4 py-2 rounded-full">1500р</span></div></article></li>
+                </ul>
+            </section>
 
-        <!-- РЕСНИЦЫ -->
-        <section class="mb-8 reveal-item delay-2" aria-labelledby="lash-title">
-            <div class="flex items-baseline justify-between mb-6 px-1">
-                <h2 id="lash-title" class="font-accent text-[2.6rem] italic font-semibold premium-heading text-neutral-900">Ресницы</h2>
-                <div class="h-[1px] flex-1 bg-neutral-300/40 mx-4 mt-8"></div>
-                <span class="text-[9px] uppercase tracking-[0.12em] text-neutral-400 font-medium shrink-0">Выберите услуги</span>
-            </div>
+            <section class="mb-8 reveal-item delay-2" aria-labelledby="lash-title">
+                <div class="flex items-baseline justify-between mb-6 px-1">
+                    <h2 id="lash-title" class="font-accent text-[2.6rem] italic font-semibold premium-heading text-neutral-900">Ресницы</h2>
+                    <div class="h-[1px] flex-1 bg-neutral-300/40 mx-4 mt-8"></div>
+                    <span class="text-[9px] uppercase tracking-[0.12em] text-neutral-400 font-medium shrink-0">Выберите услуги</span>
+                </div>
 
-            <ul class="flex flex-col gap-3.5 list-none p-0 m-0">
-                <li>
-                    <article class="spotlight-card p-5 cursor-pointer group" tabindex="0" role="button" aria-pressed="false" data-name="ламинирование ресниц" data-price="1200">
-                        <div class="card-content flex justify-between items-center gap-4">
-                            <div class="flex-1 min-w-0 pr-1">
-                                <h3 class="text-[14.5px] font-semibold premium-text text-neutral-900 transition-colors duration-300">Ламинирование ресниц</h3>
-                                <p class="text-[12px] text-neutral-400 font-light mt-1 leading-snug transition-colors duration-300">(+окрашивание, уход)</p>
-                            </div>
-                            <span class="price-badge shrink-0 text-[13.5px] font-medium tracking-wide text-neutral-800 bg-white/60 border border-white/80 px-4 py-2 rounded-full">1200р</span>
+                <ul class="flex flex-col gap-3.5 list-none p-0 m-0">
+                    <li><article class="spotlight-card p-5 cursor-pointer group" tabindex="0" role="button" aria-pressed="false" data-name="ламинирование ресниц" data-price="1200"><div class="card-content flex justify-between items-center gap-4"><div class="flex-1 min-w-0 pr-1"><h3 class="text-[14.5px] font-semibold premium-text text-neutral-900 transition-colors duration-300">Ламинирование ресниц</h3><p class="text-[12px] text-neutral-400 font-light mt-1 leading-snug transition-colors duration-300">(+окрашивание, уход)</p></div><span class="price-badge shrink-0 text-[13.5px] font-medium tracking-wide text-neutral-800 bg-white/60 border border-white/80 px-4 py-2 rounded-full">1200р</span></div></article></li>
+                    <li><article class="spotlight-card p-5 cursor-pointer group" tabindex="0" role="button" aria-pressed="false" data-name="окрашивание ресниц" data-price="300"><div class="card-content flex justify-between items-center gap-4"><div class="flex-1 min-w-0 pr-1"><h3 class="text-[14.5px] font-semibold premium-text text-neutral-900 transition-colors duration-300">Окрашивание ресниц</h3></div><span class="price-badge shrink-0 text-[13.5px] font-medium tracking-wide text-neutral-800 bg-white/60 border border-white/80 px-4 py-2 rounded-full">300р</span></div></article></li>
+                    <li><article class="spotlight-card p-5 cursor-pointer group" tabindex="0" role="button" aria-pressed="false" data-name="снятие наращенных ресниц" data-price="300"><div class="card-content flex justify-between items-center gap-4"><div class="flex-1 min-w-0 pr-1"><h3 class="text-[14.5px] font-semibold premium-text text-neutral-900 transition-colors duration-300">Снятие наращенных ресниц</h3></div><span class="price-badge shrink-0 text-[13.5px] font-medium tracking-wide text-neutral-800 bg-white/60 border border-white/80 px-4 py-2 rounded-full">300р</span></div></article></li>
+                </ul>
+            </section>
+
+            <div class="w-full mt-4 relative reveal-item delay-3">
+                <div class="bg-white/40 backdrop-blur-xl border border-white/60 rounded-[24px] p-5 text-center mb-6 transition-all duration-300">
+                    <p class="text-[14px] font-light tracking-wide text-neutral-600">
+                        Итоговая сумма: <br>
+                        <span class="font-semibold text-neutral-900 text-[24px] mt-1 inline-block tracking-wide">
+                            <span id="totalPrice">0</span>р
+                        </span>
+                        <span id="discountBadge" class="hidden ml-2 text-[14px] text-green-600 font-semibold align-middle">(-15%)</span>
+                    </p>
+                    <p id="discountText" class="text-[11px] text-neutral-400 font-light mt-2">
+                        На первое посещение действует скидка 15%
+                    </p>
+                </div>
+
+                <button onclick="chooseMessenger('telegram')" class="premium-btn btn-tg w-full h-[54px] flex justify-center items-center rounded-[20px] font-semibold tracking-[0.12em] text-[11px] uppercase outline-none">
+                    <svg class="btn-icon w-5 h-5 text-white" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/></svg>
+                    <span class="btn-text">Записаться в Telegram</span>
+                </button>
+
+                <div id="calendarBlock" class="mt-6 p-5 bg-white/50 backdrop-blur-2xl border border-white/70 rounded-[28px] transition-all duration-500 hidden scale-95 opacity-0">
+                    <div class="flex justify-between items-center mb-4">
+                        <h4 class="text-[12px] font-semibold tracking-[0.15em] uppercase text-neutral-700">Выберите дату</h4>
+                        <button onclick="closeCalendar()" class="text-neutral-400 hover:text-neutral-900 transition-colors" aria-label="Закрыть календарь">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" /></svg>
+                        </button>
+                    </div>
+                    <div id="clientCalendar" class="mb-5"></div>
+                    <div class="mt-4">
+                        <label class="text-[12px] text-neutral-500 mb-2 block">Доступное время</label>
+                        <div id="timeSlotsContainer" class="flex flex-wrap gap-2 min-h-[45px] items-center">
+                            <p class="text-[12px] text-neutral-400">Выберите дату в календаре</p>
                         </div>
-                    </article>
-                </li>
-                <li>
-                    <article class="spotlight-card p-5 cursor-pointer group" tabindex="0" role="button" aria-pressed="false" data-name="окрашивание ресниц" data-price="300">
-                        <div class="card-content flex justify-between items-center gap-4">
-                            <div class="flex-1 min-w-0 pr-1">
-                                <h3 class="text-[14.5px] font-semibold premium-text text-neutral-900 transition-colors duration-300">Окрашивание ресниц</h3>
-                            </div>
-                            <span class="price-badge shrink-0 text-[13.5px] font-medium tracking-wide text-neutral-800 bg-white/60 border border-white/80 px-4 py-2 rounded-full">300р</span>
-                        </div>
-                    </article>
-                </li>
-                <li>
-                    <article class="spotlight-card p-5 cursor-pointer group" tabindex="0" role="button" aria-pressed="false" data-name="снятие наращенных ресниц" data-price="300">
-                        <div class="card-content flex justify-between items-center gap-4">
-                            <div class="flex-1 min-w-0 pr-1">
-                                <h3 class="text-[14.5px] font-semibold premium-text text-neutral-900 transition-colors duration-300">Снятие наращенных ресниц</h3>
-                            </div>
-                            <span class="price-badge shrink-0 text-[13.5px] font-medium tracking-wide text-neutral-800 bg-white/60 border border-white/80 px-4 py-2 rounded-full">300р</span>
-                        </div>
-                    </article>
-                </li>
-            </ul>
-        </section>
-
-        <!-- ИТОГИ И КНОПКА -->
-        <div class="w-full mt-4 relative reveal-item delay-3">
-            <div class="bg-white/40 backdrop-blur-xl border border-white/60 rounded-[24px] p-5 text-center mb-6 transition-all duration-300">
-                <p class="text-[14px] font-light tracking-wide text-neutral-600">
-                    Итоговая сумма: <br>
-                    <span class="font-semibold text-neutral-900 text-[24px] mt-1 inline-block tracking-wide">
-                        <span id="totalPrice">0</span>р
-                    </span>
-                    <span id="discountBadge" class="hidden ml-2 text-[14px] text-green-600 font-semibold align-middle">(-15%)</span>
-                </p>
-                <p id="discountText" class="text-[11px] text-neutral-400 font-light mt-2">
-                    На первое посещение действует скидка 15%
-                </p>
-            </div>
-
-            <button onclick="chooseMessenger('telegram')" class="premium-btn btn-tg w-full h-[54px] flex justify-center items-center rounded-[20px] font-semibold tracking-[0.12em] text-[11px] uppercase outline-none">
-                <svg class="btn-icon w-5 h-5 text-white" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/></svg>
-                <span class="btn-text">Записаться в Telegram</span>
-            </button>
-
-            <div id="calendarBlock" class="mt-6 p-5 bg-white/50 backdrop-blur-2xl border border-white/70 rounded-[28px] transition-all duration-500 hidden scale-95 opacity-0">
-                <div class="flex justify-between items-center mb-4">
-                    <h4 class="text-[12px] font-semibold tracking-[0.15em] uppercase text-neutral-700">Выберите дату</h4>
-                    <button onclick="closeCalendar()" class="text-neutral-400 hover:text-neutral-900 transition-colors" aria-label="Закрыть календарь">
-                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" /></svg>
+                    </div>
+                    <button onclick="generateAndSend()" id="submitBookingBtn" disabled class="premium-btn h-[50px] mt-6 flex justify-center items-center rounded-[18px] font-semibold tracking-[0.12em] text-[11px] uppercase outline-none w-full">
+                        Отправить запрос
                     </button>
                 </div>
-
-                <div id="clientCalendar" class="mb-5"></div>
-
-                <div class="mt-4">
-                    <label class="text-[12px] text-neutral-500 mb-2 block">Доступное время</label>
-                    <div id="timeSlotsContainer" class="flex flex-wrap gap-2 min-h-[45px] items-center">
-                        <p class="text-[12px] text-neutral-400">Выберите дату в календаре</p>
-                    </div>
-                </div>
-
-                <button onclick="generateAndSend()" id="submitBookingBtn" disabled class="premium-btn h-[50px] mt-6 flex justify-center items-center rounded-[18px] font-semibold tracking-[0.12em] text-[11px] uppercase outline-none w-full">
-                    Отправить запрос
-                </button>
             </div>
         </div>
+
+        <!-- ВКЛАДКА: МОИ ЗАПИСИ -->
+        <div id="tab-appointments" class="hidden">
+            <h2 class="font-accent text-[2.2rem] italic font-semibold premium-heading text-neutral-900 mb-6 text-center">Мои записи</h2>
+            <div id="userAppointmentsList" class="flex flex-col gap-4">
+                <p class="text-center text-neutral-500 py-10">Загрузка записей...</p>
+            </div>
+        </div>
+
+        <!-- ВКЛАДКА: ПРОФИЛЬ -->
+        <div id="tab-profile" class="hidden">
+            <h2 class="font-accent text-[2.2rem] italic font-semibold premium-heading text-neutral-900 mb-6 text-center">Профиль</h2>
+            
+            <div class="bg-white/40 border border-white/60 rounded-[24px] p-6 flex flex-col gap-4">
+                <div>
+                    <label class="text-[12px] text-neutral-500 mb-2 block">Фамилия</label>
+                    <input type="text" id="profileLastName" class="premium-input text-[14px]" placeholder="Иванова">
+                </div>
+                <div>
+                    <label class="text-[12px] text-neutral-500 mb-2 block">Имя</label>
+                    <input type="text" id="profileFirstName" class="premium-input text-[14px]" placeholder="Анна">
+                </div>
+                <div>
+                    <label class="text-[12px] text-neutral-500 mb-2 block">Отчество (по желанию)</label>
+                    <input type="text" id="profilePatronymic" class="premium-input text-[14px]" placeholder="Сергеевна">
+                </div>
+                <div>
+                    <label class="text-[12px] text-neutral-500 mb-2 block">Номер телефона</label>
+                    <input type="tel" id="profilePhone" class="premium-input text-[14px]" placeholder="+7 (999) 123-45-67">
+                </div>
+                <button onclick="saveProfile()" class="premium-btn btn-green h-[50px] mt-4 flex justify-center items-center rounded-[18px] font-semibold tracking-[0.12em] text-[11px] uppercase outline-none w-full">
+                    Сохранить профиль
+                </button>
+            </div>
+
+            <button onclick="logoutUser()" class="w-full text-center text-[11px] uppercase tracking-[0.12em] text-neutral-400 hover:text-red-500 transition-colors mt-6">
+                Выйти из аккаунта
+            </button>
+        </div>
     </main>
+
+    <!-- Нижняя навигация (только для клиента) -->
+    <nav id="bottom-nav" class="bottom-nav">
+        <div class="nav-item active" onclick="switchClientTab('services')" id="nav-services">
+            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 10h16M4 14h16M4 18h16" /></svg>
+            <span>Услуги</span>
+        </div>
+        <div class="nav-item" onclick="switchClientTab('appointments')" id="nav-appointments">
+            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+            <span>Мои записи</span>
+        </div>
+        <div class="nav-item" onclick="switchClientTab('profile')" id="nav-profile">
+            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" /></svg>
+            <span>Профиль</span>
+        </div>
+    </nav>
 
     <!-- АДМИН ПАНЕЛЬ -->
     <main id="admin-view" class="hidden relative w-full max-w-[500px] bg-white/35 backdrop-blur-3xl rounded-[48px] p-6 sm:p-8 border border-white/50 main-container-shadow z-10">
@@ -435,16 +417,13 @@
             <button onclick="switchAdminTab('schedule')" id="tab-btn-schedule" class="pb-3 text-[12px] uppercase tracking-wide font-semibold tab-inactive">Расписание</button>
         </div>
 
-        <!-- Вкладка Заявки -->
         <div id="admin-bookings-view">
             <div id="admin-list" class="flex flex-col gap-4">
                 <p class="text-center text-neutral-500 py-10">Загрузка заявок...</p>
             </div>
         </div>
 
-        <!-- Вкладка Расписание -->
         <div id="admin-schedule-view" class="hidden">
-            
             <div class="bg-white/40 border border-white/60 rounded-[24px] p-5 mb-6">
                 <div class="flex justify-between items-center mb-4">
                     <h4 class="text-[12px] font-semibold tracking-[0.15em] uppercase text-neutral-700">Шаг 1: Выберите даты</h4>
@@ -505,16 +484,18 @@
         let selectedTimeSlot = null;
         let isFirstVisit = !localStorage.getItem('hasBookedBefore');
         
+        // Профиль пользователя
+        let currentUserId = localStorage.getItem('appUserId');
+        let currentUserData = null;
+
         const cards = document.querySelectorAll('.spotlight-card');
         const toast = document.getElementById('toast');
         const clientView = document.getElementById('client-view');
         const adminView = document.getElementById('admin-view');
+        const bottomNav = document.getElementById('bottom-nav');
 
-        // Состояния календарей
         let clientCalState = { month: new Date().getMonth(), year: new Date().getFullYear(), selectedDate: null };
         let adminCalState = { month: new Date().getMonth(), year: new Date().getFullYear(), selectedDates: [] };
-        
-        // Выбранные часы в админке
         let adminSelectedTimes = [];
 
         function showToast(message) {
@@ -540,67 +521,138 @@
             document.getElementById('totalPrice').innerText = finalPrice;
         }
 
-        // ====== ЛОГИКА КЛИЕНТА ======
+        // ====== ЛОГИКА ПРОФИЛЯ ======
+        function initUser() {
+            if (!currentUserId) {
+                currentUserId = db.collection('users').doc().id;
+                localStorage.setItem('appUserId', currentUserId);
+            }
+            db.collection('users').doc(currentUserId).onSnapshot(doc => {
+                if (doc.exists) {
+                    currentUserData = doc.data();
+                    document.getElementById('profileLastName').value = currentUserData.lastName || '';
+                    document.getElementById('profileFirstName').value = currentUserData.firstName || '';
+                    document.getElementById('profilePatronymic').value = currentUserData.patronymic || '';
+                    document.getElementById('profilePhone').value = currentUserData.phone || '';
+                }
+            });
+        }
+
+        function saveProfile() {
+            const lastName = document.getElementById('profileLastName').value.trim();
+            const firstName = document.getElementById('profileFirstName').value.trim();
+            const patronymic = document.getElementById('profilePatronymic').value.trim();
+            const phone = document.getElementById('profilePhone').value.trim();
+
+            if (!firstName || !lastName || !phone) {
+                showToast('Заполните Фамилию, Имя и Телефон.');
+                return;
+            }
+
+            db.collection('users').doc(currentUserId).set({
+                lastName, firstName, patronymic, phone,
+                updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+            }, { merge: true }).then(() => {
+                showToast('Профиль успешно сохранен!');
+            });
+        }
+
+        function logoutUser() {
+            localStorage.removeItem('appUserId');
+            localStorage.removeItem('hasBookedBefore');
+            window.location.reload();
+        }
+
+        function switchClientTab(tab) {
+            document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
+            document.getElementById(`nav-${tab}`).classList.add('active');
+
+            document.getElementById('tab-services').classList.add('hidden');
+            document.getElementById('tab-appointments').classList.add('hidden');
+            document.getElementById('tab-profile').classList.add('hidden');
+
+            document.getElementById(`tab-${tab}`).classList.remove('hidden');
+
+            if (tab === 'appointments') fetchUserAppointments();
+        }
+
+        function fetchUserAppointments() {
+            const list = document.getElementById('userAppointmentsList');
+            list.innerHTML = '<p class="text-center text-neutral-500 py-10">Загрузка записей...</p>';
+
+            db.collection('bookings').where('userId', '==', currentUserId).onSnapshot(snapshot => {
+                if (snapshot.empty) {
+                    list.innerHTML = '<p class="text-center text-neutral-500 py-10">У вас пока нет записей.</p>';
+                    return;
+                }
+
+                list.innerHTML = '';
+                // Сортируем локально
+                const bookings = snapshot.docs.sort((a, b) => {
+                    const aDate = a.data().timestamp?.toMillis() || 0;
+                    const bDate = b.data().timestamp?.toMillis() || 0;
+                    return bDate - aDate;
+                });
+
+                bookings.forEach(doc => {
+                    const b = doc.data();
+                    let statusClass = 'status-pending', statusText = 'Ожидает';
+                    if (b.status === 'approved') { statusClass = 'status-approved'; statusText = 'Подтверждена'; }
+                    if (b.status === 'rejected') { statusClass = 'status-rejected'; statusText = 'Отклонена'; }
+
+                    const card = document.createElement('div');
+                    card.className = 'admin-card p-5';
+                    card.innerHTML = `
+                        <div class="flex justify-between items-start mb-3">
+                            <div>
+                                <p class="text-[14px] font-semibold text-neutral-900">${b.services}</p>
+                                <p class="text-[12px] text-neutral-500 mt-1">${b.date} в ${b.time}</p>
+                            </div>
+                            <span class="text-[10px] uppercase tracking-wide ${statusClass} bg-neutral-100 px-2 py-1 rounded-full">${statusText}</span>
+                        </div>
+                    `;
+                    list.appendChild(card);
+                });
+            });
+        }
+
+        // ====== ЛОГИКА УСЛУГ ======
         cards.forEach(card => {
             card.addEventListener('mousemove', (e) => {
                 if (card.classList.contains('is-selected')) return;
                 const rect = card.getBoundingClientRect();
-                const x = e.clientX - rect.left;
-                const y = e.clientY - rect.top;
-                card.style.setProperty('--x', `${x}px`);
-                card.style.setProperty('--y', `${y}px`);
-
-                const centerX = rect.width / 2;
-                const centerY = rect.height / 2;
-                const rotateX = ((y - centerY) / centerY) * -5;
-                const rotateY = ((x - centerX) / centerX) * 5;
-
+                const x = e.clientX - rect.left, y = e.clientY - rect.top;
+                card.style.setProperty('--x', `${x}px`); card.style.setProperty('--y', `${y}px`);
+                const centerX = rect.width / 2, centerY = rect.height / 2;
+                const rotateX = ((y - centerY) / centerY) * -5, rotateY = ((x - centerX) / centerX) * 5;
                 card.style.transform = `perspective(800px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale3d(1.015, 1.015, 1.015)`;
                 const content = card.querySelector('.card-content');
                 if(content) content.style.transform = `translateZ(25px) translateX(${rotateY * 0.5}px) translateY(${rotateX * -0.5}px)`;
             });
 
             card.addEventListener('mouseleave', () => {
-                card.style.transform = '';
-                const content = card.querySelector('.card-content');
+                card.style.transform = ''; const content = card.querySelector('.card-content');
                 if(content) content.style.transform = '';
             });
 
             const toggleSelection = () => {
-                const name = card.getAttribute('data-name');
-                const price = parseInt(card.getAttribute('data-price'), 10);
+                const name = card.getAttribute('data-name'), price = parseInt(card.getAttribute('data-price'), 10);
                 const isSelected = card.classList.toggle('is-selected');
                 card.setAttribute('aria-pressed', isSelected);
-
-                if (isSelected) {
-                    totalPrice += price;
-                    selectedServices.push(name);
-                } else {
-                    totalPrice -= price;
-                    const index = selectedServices.indexOf(name);
-                    if (index > -1) selectedServices.splice(index, 1);
-                }
+                if (isSelected) { totalPrice += price; selectedServices.push(name); } 
+                else { totalPrice -= price; const index = selectedServices.indexOf(name); if (index > -1) selectedServices.splice(index, 1); }
                 updateTotalPrice();
             };
 
             card.addEventListener('click', toggleSelection);
-            card.addEventListener('keydown', (e) => {
-                if (e.key === 'Enter' || e.key === ' ') {
-                    e.preventDefault();
-                    toggleSelection();
-                }
-            });
+            card.addEventListener('keydown', (e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); toggleSelection(); } });
         });
 
         function chooseMessenger(messenger) {
-            if (selectedServices.length === 0) {
-                showToast('Пожалуйста, выберите сначала хотя бы одну процедуру.');
-                return;
-            }
+            if (selectedServices.length === 0) { showToast('Пожалуйста, выберите сначала хотя бы одну процедуру.'); return; }
             const calendarBlock = document.getElementById('calendarBlock');
             calendarBlock.classList.remove('hidden');
             renderCalendar('client');
-
             setTimeout(() => {
                 calendarBlock.classList.remove('scale-95', 'opacity-0');
                 calendarBlock.classList.add('scale-100', 'opacity-100');
@@ -615,11 +667,7 @@
             setTimeout(() => calendarBlock.classList.add('hidden'), 500);
         }
 
-        function formatDate(dateString) {
-            if (!dateString) return '';
-            const [year, month, day] = dateString.split('-');
-            return `${day}.${month}.${year}`;
-        }
+        function formatDate(dateString) { if (!dateString) return ''; const [year, month, day] = dateString.split('-'); return `${day}.${month}.${year}`; }
 
         // ====== ЛОГИКА КАЛЕНДАРЕЙ ======
         function renderCalendar(target) {
@@ -632,36 +680,20 @@
             
             let html = `
                 <div class="flex justify-between items-center mb-4">
-                    <button id="${target}-cal-prev" class="p-2 rounded-lg hover:bg-neutral-200/50 transition-colors">
-                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" /></svg>
-                    </button>
+                    <button id="${target}-cal-prev" class="p-2 rounded-lg hover:bg-neutral-200/50 transition-colors"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" /></svg></button>
                     <span class="font-semibold text-sm">${monthNames[state.month]} ${state.year}</span>
-                    <button id="${target}-cal-next" class="p-2 rounded-lg hover:bg-neutral-200/50 transition-colors">
-                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" /></svg>
-                    </button>
+                    <button id="${target}-cal-next" class="p-2 rounded-lg hover:bg-neutral-200/50 transition-colors"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" /></svg></button>
                 </div>
-                <div class="calendar-grid text-center text-[10px] text-neutral-400 mb-2">
-                    <div>Пн</div><div>Вт</div><div>Ср</div><div>Чт</div><div>Пт</div><div>Сб</div><div>Вс</div>
-                </div>
-                <div class="calendar-grid" id="${target}-cal-grid"></div>
-            `;
+                <div class="calendar-grid text-center text-[10px] text-neutral-400 mb-2"><div>Пн</div><div>Вт</div><div>Ср</div><div>Чт</div><div>Пт</div><div>Сб</div><div>Вс</div></div>
+                <div class="calendar-grid" id="${target}-cal-grid"></div>`;
             container.innerHTML = html;
 
-            document.getElementById(`${target}-cal-prev`).onclick = () => {
-                state.month--;
-                if (state.month < 0) { state.month = 11; state.year--; }
-                renderCalendar(target);
-            };
-            document.getElementById(`${target}-cal-next`).onclick = () => {
-                state.month++;
-                if (state.month > 11) { state.month = 0; state.year++; }
-                renderCalendar(target);
-            };
+            document.getElementById(`${target}-cal-prev`).onclick = () => { state.month--; if (state.month < 0) { state.month = 11; state.year--; } renderCalendar(target); };
+            document.getElementById(`${target}-cal-next`).onclick = () => { state.month++; if (state.month > 11) { state.month = 0; state.year++; } renderCalendar(target); };
 
             const grid = document.getElementById(`${target}-cal-grid`);
             const firstDay = new Date(state.year, state.month, 1).getDay() || 7;
             const daysInMonth = new Date(state.year, state.month + 1, 0).getDate();
-            
             for (let i = 1; i < firstDay; i++) grid.innerHTML += `<div></div>`;
 
             for (let day = 1; day <= daysInMonth; day++) {
@@ -670,19 +702,14 @@
                 const cellDate = new Date(state.year, state.month, day);
                 const isPast = cellDate < today;
                 const isToday = cellDate.getTime() === today.getTime();
-                
                 let isSelected = false;
-                if (target === 'client') {
-                    isSelected = clientCalState.selectedDate === dateStr;
-                } else {
-                    isSelected = adminCalState.selectedDates.includes(dateStr);
-                }
+                if (target === 'client') isSelected = clientCalState.selectedDate === dateStr;
+                else isSelected = adminCalState.selectedDates.includes(dateStr);
 
                 let classes = 'cal-day';
                 if (isPast) classes += ' cal-disabled';
                 if (isToday) classes += ' cal-today';
                 if (isSelected) classes += target === 'client' ? ' cal-selected' : ' cal-multi-selected';
-
                 grid.innerHTML += `<div class="${classes}" data-date="${dateStr}">${day}</div>`;
             }
 
@@ -690,17 +717,11 @@
                 el.onclick = () => {
                     const dateStr = el.getAttribute('data-date');
                     if (target === 'client') {
-                        clientCalState.selectedDate = dateStr;
-                        renderCalendar('client');
-                        fetchAvailableTimes(dateStr);
+                        clientCalState.selectedDate = dateStr; renderCalendar('client'); fetchAvailableTimes(dateStr);
                     } else {
-                        // Мульти-выбор для админа
                         const idx = adminCalState.selectedDates.indexOf(dateStr);
-                        if (idx > -1) {
-                            adminCalState.selectedDates.splice(idx, 1);
-                        } else {
-                            adminCalState.selectedDates.push(dateStr);
-                        }
+                        if (idx > -1) adminCalState.selectedDates.splice(idx, 1);
+                        else adminCalState.selectedDates.push(dateStr);
                         document.getElementById('dateCounter').innerText = `Выбрано: ${adminCalState.selectedDates.length}`;
                         renderCalendar('admin');
                     }
@@ -709,85 +730,54 @@
         }
 
         function fetchAvailableTimes(dateStr) {
-            const container = document.getElementById('timeSlotsContainer');
-            const submitBtn = document.getElementById('submitBookingBtn');
-            
-            selectedTimeSlot = null;
-            submitBtn.disabled = true;
+            const container = document.getElementById('timeSlotsContainer'), submitBtn = document.getElementById('submitBookingBtn');
+            selectedTimeSlot = null; submitBtn.disabled = true;
             container.innerHTML = '<p class="text-[12px] text-neutral-400">Загрузка...</p>';
-
             db.collection("schedule").doc(dateStr).onSnapshot(doc => {
                 container.innerHTML = '';
                 if (doc.exists && doc.data().times && doc.data().times.length > 0) {
-                    const times = doc.data().times.sort();
-                    times.forEach(time => {
-                        const btn = document.createElement('button');
-                        btn.className = 'time-slot';
-                        btn.innerText = time;
-                        btn.onclick = () => selectTimeSlot(btn, time);
-                        container.appendChild(btn);
+                    doc.data().times.sort().forEach(time => {
+                        const btn = document.createElement('button'); btn.className = 'time-slot'; btn.innerText = time;
+                        btn.onclick = () => selectTimeSlot(btn, time); container.appendChild(btn);
                     });
-                } else {
-                    container.innerHTML = '<p class="text-[12px] text-neutral-400 w-full text-center">На эту дату нет свободного времени</p>';
-                }
+                } else container.innerHTML = '<p class="text-[12px] text-neutral-400 w-full text-center">На эту дату нет свободного времени</p>';
             });
         }
 
         function selectTimeSlot(btn, time) {
             document.querySelectorAll('#timeSlotsContainer .time-slot').forEach(b => b.classList.remove('is-selected'));
-            btn.classList.add('is-selected');
-            selectedTimeSlot = time;
+            btn.classList.add('is-selected'); selectedTimeSlot = time;
             document.getElementById('submitBookingBtn').disabled = false;
         }
 
         function generateAndSend() {
             const rawDate = clientCalState.selectedDate;
-            if (!rawDate || !selectedTimeSlot) {
-                showToast('Пожалуйста, выберите дату и время.');
-                return;
-            }
+            if (!rawDate || !selectedTimeSlot) { showToast('Пожалуйста, выберите дату и время.'); return; }
 
             const formattedDate = formatDate(rawDate);
             let proceduresText = '';
-
-            if (selectedServices.length === 1) {
-                proceduresText = `процедуру: ${selectedServices[0]}`;
-            } else if (selectedServices.length > 1) {
-                const last = selectedServices[selectedServices.length - 1];
-                const otherServices = selectedServices.slice(0, -1).join(', ');
-                proceduresText = `процедуры: ${otherServices} и ${last}`;
-            }
+            if (selectedServices.length === 1) proceduresText = `процедуру: ${selectedServices[0]}`;
+            else if (selectedServices.length > 1) { const last = selectedServices[selectedServices.length - 1]; const otherServices = selectedServices.slice(0, -1).join(', '); proceduresText = `процедуры: ${otherServices} и ${last}`; }
 
             let textMessage = `Здравствуйте, хочу записаться на ${proceduresText}. Дата ${formattedDate} ${selectedTimeSlot}.`;
-            if (isFirstVisit) {
-                textMessage += ` (Это мой первый визит, применена скидка 15%)`;
-            }
+            if (isFirstVisit) textMessage += ` (Это мой первый визит, применена скидка 15%)`;
             const encodedText = encodeURIComponent(textMessage);
 
+            // Привязываем заявку к профилю
             if (db) {
                 db.collection("bookings").add({
-                    services: selectedServices.join(', '),
-                    date: formattedDate,
-                    rawDate: rawDate,
-                    time: selectedTimeSlot,
-                    timestamp: firebase.firestore.FieldValue.serverTimestamp(),
-                    status: 'pending',
-                    isFirstVisit: isFirstVisit
-                }).then(() => {
-                    localStorage.setItem('hasBookedBefore', 'true');
-                    isFirstVisit = false;
-                }).catch(error => console.error("Ошибка записи в БД:", error));
+                    services: selectedServices.join(', '), date: formattedDate, rawDate: rawDate, time: selectedTimeSlot,
+                    timestamp: firebase.firestore.FieldValue.serverTimestamp(), status: 'pending',
+                    isFirstVisit: isFirstVisit, userId: currentUserId // ID пользователя
+                }).then(() => { localStorage.setItem('hasBookedBefore', 'true'); isFirstVisit = false; })
+                .catch(error => console.error("Ошибка записи в БД:", error));
             }
 
-            let finalLink = `https://t.me/${TG_USERNAME}?text=${encodedText}`;
-            window.open(finalLink, '_blank', 'noopener,noreferrer');
+            window.open(`https://t.me/${TG_USERNAME}?text=${encodedText}`, '_blank', 'noopener,noreferrer');
             closeCalendar();
-            
             setTimeout(() => {
                 cards.forEach(c => { c.classList.remove('is-selected'); c.setAttribute('aria-pressed', 'false'); });
-                selectedServices.length = 0;
-                totalPrice = 0;
-                updateTotalPrice();
+                selectedServices.length = 0; totalPrice = 0; updateTotalPrice();
             }, 1000);
         }
 
@@ -795,59 +785,43 @@
         function checkAdminRoute() {
             if (window.location.hash === '#admin') {
                 const isAdmin = sessionStorage.getItem('isAdmin');
-                if (isAdmin === 'true') {
-                    showAdminPanel();
-                } else {
+                if (isAdmin === 'true') showAdminPanel();
+                else {
                     const pin = prompt('Введите PIN-код:');
-                    if (pin === ADMIN_PIN) {
-                        sessionStorage.setItem('isAdmin', 'true');
-                        showAdminPanel();
-                    } else {
-                        alert('Неверный PIN-код.');
-                        window.location.hash = '';
-                    }
+                    if (pin === ADMIN_PIN) { sessionStorage.setItem('isAdmin', 'true'); showAdminPanel(); }
+                    else { alert('Неверный PIN-код.'); window.location.hash = ''; }
                 }
             } else {
-                showClientPanel();
+                adminView.classList.add('hidden');
+                clientView.classList.remove('hidden');
+                bottomNav.classList.remove('hidden');
             }
         }
 
         function showAdminPanel() {
             clientView.classList.add('hidden');
+            bottomNav.classList.add('hidden');
             adminView.classList.remove('hidden');
             switchAdminTab('bookings');
         }
 
-        function showClientPanel() {
-            adminView.classList.add('hidden');
-            clientView.classList.remove('hidden');
-        }
-
         function logoutAdmin() {
-            sessionStorage.removeItem('isAdmin');
-            window.location.hash = '';
-            showClientPanel();
+            sessionStorage.removeItem('isAdmin'); window.location.hash = ''; window.location.reload();
         }
 
         function switchAdminTab(tab) {
-            const btnBookings = document.getElementById('tab-btn-bookings');
-            const btnSchedule = document.getElementById('tab-btn-schedule');
-            const viewBookings = document.getElementById('admin-bookings-view');
-            const viewSchedule = document.getElementById('admin-schedule-view');
-
+            const btnBookings = document.getElementById('tab-btn-bookings'), btnSchedule = document.getElementById('tab-btn-schedule');
+            const viewBookings = document.getElementById('admin-bookings-view'), viewSchedule = document.getElementById('admin-schedule-view');
             if (tab === 'bookings') {
                 btnBookings.classList.replace('tab-inactive', 'tab-active');
                 btnSchedule.classList.replace('tab-active', 'tab-inactive');
-                viewBookings.classList.remove('hidden');
-                viewSchedule.classList.add('hidden');
+                viewBookings.classList.remove('hidden'); viewSchedule.classList.add('hidden');
                 listenToBookings();
             } else {
                 btnSchedule.classList.replace('tab-inactive', 'tab-active');
                 btnBookings.classList.replace('tab-active', 'tab-inactive');
-                viewSchedule.classList.remove('hidden');
-                viewBookings.classList.add('hidden');
-                renderCalendar('admin');
-                renderTimeGrid();
+                viewSchedule.classList.remove('hidden'); viewBookings.classList.add('hidden');
+                renderCalendar('admin'); renderTimeGrid();
             }
         }
 
@@ -855,92 +829,58 @@
         function listenToBookings() {
             if (!db) return;
             if (unsubscribeBookings) unsubscribeBookings();
+            unsubscribeBookings = db.collection("bookings").orderBy("timestamp", "desc").onSnapshot(snapshot => {
+                const list = document.getElementById('admin-list');
+                if (snapshot.empty) { list.innerHTML = '<p class="text-center text-neutral-500 py-10">Новых заявок нет.</p>'; return; }
+                list.innerHTML = '';
+                snapshot.forEach(doc => {
+                    const b = doc.data(), id = doc.id;
+                    let statusClass = 'status-pending', statusText = 'Ожидает';
+                    if (b.status === 'approved') { statusClass = 'status-approved'; statusText = 'Подтверждена'; }
+                    if (b.status === 'rejected') { statusClass = 'status-rejected'; statusText = 'Отклонена'; }
+                    let dateStr = 'Только что';
+                    if (b.timestamp && b.timestamp.toDate) dateStr = b.timestamp.toDate().toLocaleString('ru-RU');
+                    const visitBadge = b.isFirstVisit ? `<span class="ml-2 text-[10px] bg-green-100 text-green-700 px-2 py-1 rounded-full">1-й визит</span>` : '';
 
-            unsubscribeBookings = db.collection("bookings")
-                .orderBy("timestamp", "desc")
-                .onSnapshot(snapshot => {
-                    const list = document.getElementById('admin-list');
-                    if (snapshot.empty) {
-                        list.innerHTML = '<p class="text-center text-neutral-500 py-10">Новых заявок нет.</p>';
-                        return;
-                    }
-
-                    list.innerHTML = '';
-                    snapshot.forEach(doc => {
-                        const b = doc.data();
-                        const id = doc.id;
-                        
-                        let statusClass = 'status-pending';
-                        let statusText = 'Ожидает';
-                        if (b.status === 'approved') { statusClass = 'status-approved'; statusText = 'Подтверждена'; }
-                        if (b.status === 'rejected') { statusClass = 'status-rejected'; statusText = 'Отклонена'; }
-
-                        let dateStr = 'Только что';
-                        if (b.timestamp && b.timestamp.toDate) {
-                            dateStr = b.timestamp.toDate().toLocaleString('ru-RU');
-                        }
-
-                        const visitBadge = b.isFirstVisit ? `<span class="ml-2 text-[10px] bg-green-100 text-green-700 px-2 py-1 rounded-full">1-й визит</span>` : '';
-
-                        const card = document.createElement('div');
-                        card.className = 'admin-card p-5';
-                        card.innerHTML = `
-                            <div class="flex justify-between items-start mb-3">
-                                <div>
-                                    <p class="text-[14px] font-semibold text-neutral-900">${b.services} ${visitBadge}</p>
-                                    <p class="text-[12px] text-neutral-500 mt-1">${b.date} в ${b.time}</p>
-                                </div>
-                                <span class="text-[10px] uppercase tracking-wide ${statusClass} bg-neutral-100 px-2 py-1 rounded-full">${statusText}</span>
+                    const card = document.createElement('div');
+                    card.className = 'admin-card p-5';
+                    card.innerHTML = `
+                        <div class="flex justify-between items-start mb-3">
+                            <div>
+                                <p class="text-[14px] font-semibold text-neutral-900">${b.services} ${visitBadge}</p>
+                                <p class="text-[12px] text-neutral-500 mt-1">${b.date} в ${b.time}</p>
                             </div>
-                            <p class="text-[10px] text-neutral-400 mb-4">Заявка от: ${dateStr}</p>
-                            
-                            ${b.status === 'pending' ? `
-                            <div class="flex gap-2 mt-2">
-                                <button onclick="approveBooking('${id}', '${b.rawDate}', '${b.time}')" class="flex-1 py-2 rounded-xl text-white text-[11px] uppercase tracking-wide font-semibold btn-green transition-all">Подтвердить</button>
-                                <button onclick="updateBookingStatus('${id}', 'rejected')" class="flex-1 py-2 rounded-xl text-white text-[11px] uppercase tracking-wide font-semibold btn-red transition-all">Отклонить</button>
-                            </div>
-                            ` : ''}
-                        `;
-                        list.appendChild(card);
-                    });
+                            <span class="text-[10px] uppercase tracking-wide ${statusClass} bg-neutral-100 px-2 py-1 rounded-full">${statusText}</span>
+                        </div>
+                        <p class="text-[10px] text-neutral-400 mb-4">Заявка от: ${dateStr}</p>
+                        ${b.status === 'pending' ? `
+                        <div class="flex gap-2 mt-2">
+                            <button onclick="approveBooking('${id}', '${b.rawDate}', '${b.time}')" class="flex-1 py-2 rounded-xl text-white text-[11px] uppercase tracking-wide font-semibold btn-green transition-all">Подтвердить</button>
+                            <button onclick="updateBookingStatus('${id}', 'rejected')" class="flex-1 py-2 rounded-xl text-white text-[11px] uppercase tracking-wide font-semibold btn-red transition-all">Отклонить</button>
+                        </div>` : ''}`;
+                    list.appendChild(card);
                 });
+            });
         }
 
         function approveBooking(bookingId, rawDate, time) {
             if (!db) return;
-            db.collection("schedule").doc(rawDate).update({
-                times: firebase.firestore.FieldValue.arrayRemove(time)
-            }).then(() => {
-                db.collection("bookings").doc(bookingId).update({ status: 'approved' });
-            }).catch(error => {
-                console.error("Ошибка подтверждения:", error);
-                db.collection("bookings").doc(bookingId).update({ status: 'approved' });
-            });
+            db.collection("schedule").doc(rawDate).update({ times: firebase.firestore.FieldValue.arrayRemove(time) })
+            .then(() => db.collection("bookings").doc(bookingId).update({ status: 'approved' }))
+            .catch(() => db.collection("bookings").doc(bookingId).update({ status: 'approved' }));
         }
 
-        function updateBookingStatus(id, status) {
-            if (db) db.collection("bookings").doc(id).update({ status: status });
-        }
+        function updateBookingStatus(id, status) { if (db) db.collection("bookings").doc(id).update({ status: status }); }
 
-        // ====== ЛОГИКА РАСПИСАНИЯ (АДМИН) ======
         function renderTimeGrid() {
-            const grid = document.getElementById('adminTimeGrid');
-            grid.innerHTML = '';
+            const grid = document.getElementById('adminTimeGrid'); grid.innerHTML = '';
             const hours = ['08:00', '09:00', '10:00', '11:00', '12:00', '13:00', '14:00', '15:00', '16:00', '17:00', '18:00', '19:00', '20:00'];
-            
             hours.forEach(time => {
-                const btn = document.createElement('div');
-                btn.className = 'time-toggle';
-                btn.innerText = time;
+                const btn = document.createElement('div'); btn.className = 'time-toggle'; btn.innerText = time;
                 btn.onclick = () => {
                     const idx = adminSelectedTimes.indexOf(time);
-                    if (idx > -1) {
-                        adminSelectedTimes.splice(idx, 1);
-                        btn.classList.remove('is-selected');
-                    } else {
-                        adminSelectedTimes.push(time);
-                        btn.classList.add('is-selected');
-                    }
+                    if (idx > -1) { adminSelectedTimes.splice(idx, 1); btn.classList.remove('is-selected'); } 
+                    else { adminSelectedTimes.push(time); btn.classList.add('is-selected'); }
                 };
                 grid.appendChild(btn);
             });
@@ -952,63 +892,36 @@
             if (type === 'day') adminSelectedTimes = ['12:00', '13:00', '14:00', '15:00'];
             if (type === 'evening') adminSelectedTimes = ['16:00', '17:00', '18:00', '19:00', '20:00'];
             if (type === 'full') adminSelectedTimes = ['08:00', '09:00', '10:00', '11:00', '12:00', '13:00', '14:00', '15:00', '16:00', '17:00', '18:00', '19:00', '20:00'];
-            
-            // Обновляем UI
             document.querySelectorAll('#adminTimeGrid .time-toggle').forEach(btn => {
-                if (adminSelectedTimes.includes(btn.innerText)) {
-                    btn.classList.add('is-selected');
-                } else {
-                    btn.classList.remove('is-selected');
-                }
+                if (adminSelectedTimes.includes(btn.innerText)) btn.classList.add('is-selected');
+                else btn.classList.remove('is-selected');
             });
         }
 
         function applySchedule() {
-            if (adminCalState.selectedDates.length === 0) {
-                showToast('Сначала выберите даты в календаре.');
-                return;
-            }
-            if (adminSelectedTimes.length === 0) {
-                showToast('Сначала выберите время (часы).');
-                return;
-            }
-
+            if (adminCalState.selectedDates.length === 0) return showToast('Сначала выберите даты в календаре.');
+            if (adminSelectedTimes.length === 0) return showToast('Сначала выберите время (часы).');
             const batch = db.batch();
             adminCalState.selectedDates.forEach(dateStr => {
                 const ref = db.collection("schedule").doc(dateStr);
                 batch.set(ref, { times: firebase.firestore.FieldValue.arrayUnion(...adminSelectedTimes) }, { merge: true });
             });
-
-            batch.commit().then(() => {
-                showToast(`Успешно добавлено время на ${adminCalState.selectedDates.length} дат(ы).`);
-            }).catch(err => {
-                console.error(err);
-                showToast('Ошибка при сохранении.');
-            });
+            batch.commit().then(() => showToast(`Успешно добавлено время на ${adminCalState.selectedDates.length} дат(ы).`));
         }
 
         function clearSchedule() {
-            if (adminCalState.selectedDates.length === 0) {
-                showToast('Сначала выберите даты в календаре для очистки.');
-                return;
-            }
-
+            if (adminCalState.selectedDates.length === 0) return showToast('Сначала выберите даты в календаре для очистки.');
             const batch = db.batch();
             adminCalState.selectedDates.forEach(dateStr => {
                 const ref = db.collection("schedule").doc(dateStr);
                 batch.set(ref, { times: [] }, { merge: true });
             });
-
-            batch.commit().then(() => {
-                showToast(`Расписание очищено для ${adminCalState.selectedDates.length} дат(ы).`);
-            }).catch(err => {
-                console.error(err);
-                showToast('Ошибка при очистке.');
-            });
+            batch.commit().then(() => showToast(`Расписание очищено для ${adminCalState.selectedDates.length} дат(ы).`));
         }
 
         window.addEventListener('hashchange', checkAdminRoute);
         window.addEventListener('DOMContentLoaded', () => {
+            initUser();
             updateTotalPrice();
             checkAdminRoute();
         });

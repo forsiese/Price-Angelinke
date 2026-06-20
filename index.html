@@ -1121,13 +1121,22 @@ function escapeHTML(str) {
     /* ================================================================
        ОТПРАВКА УВЕДОМЛЕНИЙ (TELEGRAM + EMAIL)
     ================================================================ */
-    async function sendNotification(params) {
-        try {
-            var response = await fetch('/api/notify', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(params)
-            });
+   async function sendNotification(params) {
+    try {
+        // Получаем токен авторизации текущего пользователя
+        var idToken = auth.currentUser ? await auth.currentUser.getIdToken() : '';
+        
+        var response = await fetch('/api/notify', {
+            method: 'POST',
+            headers: { 
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + idToken // Передаем токен
+            },
+            body: JSON.stringify(params)
+        });
+        return await response.json();
+    } catch (e) {
+// ...
             return await response.json();
         } catch (e) {
             console.warn('Serverless unavailable, fallback to Telegram link');
@@ -1587,12 +1596,18 @@ function escapeHTML(str) {
             list.innerHTML = '';
             snapshot.forEach(function(doc) {
                 var b = doc.data();
-                var sc = 'status-pending', st = 'Ожидает';
-                if (b.status === 'approved') { sc = 'status-approved'; st = 'Подтверждена'; }
-                if (b.status === 'rejected') { sc = 'status-rejected'; st = 'Отклонена'; }
-                var card = document.createElement('div'); card.className = 'admin-card p-5';
-                card.innerHTML = '<div class="flex justify-between items-start mb-2"><p class="text-[14px] font-semibold text-neutral-900">' + b.services + '</p><span class="text-[10px] uppercase tracking-wide ' + sc + ' bg-neutral-100 px-2 py-1 rounded-full shrink-0 ml-2">' + st + '</span></div><p class="text-[12px] text-neutral-500">' + b.date + ' в ' + b.time + '</p><p class="text-[12px] text-neutral-400 mt-1">' + (b.finalPrice ? formatPrice(b.finalPrice) + 'р' : '') + (b.isFirstVisit ? ' &middot; Первый визит' : '') + '</p>';
-                list.appendChild(card);
+var sc = 'status-pending', st = 'Ожидает';
+if (b.status === 'approved') { sc = 'status-approved'; st = 'Подтверждена'; }
+if (b.status === 'rejected') { sc = 'status-rejected'; st = 'Отклонена'; }
+
+// Обезвреживаем данные для клиента
+var safeServices = escapeHTML(b.services || 'Услуги не указаны');
+var safeDate = escapeHTML(b.date || '');
+var safeTime = escapeHTML(b.time || '');
+
+var card = document.createElement('div'); card.className = 'admin-card p-5';
+card.innerHTML = '<div class="flex justify-between items-start mb-2"><p class="text-[14px] font-semibold text-neutral-900">' + safeServices + '</p><span class="text-[10px] uppercase tracking-wide ' + sc + ' bg-neutral-100 px-2 py-1 rounded-full shrink-0 ml-2">' + st + '</span></div><p class="text-[12px] text-neutral-500">' + safeDate + ' в ' + safeTime + '</p><p class="text-[12px] text-neutral-400 mt-1">' + (b.finalPrice ? formatPrice(b.finalPrice) + 'р' : '') + (b.isFirstVisit ? ' &middot; Первый визит' : '') + '</p>';
+list.appendChild(card);
             });
         }, function(err) { handleDbError(err, 'Мои записи'); });
     }
